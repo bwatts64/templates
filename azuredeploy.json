@@ -4,7 +4,7 @@
   "parameters": {
     "vNETName": {
       "type": "String",
-      "defaultValue": "pocInspireVnet",
+      "defaultValue": "wbpocInspireVnet",
       "metadata": {
         "description": "Name of the virtual network to be created"
       }
@@ -44,7 +44,7 @@
     },
     "databaseName": {
       "type": "string",
-      "defaultValue": "wbpocdb"
+      "defaultValue": "wbpocinspiredb"
     },
     "sqltier": {
       "type": "string",
@@ -60,19 +60,19 @@
     },
     "sqlserverName": {
       "type": "String",
-      "defaultValue": "pocinspire"
+      "defaultValue": "wbpocinspiresql"
     },
     "sqlzoneRedundant": {
       "defaultValue": false,
       "type": "Bool"
     },
     "appInsightsName": {
-      "defaultValue": "apimAppInsights",
+      "defaultValue": "wbpocapimai",
       "type": "string"
     },
     "apimname": {
       "type": "String",
-      "defaultValue": "powwbapim"
+      "defaultValue": "wbpocinspireapim"
     },
     "apimsku": {
       "type": "string",
@@ -87,12 +87,11 @@
     }
   },
   "variables": {
-    "blobSAS": "?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2023-02-19T03:24:28Z&st=2020-02-18T19:24:28Z&spr=https&sig=R41ao%2BX%2BMD5okFz5t2sZ3gEjvWFMBJBr4WaXZmjoD2w%3D",
-    "blobUri": "https://stage5f1c1322cebc4ea3877.blob.core.windows.net/infor",
-    "deployVNETTemplateURL": "[concat(variables('blobUri'),'/VNet.json',variables('blobSAS'))]",
-    "deploySQLTemplateURL": "[concat(variables('blobUri'),'/SQLDB.json',variables('blobSAS'))]",
-    "deployAppInsightsTemplateURL": "[concat(variables('blobUri'),'/ApplicationInsights.json',variables('blobSAS'))]",
-    "deployAPIMTemplateURL": "[concat(variables('blobUri'),'/APIM.json',variables('blobSAS'))]"
+    "gitUri": "https://raw.githubusercontent.com/bwatts64/templates/master/",
+    "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
+    "deploySQLTemplateURL": "[concat(variables('gitUri'),'/SQLDB.json')]",
+    "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
+    "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]"
   },
   "resources": [
     {
@@ -174,6 +173,9 @@
           },
           "vnetID": {
             "value": "[reference('deployVNET').outputs.vnetId.value]"
+          },
+          "location": {
+            "value": "[resourceGroup().location]"
           }
         }
       }
@@ -202,6 +204,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
+        "deployVNET",
+        "deployAppInsights"
       ],
       "properties": {
         "mode": "Incremental",
@@ -210,14 +214,14 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "name": {
+          "apimname": {
             "value": "[parameters('apimName')]"
           },
           "sku": {
             "value": "[parameters('apimsku')]"
           },
           "capacity": {
-            "value": "[parameters('apimsku')]"
+            "value": "[parameters('apimcapacity')]"
           },
           "apimEmail": {
             "value": "[parameters('apimEmail')]"
