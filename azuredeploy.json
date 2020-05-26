@@ -1,0 +1,237 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vNETName": {
+      "type": "String",
+      "defaultValue": "pocInspireVnet",
+      "metadata": {
+        "description": "Name of the virtual network to be created"
+      }
+    },
+    "addressRange": {
+      "type": "String",
+      "defaultValue":"10.0.0.0/8",
+      "metadata": {
+        "description": "Administrator password for the local admin account"
+      }
+    },
+    "apimRange": {
+      "type": "String",
+      "defaultValue": "10.0.1.0/24"
+    },"aksRange": {
+      "type": "String",
+      "defaultValue": "10.1.0.0/16"
+    },
+    "privateEPRange": {
+      "type": "String",
+      "defaultValue":"10.0.2.0/24"
+    },
+    "sharedRange": {
+      "type": "String",
+      "defaultValue": "10.0.3.0/24"
+    },
+    "bastionRange": {
+      "type": "String",
+      "defaultValue": "10.0.4.0/24"
+    },
+    "sqladmin": {
+      "type": "string",
+      "defaultValue": "bwatts"
+    },
+    "sqlPwd": {
+      "type": "securestring"
+    },
+    "databaseName": {
+      "type": "string",
+      "defaultValue": "wbpocdb"
+    },
+    "sqltier": {
+      "type": "string",
+      "defaultValue": "GeneralPurpose"
+    },
+    "sqlskuName": {
+      "type": "string",
+      "defaultValue": "GP_Gen5_2"
+    },
+    "sqlmaxSizeBytes": {
+      "type": "Int",
+      "defaultValue": 1073741824
+    },
+    "sqlserverName": {
+      "type": "String",
+      "defaultValue": "pocinspire"
+    },
+    "sqlzoneRedundant": {
+      "defaultValue": false,
+      "type": "Bool"
+    },
+    "appInsightsName": {
+      "defaultValue": "apimAppInsights",
+      "type": "string"
+    },
+    "apimname": {
+      "type": "String",
+      "defaultValue": "powwbapim"
+    },
+    "apimsku": {
+      "type": "string",
+      "defaultValue": "Developer"
+    },
+    "apimcapacity": {
+      "type": "int",
+      "defaultValue": 1
+    },
+    "apimEmail": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "blobSAS": "?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2023-02-19T03:24:28Z&st=2020-02-18T19:24:28Z&spr=https&sig=R41ao%2BX%2BMD5okFz5t2sZ3gEjvWFMBJBr4WaXZmjoD2w%3D",
+    "blobUri": "https://stage5f1c1322cebc4ea3877.blob.core.windows.net/infor",
+    "deployVNETTemplateURL": "[concat(variables('blobUri'),'/VNet.json',variables('blobSAS'))]",
+    "deploySQLTemplateURL": "[concat(variables('blobUri'),'/SQLDB.json',variables('blobSAS'))]",
+    "deployAppInsightsTemplateURL": "[concat(variables('blobUri'),'/ApplicationInsights.json',variables('blobSAS'))]",
+    "deployAPIMTemplateURL": "[concat(variables('blobUri'),'/APIM.json',variables('blobSAS'))]"
+  },
+  "resources": [
+    {
+      "name": "deployVNET",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployVNETTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vNETName": {
+            "value": "[parameters('vNETName')]"
+          },
+          "addressRange": {
+            "value": "[parameters('addressRange')]"
+          },
+          "apimRange": {
+            "value": "[parameters('apimRange')]"
+          },
+          "aksRange": {
+            "value": "[parameters('aksRange')]"
+          },
+          "sharedRange": {
+            "value": "[parameters('sharedRange')]"
+          },
+          "bastionRange": {
+            "value": "[parameters('bastionRange')]"
+          },
+          "privateEPRange": {
+            "value": "[parameters('privateEPRange')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deploySQL",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deploySQLTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "administratorLogin": {
+            "value": "[parameters('sqlAdmin')]"
+          },
+          "administratorLoginPassword": {
+            "value": "[parameters('sqlPwd')]"
+          },
+          "databaseName": {
+            "value": "[parameters('databaseName')]"
+          },
+          "tier": {
+            "value": "[parameters('sqltier')]"
+          },
+          "skuName": {
+            "value": "[parameters('sqlskuName')]"
+          },
+          "maxSizeBytes": {
+            "value": "[parameters('sqlmaxSizeBytes')]"
+          },
+          "serverName": {
+            "value": "[parameters('sqlserverName')]"
+          },
+          "zoneRedundant": {
+            "value": "[parameters('sqlzoneRedundant')]"
+          },
+          "peSubnetId": {
+            "value": "[reference('deployVNET').outputs.epSubnetID.value]"
+          },
+          "vnetID": {
+            "value": "[reference('deployVNET').outputs.vnetId.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployAppInsights",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployAppInsightsTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "name": {
+            "value": "[parameters('appInsightsName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployAPIM",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployAPIMTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "name": {
+            "value": "[parameters('apimName')]"
+          },
+          "sku": {
+            "value": "[parameters('apimsku')]"
+          },
+          "capacity": {
+            "value": "[parameters('apimsku')]"
+          },
+          "apimEmail": {
+            "value": "[parameters('apimEmail')]"
+          },
+          "appinsightsID": {
+            "value": "[reference('deployAppInsights').outputs.appInsightsID.value]"
+          },
+          "subnetID": {
+            "value": "[reference('deployVNET').outputs.apimSubnetID.value]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
