@@ -105,6 +105,29 @@
     "bastionHostName": {
       "type": "string",
       "defaultValue": "wbpocdemobastion"
+    },
+    "jumpName": {
+      "type": "string",
+      "defaultValue": "wbpocdemojump"
+    },
+    "jumpSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2"
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "jumpAdmin"
+    },
+    "adminPassword": {
+      "type": "secureString"
+    },
+    "jumpAvailabilityZone": {
+      "type": "string",
+      "defaultValue": "1"
+    },
+    "jumpSKU": {
+      "type": "string",
+      "defaultValue": "2019-Datacenter"
     }
   },
   "variables": {
@@ -112,7 +135,9 @@
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",
-    "deployAPPGWTemplateURL": "[concat(variables('gitUri'),'/AppGW.json')]"
+    "deployAPPGWTemplateURL": "[concat(variables('gitUri'),'/AppGW.json')]",
+    "deployAzureBastionTemplateURL": "[concat(variables('gitUri'),'/AzureBastion.json')]",
+    "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]"
   },
   "resources": [
     {
@@ -299,6 +324,44 @@
           },
           "publicIpAddressName": {
               "value": "[concat(parameters('bastionHostName'),'-pip')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployJumpBox",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployWindowsServerTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "subnetID": {
+            "value": "[reference('deployVNET').outputs.sharedSubnetID.value]"
+          },
+          "virtualMachineName": {
+            "value": "[parameters('jumpName')]"
+          },
+          "virtualMachineSize": {
+            "value": "[parameters('jumpSize')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUserName')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "zone": {
+            "value": "[parameters('jumpAvailabilityZone')]"
+          },
+          "sku": {
+            "value": "[parameters('jumpSKU')]"
           }
         }
       }

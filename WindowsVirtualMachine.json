@@ -2,10 +2,7 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "subnetName": {
-      "type": "string"
-    },
-    "virtualNetworkId": {
+    "subnetID": {
       "type": "string"
     },
     "virtualMachineName": {
@@ -32,11 +29,8 @@
     }
   },
   "variables": {
-    "vnetId": "[parameters('virtualNetworkId')]",
-    "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
     "publisher": "Windows",
     "offer": "WindowsServer",
-    "dataDiskName": "[concat(parameters('virtualMachineName'),'-DataDisk0')]",
     "nicName": "[concat(parameters('virtualMachineName'),'-NIC')]"
   },
   "resources": [
@@ -52,7 +46,7 @@
             "name": "ipconfig1",
             "properties": {
               "subnet": {
-                "id": "[variables('subnetRef')]"
+                "id": "[parameters('subnetID')]"
               },
               "privateIPAllocationMethod": "Dynamic"
             }
@@ -76,12 +70,12 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
+            "offer": "[variables('offer')]",
             "sku": "[parameters('sku')]",
             "version": "latest"
           },
           "osDisk": {
-            "osType": "Windows",
+            "osType": "[variables('publisher')]",
             "createOption": "fromImage",
             "managedDisk": {
               "storageAccountType": "StandardSSD_LRS"
