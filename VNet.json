@@ -101,7 +101,7 @@
               "priority": 150,
               "access": "Allow",
               "direction": "Outbound",
-              "destinationPortRange": [
+              "destinationPortRanges": [
                 "5671",
                 "5672",
                 "443"
