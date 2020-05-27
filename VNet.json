@@ -157,7 +157,11 @@
               "priority": 190,
               "access": "Allow",
               "direction": "Outbound",
-              "destinationPortRange": "25,587,25028",
+              "destinationPortRanges": [
+                "25",
+                "587",
+                "25028"
+              ],
               "protocol": "Tcp",
               "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
