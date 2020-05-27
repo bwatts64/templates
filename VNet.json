@@ -18,6 +18,9 @@
     "apimRange": {
       "type": "String"
     },
+    "appGWRange": {
+      "type": "string"
+    },
     "aksRange": {
       "type": "String"
     },
@@ -143,6 +146,12 @@
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'AKS-NSG')]"
               }
             }
+          },
+          {
+            "name": "APPGW-SN",
+            "properties": {
+              "addressPrefix": "[parameters('appgwRange')]",
+            }
           }
         ]
       }
@@ -168,6 +177,10 @@
     "apimSubnetID": {
       "type": "string",
       "value": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vNETName')), '/subnets/APIM-SN')]"
+    },
+    "appgwSubnetID": {
+      "type": "string",
+      "value": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vNETName')), '/subnets/APPGW-SN')]"
     }
   }
 }

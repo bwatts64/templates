@@ -35,6 +35,10 @@
       "type": "String",
       "defaultValue": "10.0.4.0/24"
     },
+    "appgwRange": {
+      "type": "string",
+      "defaultValue": "10.0.5.0/24"
+    },
     "appInsightsName": {
       "defaultValue": "wbpocapimai",
       "type": "string"
@@ -53,6 +57,50 @@
     },
     "apimEmail": {
       "type": "string"
+    },
+    "applicationGatewayName": {
+      "type": "string",
+      "defaultValue": "wbpocinspireappgw"
+    },
+    "appgwtier": {
+      "type": "string",
+      "defaultValue": "WAF_v2"
+    },
+    "appgwskuSize": {
+        "type": "string",
+        "defaultValue": "WAF_v2"
+    },
+    "appgwcapacity": {
+        "type": "int",
+        "defaultValue": 2
+    },
+    "appgwzones": {
+        "type": "array",
+        "defaultValue": [
+                "1",
+                "2",
+                "3"
+        ]
+    },
+    "appgwPIPName": {
+        "type": "string",
+        "defaultValue": "wbpocinspireappgw-pip"
+    },
+    "appgwsku": {
+        "type": "string",
+        "defaultValue": "Standard"
+    },
+    "appgwpublicIpZones": {
+        "type": "array",
+        "defaultValue": []
+    },
+    "appgwprivateIpAddress": {
+        "type": "string",
+        "defaultValue": "10.0.5.4"
+    },
+    "appgwautoScaleMaxCapacity": {
+        "type": "int",
+        "defaultValue": 4
     }
   },
   "variables": {
@@ -85,6 +133,9 @@
           },
           "aksRange": {
             "value": "[parameters('aksRange')]"
+          },
+          "appgwRange": {
+            "value": "[parameters('appgwRange')]"
           },
           "sharedRange": {
             "value": "[parameters('sharedRange')]"
@@ -152,6 +203,68 @@
           },
           "loggerName":{
             "value": "[parameters('appInsightsName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployAPGW",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployAPGWTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[resourceGroup().location]"
+          },
+          "applicationGatewayName": {
+              "value": "[parameters('applicationGatewayName')]"
+          },
+          "tier": {
+              "value": "[parameters('appgwTier')]"
+          },
+          "skuSize": {
+              "value": "[parameters('appgwSkuSize')]"
+          },
+          "capacity": {
+              "value": "[parameters('appgwCapacity')]"
+          },
+          "subnetName": {
+              "value": "appgw-sn"
+          },
+          "zones": {
+              "value": "[parameters('appgwZones')]"
+          },
+          "publicIpAddressName": {
+              "value": "[parameters('appgwPIPName')]"
+          },
+          "sku": {
+              "value": "[parameters('appgwSKU')]"
+          },
+          "allocationMethod": {
+              "value": "static"
+          },
+          "publicIpZones": {
+              "value": "[parameters('appgwpublicIPZones')]"
+          },
+          "privateIpAddress": {
+              "value": "[parameters('appgwPrivateIpAddress')]"
+          },
+          "autoScaleMaxCapacity": {
+              "value": "[parameters('appgwAutoScaleMaxCapacity')]"
+          },
+          "vnetID": {
+              "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "subnetID": {
+              "value": "[reference('deployVNET').outputs.apgwSubnetID.value]"
           }
         }
       }
