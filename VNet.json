@@ -113,7 +113,8 @@
           {
             "name": "PrivateEP-SN",
             "properties": {
-              "addressPrefix": "[parameters('privateEPRange')]"
+              "addressPrefix": "[parameters('privateEPRange')]",
+              "privateEndpointNetworkPolicies": "Disabled" 
             }
           },
           {
