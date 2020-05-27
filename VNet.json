@@ -161,7 +161,7 @@
             }
           },
           {
-            "name": "allow-azure-cache",
+            "name": "allow-azure-cache-ib",
             "properties": {
               "priority": 200,
               "access": "Allow",
@@ -174,7 +174,7 @@
             }
           },
           {
-            "name": "allow-azure-cache",
+            "name": "allow-azure-cache-ob",
             "properties": {
               "priority": 210,
               "access": "Allow",
