@@ -51,6 +51,162 @@
               "direction": "Inbound",
               "destinationPortRange": "443",
               "protocol": "Tcp",
+              "sourceAddressPrefix": "[parameters('appGWRange')]",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "allow-mgmt-endpoint",
+            "properties": {
+              "priority": 120,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "3443",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "ApiManagement",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "VIRTUAL_NETWORK"
+            }
+          },
+          {
+            "name": "allow-azure-storage",
+            "properties": {
+              "priority": 130,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "443",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "Storage"
+            }
+          },
+          {
+            "name": "allow-azure-ad",
+            "properties": {
+              "priority": 140,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "443",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "AzureActiveDirectory"
+            }
+          },
+          {
+            "name": "allow-event-hub",
+            "properties": {
+              "priority": 150,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "5671,5672,443",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "EventHub"
+            }
+          },
+          {
+            "name": "allow-file-share",
+            "properties": {
+              "priority": 160,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "445",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "Storage"
+            }
+          },
+          {
+            "name": "allow-health-status",
+            "properties": {
+              "priority": 170,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "1886",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "AzureCloud"
+            }
+          },
+          {
+            "name": "allow-azure-monitor",
+            "properties": {
+              "priority": 180,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "443",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "AzureMonitor"
+            }
+          },
+          {
+            "name": "allow-smtp-relay",
+            "properties": {
+              "priority": 190,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "25,587,25028",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "INTERNET"
+            }
+          },
+          {
+            "name": "allow-azure-cache",
+            "properties": {
+              "priority": 200,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "6381-6383",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "INTERNET"
+            }
+          },
+          {
+            "name": "allow-azure-cache",
+            "properties": {
+              "priority": 210,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "6381-6383",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "INTERNET"
+            }
+          },
+          {
+            "name": "deny-all",
+            "properties": {
+              "priority": 500,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "deny-all",
+            "properties": {
+              "priority": 500,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
               "sourceAddressPrefix": "*",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "*"
@@ -65,21 +221,7 @@
       "name": "AKS-NSG",
       "location": "[resourceGroup().location]",
       "properties": {
-        "securityRules": [
-          {
-            "name": "apim-allow-443",
-            "properties": {
-              "priority": 110,
-              "access": "Allow",
-              "direction": "Inbound",
-              "destinationPortRange": "443",
-              "protocol": "Tcp",
-              "sourceAddressPrefix": "[parameters('apimRange')]",
-              "sourcePortRange": "*",
-              "destinationAddressPrefix": "*"
-            }
-          }
-        ]
+
       }
     },
     {
@@ -87,7 +229,86 @@
       "apiVersion": "2019-08-01",
       "name": "Shared-NSG",
       "location": "[resourceGroup().location]",
-      "properties": {}
+      "properties": {
+        "securityRules": [
+          {
+            "name": "deny-all",
+            "properties": {
+              "priority": 500,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "allow-bastion",
+            "properties": {
+              "priority": 100,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "[parameters('bastionRange')]",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }      
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2019-08-01",
+      "name": "Backend-NSG",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "deny-all",
+            "properties": {
+              "priority": 500,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "allow-AKS",
+            "properties": {
+              "priority": 100,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "[parameters('aksRange')]",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          ,
+          {
+            "name": "allow-Mgmt",
+            "properties": {
+              "priority": 100,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "[parameters('sharedRange')]",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }      
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
@@ -117,6 +338,9 @@
             "name": "PrivateEP-SN",
             "properties": {
               "addressPrefix": "[parameters('privateEPRange')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'Backend-NSG')]"
+              },
               "privateEndpointNetworkPolicies": "Disabled" 
             }
           },

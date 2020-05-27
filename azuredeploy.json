@@ -4,7 +4,7 @@
   "parameters": {
     "vNETName": {
       "type": "String",
-      "defaultValue": "wbpocInspireVnet",
+      "defaultValue": "wbpocAPPVnet",
       "metadata": {
         "description": "Name of the virtual network to be created"
       }
@@ -45,7 +45,7 @@
     },
     "apimname": {
       "type": "String",
-      "defaultValue": "wbpocinspireapim"
+      "defaultValue": "wbpocAPPapim"
     },
     "apimsku": {
       "type": "string",
@@ -60,7 +60,7 @@
     },
     "applicationGatewayName": {
       "type": "string",
-      "defaultValue": "wbpocinspireappgw"
+      "defaultValue": "wbpocAPPappgw"
     },
     "appgwtier": {
       "type": "string",
@@ -84,7 +84,7 @@
     },
     "appgwPIPName": {
         "type": "string",
-        "defaultValue": "wbpocinspireappgw-pip"
+        "defaultValue": "wbpocAPPappgw-pip"
     },
     "appgwsku": {
         "type": "string",
@@ -108,7 +108,7 @@
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",
-    "deployAPPGWTemplateURL": "[concat(variables('gitUri'),'/APPGW.json')]"
+    "deployAPPGWTemplateURL": "[concat(variables('gitUri'),'/AppGW.json')]"
   },
   "resources": [
     {
@@ -260,9 +260,6 @@
           },
           "autoScaleMaxCapacity": {
               "value": "[parameters('appgwAutoScaleMaxCapacity')]"
-          },
-          "vnetID": {
-              "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "subnetID": {
               "value": "[reference('deployVNET').outputs.appgwSubnetID.value]"

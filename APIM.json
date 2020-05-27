@@ -15,7 +15,6 @@
             "type": "string"
         },
         "appinsightsID": {
-            "defaultValue": "/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/POCInspire/providers/microsoft.insights/components/apiminsights",
             "type": "String"
         },
         "subnetID": {
@@ -38,7 +37,7 @@
             },
             "properties": {
                 "publisherEmail": "[parameters('apimEmail')]",
-                "publisherName": "Inspire Brands",
+                "publisherName": "Demo Brands",
                 "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
                 "hostnameConfigurations": [
                     {

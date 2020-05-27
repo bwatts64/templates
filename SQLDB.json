@@ -33,8 +33,7 @@
             "defaultValue": 1073741824
         },
         "serverName": {
-            "type": "String",
-            "defaultValue": "pocinspire"
+            "type": "String"
         },
         "zoneRedundant": {
             "defaultValue": false,
