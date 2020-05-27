@@ -249,7 +249,6 @@
                     ]
                 }
             },
-            "subscriptionId": "[if(parameters('enablePrivateEndpoint'), variables('SubscriptionId'), variables('subscriptionId'))]",
             "resourceGroup": "[if(parameters('enablePrivateEndpoint'), variables('resourceGroupName'), variables('resourceGroupName'))]"
         },
         {
@@ -300,7 +299,6 @@
                     "uri": "[variables('privateEndpointTemplateLink')]"
                 }
             },
-            "subscriptionId": "[if(parameters('enablePrivateEndpoint'), variables('subscriptionId'), variables('subscriptionId'))]",
             "resourceGroup": "[if(parameters('enablePrivateEndpoint'), variables('resourceGroupName'), variables('resourceGroupName'))]"
         },
         {
@@ -378,7 +376,6 @@
                     ]
                 }
             },
-            "subscriptionId": "[if(parameters('enablePrivateEndpoint'), variables('SubscriptionId'), variables('subscriptionId'))]",
             "resourceGroup": "[if(parameters('enablePrivateEndpoint'), variables('resourceGroupName'), variables('resourceGroupName'))]"
         }
     ]
