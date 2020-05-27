@@ -231,6 +231,9 @@
           },
           "subnetID": {
             "value": "[reference('deployVNET').outputs.apimSubnetID.value]"
+          },
+          "loggerName":{
+            "value": "[parameters('appInsightsName')]"
           }
         }
       }
