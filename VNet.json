@@ -77,7 +77,7 @@
               "direction": "Outbound",
               "destinationPortRange": "443",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "Storage"
             }
@@ -90,7 +90,7 @@
               "direction": "Outbound",
               "destinationPortRange": "443",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "AzureActiveDirectory"
             }
@@ -103,7 +103,7 @@
               "direction": "Outbound",
               "destinationPortRange": "5671,5672,443",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "EventHub"
             }
@@ -116,7 +116,7 @@
               "direction": "Outbound",
               "destinationPortRange": "445",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "Storage"
             }
@@ -129,7 +129,7 @@
               "direction": "Outbound",
               "destinationPortRange": "1886",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "AzureCloud"
             }
@@ -142,7 +142,7 @@
               "direction": "Outbound",
               "destinationPortRange": "443",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "AzureMonitor"
             }
@@ -155,7 +155,7 @@
               "direction": "Outbound",
               "destinationPortRange": "25,587,25028",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "INTERNET"
             }
@@ -168,7 +168,7 @@
               "direction": "Outbound",
               "destinationPortRange": "6381-6383",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "INTERNET"
             }
@@ -181,7 +181,7 @@
               "direction": "Inbound",
               "destinationPortRange": "6381-6383",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "VIRTUAL_NETWORK",
+              "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "INTERNET"
             }
