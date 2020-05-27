@@ -101,7 +101,7 @@
         }
     },
     "variables": {
-        "subscriptionId": "[subscription().subscriptionId]",
+        "subscriptionId": "[subscription().Id]",
         "resourceGroupName": "[resourceGroup().name]",
         "uniqueStorage": "[uniqueString(variables('subscriptionId'), variables('resourceGroupName'), parameters('location'))]",
         "storageName": "[tolower(concat('sqlva', variables('uniqueStorage')))]",
@@ -116,7 +116,7 @@
         "subnetPoliciesTemplateName": "[concat('SubnetPolicies-', if(parameters('enablePrivateEndpoint'), variables('privateEndpointNestedTemplateId'), ''))]",
         "deploymentTemplateApi": "2018-05-01",
         "privateEndpointTemplateName": "[concat('PrivateEndpoint-', if(parameters('enablePrivateEndpoint'), variables('privateEndpointNestedTemplateId'), ''))]",
-        "privateLinkServiceServiceId": "[concat(resourceId(variables('subscriptionId'), variables('resourceGroupName')),'/providers/Microsoft.Sql/servers/', parameters('serverName'))]",
+        "privateLinkServiceServiceId": "[concat(resourceId(variables('subscriptionId'), variables('resourceGroupName')),'providers/Microsoft.Sql/servers/', parameters('serverName'))]",
         "privateEndpointTemplateLink": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.0123035/DeploymentTemplates/PrivateEndpoint.json",
         "privateDnsForPrivateEndpointTemplateLink": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.0123035/DeploymentTemplates/PrivateDnsForPrivateEndpoint.json",
         "privateDnsForPrivateEndpointNicTemplateLink": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.0123035/DeploymentTemplates/PrivateDnsForPrivateEndpointNic.json",
