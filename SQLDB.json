@@ -191,8 +191,7 @@
                     "name": "Default",
                     "dependsOn": [
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'))]",
-                        "[concat('Microsoft.Storage/storageAccounts/', variables('storageName'))]",
-                        "[concat('Microsoft.Sql/servers/', parameters('serverName'), '/securityAlertPolicies/Default')]"
+                        "[concat('Microsoft.Storage/storageAccounts/', variables('storageName'))]"
                     ],
                     "properties": {
                         "storageContainerPath": "[if(parameters('enableVA'), concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))).primaryEndpoints.blob, 'vulnerability-assessment'), '')]",
