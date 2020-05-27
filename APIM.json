@@ -89,7 +89,7 @@
                         "[concat('Microsoft.ApiManagement/service/', parameters('apimname'), '/loggers/', parameters('loggerName'))]"
                     ],
                     "properties": {
-                        "loggerId": "[concat('/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/', parameters('name'), '/loggers/', parameters('loggerName'))]",
+                        "loggerId": "[concat('/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/', parameters('apimname'), '/loggers/', parameters('loggerName'))]",
                         "alwaysLog": "allErrors",
                         "sampling": {
                             "percentage": 100,
