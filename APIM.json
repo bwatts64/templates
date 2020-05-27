@@ -61,7 +61,7 @@
                     "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": "False",
                     "Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2": "False"
                 },
-                "virtualNetworkType": "External",
+                "virtualNetworkType": "Internal",
                 "disableGateway": false,
                 "apiVersionConstraint": {}
             },

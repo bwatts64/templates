@@ -35,37 +35,6 @@
       "type": "String",
       "defaultValue": "10.0.4.0/24"
     },
-    "sqladmin": {
-      "type": "string",
-      "defaultValue": "bwatts"
-    },
-    "sqlPwd": {
-      "type": "securestring"
-    },
-    "databaseName": {
-      "type": "string",
-      "defaultValue": "wbpocinspiredb"
-    },
-    "sqltier": {
-      "type": "string",
-      "defaultValue": "GeneralPurpose"
-    },
-    "sqlskuName": {
-      "type": "string",
-      "defaultValue": "GP_Gen5_2"
-    },
-    "sqlmaxSizeBytes": {
-      "type": "Int",
-      "defaultValue": 1073741824
-    },
-    "sqlserverName": {
-      "type": "String",
-      "defaultValue": "wbpocinspiresql"
-    },
-    "sqlzoneRedundant": {
-      "defaultValue": false,
-      "type": "Bool"
-    },
     "appInsightsName": {
       "defaultValue": "wbpocapimai",
       "type": "string"
@@ -89,7 +58,6 @@
   "variables": {
     "gitUri": "https://raw.githubusercontent.com/bwatts64/templates/master/",
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
-    "deploySQLTemplateURL": "[concat(variables('gitUri'),'/SQLDB.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]"
   },
@@ -126,62 +94,6 @@
           },
           "privateEPRange": {
             "value": "[parameters('privateEPRange')]"
-          }
-        }
-      }
-    },
-    {
-      "name": "deploySQL",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "deployVNET"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('deploySQLTemplateURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "administratorLogin": {
-            "value": "[parameters('sqlAdmin')]"
-          },
-          "administratorLoginPassword": {
-            "value": "[parameters('sqlPwd')]"
-          },
-          "databaseName": {
-            "value": "[parameters('databaseName')]"
-          },
-          "tier": {
-            "value": "[parameters('sqltier')]"
-          },
-          "skuName": {
-            "value": "[parameters('sqlskuName')]"
-          },
-          "maxSizeBytes": {
-            "value": "[parameters('sqlmaxSizeBytes')]"
-          },
-          "serverName": {
-            "value": "[parameters('sqlserverName')]"
-          },
-          "zoneRedundant": {
-            "value": "[parameters('sqlzoneRedundant')]"
-          },
-          "peSubnetId": {
-            "value": "[reference('deployVNET').outputs.epSubnetID.value]"
-          },
-          "vnetID": {
-            "value": "[reference('deployVNET').outputs.vnetId.value]"
-          },
-          "location": {
-            "value": "[resourceGroup().location]"
-          },
-          "enablePrivateEndpoint": {
-            "value": true
-          },
-          "vnetName":{
-            "value": "[parameters('vNETName')]"
           }
         }
       }
