@@ -296,7 +296,7 @@
           {
             "name": "allow-Mgmt",
             "properties": {
-              "priority": 100,
+              "priority": 110,
               "access": "Allow",
               "direction": "Inbound",
               "destinationPortRange": "*",
