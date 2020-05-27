@@ -329,7 +329,7 @@
         },
         "subnets": [
           {
-            "name": "AzureBastion",
+            "name": "AzureBastionSubnet",
             "properties": {
               "addressPrefix": "[parameters('bastionRange')]"
             }
@@ -389,6 +389,10 @@
     "epSubnetID": {
       "type": "string",
       "value": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vNETName')), '/subnets/PrivateEP-SN')]"
+    },
+    "bastionSubnetID": {
+      "type": "string",
+      "value": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vNETName')), '/subnets/AzureBastionSubnet')]"
     },
     "sharedSubnetID": {
       "type": "string",

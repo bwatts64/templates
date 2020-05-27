@@ -101,6 +101,10 @@
     "appgwautoScaleMaxCapacity": {
         "type": "int",
         "defaultValue": 4
+    },
+    "bastionHostName": {
+      "type": "string",
+      "defaultValue": "wbpocdemobastion"
     }
   },
   "variables": {
@@ -263,6 +267,38 @@
           },
           "subnetID": {
               "value": "[reference('deployVNET').outputs.appgwSubnetID.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployAzureBastion",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployAzureBastionTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[resourceGroup().location]"
+          },
+          "resourceGroup": {
+              "value": "[resourceGroup().name]"
+          },
+          "bastionHostName": {
+              "value": "[parameters('bastionHostName')]"
+          },
+          "subnetId": {
+              "value": "[reference('deployVNET').outputs.bastionSubnetID.value]"
+          },
+          "publicIpAddressName": {
+              "value": "[concat(parameters('bastionHostName'),'-pip')]"
           }
         }
       }
