@@ -176,6 +176,12 @@
           },
           "location": {
             "value": "[resourceGroup().location]"
+          },
+          "enablePrivateEndpoint": {
+            "value": true
+          },
+          "vnetName":{
+            "value": "[parameters('vNETName')]"
           }
         }
       }

@@ -92,8 +92,13 @@
         },
         "vnetID": {
             "type": "string"
+        },
+        "enablePrivateEndpoint": {
+            "type": "bool"
+        },
+        "vnetName": {
+            "type": "string"
         }
-        
     },
     "variables": {
         "subscriptionId": "[subscription().subscriptionId]",
@@ -102,7 +107,20 @@
         "storageName": "[tolower(concat('sqlva', variables('uniqueStorage')))]",
         "privateEndpointSQLName": "pocinsightssqlep",
         "uniqueRoleGuid": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), variables('storageBlobContributor'), resourceId('Microsoft.Sql/servers', parameters('serverName')))]",
-        "StorageBlobContributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]"
+        "StorageBlobContributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+        "privateEndpointNestedTemplateId": "pe-bb93e816-8e81-41a6-a991-37eec74b000d",
+        "privateEndpointApi": "2019-04-01",
+        "privateEndpointId": "[if(parameters('enablePrivateEndpoint'), resourceId(variables('subscriptionId'), variables('resourceGroupName'), 'Microsoft.Network/privateEndpoints', parameters('serverName')), '')]",
+        "privateEndpointVnetId": "[if(parameters('enablePrivateEndpoint'), resourceId(variables('subscriptionId'), variables('resourceGroupName'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')), '')]",
+        "privateEndpointContainerTemplateName": "[concat('PrivateEndpointContainer-', if(parameters('enablePrivateEndpoint'), variables('privateEndpointNestedTemplateId'), ''))]",
+        "subnetPoliciesTemplateName": "[concat('SubnetPolicies-', if(parameters('enablePrivateEndpoint'), variables('privateEndpointNestedTemplateId'), ''))]",
+        "deploymentTemplateApi": "2018-05-01",
+        "privateEndpointTemplateName": "[concat('PrivateEndpoint-', if(parameters('enablePrivateEndpoint'), variables('privateEndpointNestedTemplateId'), ''))]",
+        "privateLinkServiceServiceId": "[concat(resourceId(variables('subscriptionId'), variables('resourceGroupName')),'/providers/Microsoft.Sql/servers/', parameters('serverName'))]",
+        "privateEndpointTemplateLink": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.0123035/DeploymentTemplates/PrivateEndpoint.json",
+        "privateDnsForPrivateEndpointTemplateLink": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.0123035/DeploymentTemplates/PrivateDnsForPrivateEndpoint.json",
+        "privateDnsForPrivateEndpointNicTemplateLink": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.0123035/DeploymentTemplates/PrivateDnsForPrivateEndpointNic.json",
+        "privateDnsForPrivateEndpointIpConfigTemplateLink": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.0123035/DeploymentTemplates/PrivateDnsForPrivateEndpointIpConfig.json"
     },
     "resources": [
         {
@@ -206,54 +224,162 @@
                 }
             ]
         },
-
         {
-            "type": "Microsoft.Network/privateEndpoints",
-            "apiVersion": "2019-04-01",
-            "name": "[variables('privateEndpointSQLName')]",
-            "location": "[parameters('location')]",
+            "condition": "[parameters('enablePrivateEndpoint')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('deploymentTemplateApi')]",
+            "name": "[variables('subnetPoliciesTemplateName')]",
             "properties": {
-                "privateLinkServiceConnections": [
-                    {
-                        "id": "",
-                        "name": "[variables('privateEndpointSQLName')]",
-                        "properties": {
-                            "privateLinkServiceId": "[concat(resourceGroup().id,'providers/Microsoft.Sql/servers/', parameters('serverName'))]",
-                            "groupIds": [
-                                "SqlServer"
-                            ]
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "apiVersion": "[variables('privateEndpointApi')]",
+                            "name": "[concat(parameters('vnetName'), '/PrivateEP-SN')]",
+                            "location": "[resourceGroup().location]",
+                            "properties": {
+                                "privateEndpointNetworkPolicies": "Disabled",
+                                "provisioningState": "Succeeded",
+                                "addressPrefix": "10.0.2.0/24"
+                            },
+                            "type": "Microsoft.Network/virtualNetworks/subnets"
                         }
-                    }
-                ],
-                "manualPrivateLinkServiceConnections": [],
-                "subnet": {
-                    "id": "[parameters('peSubnetId')]"
+                    ]
                 }
             },
-            "condition": "[parameters('enablePrivateEndpointSQL')]"
+            "subscriptionId": "[if(parameters('enablePrivateEndpoint'), variables('SubscriptionId'), variables('subscriptionId'))]",
+            "resourceGroup": "[if(parameters('enablePrivateEndpoint'), variables('resourceGroupName'), variables('resourceGroupName'))]"
         },
         {
-            "type": "Microsoft.Network/privateDnsZones",
-            "apiVersion": "2018-09-01",
-            "name": "privatelink.database.windows.net",
-            "location": "global",
-            "tags": {},
-            "properties": {}
-        },
-        {
-            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-            "apiVersion": "2018-09-01",
-            "name": "privatelink.database.windows.net/qeofhkhj6qxzk",
-            "location": "global",
+            "condition": "[parameters('enablePrivateEndpoint')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('deploymentTemplateApi')]",
+            "name": "[variables('privateEndpointTemplateName')]",
             "dependsOn": [
-                "privatelink.database.windows.net"
+                "[resourceId(variables('subscriptionId'), variables('resourceGroupName'), 'Microsoft.Sql/servers/databases/', parameters('serverName'), parameters('databaseName'))]",
+                "[variables('subnetPoliciesTemplateName')]"
             ],
             "properties": {
-                "virtualNetwork": {
-                    "id": "[parameters('vnetID')]"
+                "mode": "Incremental",
+                "parameters": {
+                    "privateEndpointName": {
+                        "value": "[variables('privateEndpointSQLName')]"
+                    },
+                    "privateEndpointConnectionId": {
+                        "value": ""
+                    },
+                    "privateEndpointConnectionName": {
+                        "value": "[variables('privateEndpointSQLName')]"
+                    },
+                    "privateEndpointId": {
+                        "value": "[variables('privateEndpointId')]"
+                    },
+                    "privateEndpointApiVersion": {
+                        "value": "[variables('privateEndpointApi')]"
+                    },
+                    "privateLinkServiceId": {
+                        "value": "[variables('privateLinkServiceServiceId')]"
+                    },
+                    "groupId": {
+                        "value": "SqlServer"
+                    },
+                    "subnetId": {
+                        "value": "[parameters('peSubnetId')]"
+                    },
+                    "location": {
+                        "value": "[resourceGroup().location]"
+                    },
+                    "tags": {
+                        "value": {}
+                    }
                 },
-                "registrationEnabled": false
-            }
+                "templatelink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('privateEndpointTemplateLink')]"
+                }
+            },
+            "subscriptionId": "[if(parameters('enablePrivateEndpoint'), variables('subscriptionId'), variables('subscriptionId'))]",
+            "resourceGroup": "[if(parameters('enablePrivateEndpoint'), variables('resourceGroupName'), variables('resourceGroupName'))]"
+        },
+        {
+            "condition": "[parameters('enablePrivateEndpoint')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('deploymentTemplateApi')]",
+            "name": "[concat('PrivateDns-', variables('privateEndpointNestedTemplateId'))]",
+            "dependsOn": [
+                "[variables('privateEndpointTemplateName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/privateDnsZones",
+                            "apiVersion": "2018-09-01",
+                            "name": "privatelink.database.windows.net",
+                            "location": "global",
+                            "tags": {},
+                            "properties": {}
+                        },
+                        {
+                            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+                            "apiVersion": "2018-09-01",
+                            "name": "[concat('privatelink.database.windows.net/', uniqueString(variables('privateEndpointVnetId')))]",
+                            "location": "global",
+                            "dependsOn": [
+                                "privatelink.database.windows.net"
+                            ],
+                            "properties": {
+                                "virtualNetwork": {
+                                    "id": "[variables('privateEndpointVnetId')]"
+                                },
+                                "registrationEnabled": false
+                            }
+                        },
+                        {
+                            "apiVersion": "[variables('deploymentTemplateApi')]",
+                            "name": "[concat('EndpointDnsRecords-', uniqueString(variables('privateEndpointVnetId')))]",
+                            "type": "Microsoft.Resources/deployments",
+                            "dependsOn": [
+                                "privatelink.database.windows.net"
+                            ],
+                            "properties": {
+                                "mode": "Incremental",
+                                "templatelink": {
+                                    "contentVersion": "1.0.0.0",
+                                    "uri": "[variables('privateDnsForPrivateEndpointTemplateLink')]"
+                                },
+                                "parameters": {
+                                    "privateDnsName": {
+                                        "value": "privatelink.database.windows.net"
+                                    },
+                                    "privateEndpointNicResourceId": {
+                                        "value": "[if(parameters('enablePrivateEndpoint'), reference(concat('Microsoft.Resources/deployments/', variables('privateEndpointTemplateName'))).outputs.networkInterfaceId.value, '')]"
+                                    },
+                                    "nicRecordsTemplateUri": {
+                                        "value": "[variables('privateDnsForPrivateEndpointNicTemplateLink')]"
+                                    },
+                                    "ipConfigRecordsTemplateUri": {
+                                        "value": "[variables('privateDnsForPrivateEndpointIpConfigTemplateLink')]"
+                                    },
+                                    "uniqueId": {
+                                        "value": "[uniqueString(variables('privateEndpointVnetId'))]"
+                                    },
+                                    "existingRecords": {
+                                        "value": {}
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "subscriptionId": "[if(parameters('enablePrivateEndpoint'), variables('SubscriptionId'), variables('subscriptionId'))]",
+            "resourceGroup": "[if(parameters('enablePrivateEndpoint'), variables('resourceGroupName'), variables('resourceGroupName'))]"
         }
     ]
 }
