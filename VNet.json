@@ -236,7 +236,7 @@
             "properties": {
               "priority": 500,
               "access": "Allow",
-              "direction": "Outbound",
+              "direction": "Inbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
               "sourceAddressPrefix": "*",
@@ -272,7 +272,7 @@
             "properties": {
               "priority": 500,
               "access": "Allow",
-              "direction": "Outbound",
+              "direction": "Inbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
               "sourceAddressPrefix": "*",
@@ -293,7 +293,6 @@
               "destinationAddressPrefix": "*"
             }
           },
-          ,
           {
             "name": "allow-Mgmt",
             "properties": {
