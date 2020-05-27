@@ -107,7 +107,8 @@
     "gitUri": "https://raw.githubusercontent.com/bwatts64/templates/master/",
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
-    "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]"
+    "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",
+    "deployAPPGWTemplateURL": "[concat(variables('gitUri'),'/APPGW.json')]"
   },
   "resources": [
     {
@@ -208,7 +209,7 @@
       }
     },
     {
-      "name": "deployAPGW",
+      "name": "deployAPPGW",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
@@ -217,7 +218,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('deployAPGWTemplateURL')]",
+          "uri": "[variables('deployAPPGWTemplateURL')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
