@@ -45,5 +45,5 @@ jobs:
         # Supply deployment parameter values.
         parameters: ./azuredeploy.parameters.json
           adminPassword=${ADMIN_PASSWORD}-overriden
-          adminUserName=${ADMIN_USERNAME}-overriden
+          adminUsername=${ADMIN_USERNAME}-overriden
           apimEmail=${APIM_EMAIL}-overriden      
