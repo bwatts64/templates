@@ -13,6 +13,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
+
        
   build:
     # The type of runner that the job will run on
@@ -20,6 +21,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - run: echo '::set-output name=ADMIN_PASSWORD::mypass, name=ADMIN_USERNAME::myuser'
+      id: login
+    - run: echo '::set-output name=APIM_EMAIL::someemail@someemail.com, name=APIM_NAME::karlrisstestapim'
+      id: apim
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@master
     - uses: azure/login@v1
@@ -45,7 +50,7 @@ jobs:
         deploymentName: TestDeployment
         # Supply deployment parameter values.
         parameters: ./azuredeploy.parameters.json
-          adminPassword=${{ADMIN_PASSWORD}}-overriden
-          adminUsername=${{ADMIN_USERNAME}}-overriden
-          apimEmail=${{APIM_EMAIL}}-overriden
-          apimname=${{APIM_NAME}}-overriden      
+          adminPassword=${{steps.login.outputs.ADMIN_PASSWORD}}-overriden
+          adminUsername=${{steps.login.outputs.ADMIN_PASSWORD}}-overriden
+          apimEmail=${{steps.apim.outputs.APIM_EMAIL}}-overriden
+          apimname=${{steps.apim.outputs.APIM_NAME}}-overriden      
