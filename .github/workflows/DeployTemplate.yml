@@ -54,7 +54,7 @@ jobs:
         deploymentName: TestDeployment
         # Supply deployment parameter values.
         parameters: ./azuredeploy.parameters.json
-          adminPassword=${{steps.password.outputs.ADMIN_PASSWORD}}-overriden
-          adminUsername=${{steps.admin.outputs.ADMIN_PASSWORD}}-overriden
-          apimEmail=${{steps.email.outputs.APIM_EMAIL}}-overriden
-          apimname=${{steps.apimname.outputs.APIM_NAME}}-overriden      
+          adminPassword=${{steps.password.outputs.ADMIN_PASSWORD}} 
+          adminUsername=${{steps.admin.outputs.ADMIN_PASSWORD}} 
+          apimEmail=${{steps.email.outputs.APIM_EMAIL}} 
+          apimname=${{steps.apimname.outputs.APIM_NAME}} -overriden      
