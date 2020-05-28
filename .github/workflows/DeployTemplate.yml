@@ -14,17 +14,21 @@ on:
 jobs:
   # This workflow contains a single job called "build"
 
-       
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - run: echo '::set-output name=ADMIN_PASSWORD::mypass, name=ADMIN_USERNAME::myuser'
-      id: login
+    - run: echo '::set-output name=ADMIN_PASSWORD::mypass'
+      id: password
+    - run: echo '::set-output name=ADMIN_USERNAME::myuser'
+      id: admin
     - run: echo '::set-output name=APIM_EMAIL::someemail@someemail.com, name=APIM_NAME::karlrisstestapim'
-      id: apim
+      id: email
+    - run: echo '::set-output name=APIM_NAME::karlrisstestapim'
+      id: apimname
+
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@master
     - uses: azure/login@v1
@@ -50,7 +54,7 @@ jobs:
         deploymentName: TestDeployment
         # Supply deployment parameter values.
         parameters: ./azuredeploy.parameters.json
-          adminPassword=${{steps.login.outputs.ADMIN_PASSWORD}}-overriden
-          adminUsername=${{steps.login.outputs.ADMIN_PASSWORD}}-overriden
-          apimEmail=${{steps.apim.outputs.APIM_EMAIL}}-overriden
-          apimname=${{steps.apim.outputs.APIM_NAME}}-overriden      
+          adminPassword=${{steps.password.outputs.ADMIN_PASSWORD}}-overriden
+          adminUsername=${{steps.admin.outputs.ADMIN_PASSWORD}}-overriden
+          apimEmail=${{steps.email.outputs.APIM_EMAIL}}-overriden
+          apimname=${{steps.apimname.outputs.APIM_NAME}}-overriden      
