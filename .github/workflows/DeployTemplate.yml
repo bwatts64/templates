@@ -27,9 +27,9 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - uses: allenevans/set-env@v1.0.0
       with:
-        ADMIN_PASSWORD: mypass
-        ADMIN_USERNAME: myuser
-        APIM_EMAIL: someemail@someemail.com
+        ADMIN_PASSWORD: 'mypass'
+        ADMIN_USERNAME: 'myuser'
+        APIM_EMAIL: 'someemail@someemail.com'
   
     # Deploy ARM Template
     - uses: whiteducksoftware/azure-arm-action-js@v3
