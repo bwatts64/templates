@@ -36,10 +36,10 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - uses: allenevans/set-env@v1.0.0
       with:
-        ADMIN_PASSWORD: 'mypass'
-        ADMIN_USERNAME: 'myuser'
-        APIM_EMAIL: 'someemail@someemail.com'
-        APIM_NAME: 'karlrisstestapim'
+        ADMIN_PASSWORD: 'ENVmypass'
+        ADMIN_USERNAME: 'ENVmyuser'
+        APIM_EMAIL: 'ENVsomeemail@someemail.com'
+        APIM_NAME: 'ENVkarlrisstestapim'
   
     # Deploy ARM Template
     - uses: whiteducksoftware/azure-arm-action-js@v3
@@ -57,4 +57,4 @@ jobs:
           adminPassword=${{steps.password.outputs.ADMIN_PASSWORD}} 
           adminUsername=${{steps.admin.outputs.ADMIN_PASSWORD}} 
           apimEmail=${{steps.email.outputs.APIM_EMAIL}} 
-          apimname=${{steps.apimname.outputs.APIM_NAME}} -overriden      
+          apimname=${{steps.apimname.outputs.APIM_NAME}}
