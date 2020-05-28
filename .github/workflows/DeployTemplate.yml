@@ -24,7 +24,7 @@ jobs:
       id: password
     - run: echo '::set-output name=ADMIN_USERNAME::myuser'
       id: admin
-    - run: echo '::set-output name=APIM_EMAIL::someemail@someemail.com, name=APIM_NAME::karlrisstestapim'
+    - run: echo '::set-output name=APIM_EMAIL::someemail@someemail.com'
       id: email
     - run: echo '::set-output name=APIM_NAME::karlrisstestapim'
       id: apimname
