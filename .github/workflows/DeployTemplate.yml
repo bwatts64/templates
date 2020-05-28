@@ -10,6 +10,8 @@ on:
   pull_request:
     branches: [ master ]
 
+run: 
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -45,7 +47,7 @@ jobs:
         deploymentName: TestDeployment
         # Supply deployment parameter values.
         parameters: ./azuredeploy.parameters.json
-          adminPassword=${ADMIN_PASSWORD}-overriden
-          adminUsername=${ADMIN_USERNAME}-overriden
-          apimEmail=${APIM_EMAIL}-overriden
-          apimname=${APIM_NAME}-overriden      
+          adminPassword=${{ADMIN_PASSWORD}}-overriden
+          adminUsername=${{ADMIN_USERNAME}}-overriden
+          apimEmail=${{APIM_EMAIL}}-overriden
+          apimname=${{APIM_NAME}}-overriden      
