@@ -30,6 +30,7 @@ jobs:
         ADMIN_PASSWORD: 'mypass'
         ADMIN_USERNAME: 'myuser'
         APIM_EMAIL: 'someemail@someemail.com'
+        APIM_NAME: 'karlrisstestapim'
   
     # Deploy ARM Template
     - uses: whiteducksoftware/azure-arm-action-js@v3
@@ -46,4 +47,5 @@ jobs:
         parameters: ./azuredeploy.parameters.json
           adminPassword=${ADMIN_PASSWORD}-overriden
           adminUsername=${ADMIN_USERNAME}-overriden
-          apimEmail=${APIM_EMAIL}-overriden      
+          apimEmail=${APIM_EMAIL}-overriden
+          apimname=${APIM_NAME}-overriden      
