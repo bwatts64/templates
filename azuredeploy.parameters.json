@@ -82,6 +82,9 @@
     },
     "dcVirtualMachineSize": {
       "value": "Standard_D2_v3"
+    },
+    "apimEmail": {
+        "value": "someemail@someemail.com"
     }
   }
 }
