@@ -29,7 +29,7 @@
                 "accessPolicies": [
                     {
                         "tenantId": "[variables('tenantId')]",
-                        "objectId": "[reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('identityName')), '2018-11-30', 'Full').identity.ObjectId]",
+                        "objectId": "[reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('identityName')), '2018-11-30', 'Full').properties.PrincipalId]",
                         "permissions": {
                             "keys": [
                                 "Get",

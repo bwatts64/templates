@@ -19,7 +19,8 @@
     "apimRange": {
       "type": "String",
       "defaultValue": "10.0.1.0/24"
-    },"aksRange": {
+    },
+    "aksRange": {
       "type": "String",
       "defaultValue": "10.1.0.0/16"
     },
@@ -56,7 +57,8 @@
       "defaultValue": 1
     },
     "apimEmail": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "bwatts@microsoft.com"
     },
     "applicationGatewayName": {
       "type": "string",
@@ -119,7 +121,8 @@
       "defaultValue": "jumpAdmin"
     },
     "adminPassword": {
-      "type": "secureString"
+      "type": "secureString",
+      "defaultValue": "ABCabc1234"
     },
     "jumpAvailabilityZone": {
       "type": "string",
