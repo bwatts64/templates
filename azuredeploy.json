@@ -112,7 +112,7 @@
     },
     "jumpSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3"
+      "defaultValue": "Standard_DS1_v2"
     },
     "adminUsername": {
       "type": "string",
