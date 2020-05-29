@@ -148,7 +148,11 @@
                             },
                             "backendHttpSettings": {
                                 "id": "[concat(variables('applicationGatewayId'), '/backendHttpSettingsCollection/HTTP80')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[concat(variables('applicationGatewayId'), '/backendAddressPools/BEPool')]"
                             }
+
                         }
                     }
                 ],
