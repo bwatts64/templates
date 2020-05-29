@@ -90,9 +90,6 @@
         "adminPassword": {
             "value": "" 
         },
-        "jumpAvailabilityZone": {
-            "value": "1"
-        },
         "jumpSKU": {
             "value": "2019-Datacenter"
         }

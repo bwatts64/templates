@@ -121,10 +121,6 @@
     "adminPassword": {
       "type": "secureString"
     },
-    "jumpAvailabilityZone": {
-      "type": "string",
-      "defaultValue": "1"
-    },
     "jumpSKU": {
       "type": "string",
       "defaultValue": "2019-Datacenter"
@@ -356,9 +352,6 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
-          },
-          "zone": {
-            "value": "[parameters('jumpAvailabilityZone')]"
           },
           "sku": {
             "value": "[parameters('jumpSKU')]"

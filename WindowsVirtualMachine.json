@@ -17,9 +17,6 @@
     "adminPassword": {
       "type": "secureString"
     },
-    "zone": {
-      "type": "string"
-    },
     "sku": {
       "type": "string",
       "allowedValues": [
@@ -111,10 +108,7 @@
             "provisionVmAgent": true
           }
         }
-      },
-      "zones": [
-        "[parameters('zone')]"
-      ]
+      }
     }
   ],
   "outputs": {
