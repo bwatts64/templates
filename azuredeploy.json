@@ -112,7 +112,7 @@
     },
     "jumpSize": {
       "type": "string",
-      "defaultValue": "Standard_D2"
+      "defaultValue": "Standard_DS1_v2"
     },
     "adminUsername": {
       "type": "string",
@@ -128,6 +128,10 @@
     "jumpSKU": {
       "type": "string",
       "defaultValue": "2019-Datacenter"
+    },
+    "identityName": {
+      "type": "string",
+      "defaultValue": "wbpocid"
     }
   },
   "variables": {
@@ -137,7 +141,8 @@
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",
     "deployAPPGWTemplateURL": "[concat(variables('gitUri'),'/AppGW.json')]",
     "deployAzureBastionTemplateURL": "[concat(variables('gitUri'),'/AzureBastion.json')]",
-    "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]"
+    "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]",
+    "deployManagedIdentityTemplateURL": "[concat(variables('gitUri'),'/ManagedIdentity.json')]"
   },
   "resources": [
     {
@@ -194,6 +199,25 @@
         "parameters": {
           "name": {
             "value": "[parameters('appInsightsName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployManagedIdentity",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployManagedIdentityTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "identityName": {
+            "value": "[parameters('identityName')]"
           }
         }
       }

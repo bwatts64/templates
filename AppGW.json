@@ -146,9 +146,6 @@
                             "httpListener": {
                                 "id": "[concat(variables('applicationGatewayId'), '/httpListeners/80')]"
                             },
-                            "backendAddressPool": {
-                                "id": "[concat(variables('applicationGatewayId'), '/backendAddressPools/BEPool')]"
-                            },
                             "backendHttpSettings": {
                                 "id": "[concat(variables('applicationGatewayId'), '/backendHttpSettingsCollection/HTTP80')]"
                             }
