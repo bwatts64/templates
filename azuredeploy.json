@@ -139,6 +139,31 @@
     "vaultName": {
       "type": "string",
       "defaultValue": "wbpodkv"
+    },
+    "secretName": {
+      "type": "string",
+      "defaultValue": "appgwCert"
+    },
+    "certificate": {
+      "type": "string",
+      "defaultValue": "MIIDPjCCAiagAwIBAgIQefyud1am7o1NOEappA2GHDANBgkqhkiG9w0BAQsFADAb
+MRkwFwYDVQQDDBB3d3cuZmFicmlrYW0uY29tMB4XDTIwMDUyODIwMzYzNloXDTIx
+MDUyODIwNTYzNlowGzEZMBcGA1UEAwwQd3d3LmZhYnJpa2FtLmNvbTCCASIwDQYJ
+KoZIhvcNAQEBBQADggEPADCCAQoCggEBAL0Viya94YHESubnE+aeHMnvl5YVmjik
+bm0UUaX6zmBMG9Y4Kx9OyHWzQopZM2Ho6cnZvbEA049bSHrYmB54m9buDb9uogMo
+747XdU68aheW0Qqcqolz5ohd1yuF6M47ETv2Qek8BDEaO3QUFujeTRiCF/2PB/fD
+G1QfU6ohcyKp+5bTFKfyjQlLyymaihfF9ieT1guoZAGWXAP8ajIai5soXYzCMpDA
+378Utqz9L9MbHmKh5zyV5n5EirQNBrgr93eSUDD28hFZK4kbMS1H09icVOkmy8FF
+7OweQUOtjergL8iJa7roMQlzpBMhq57OGvXx7npHiw/xYNNzKr1QUH0CAwEAAaN+
+MHwwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD
+ATAsBgNVHREEJTAjghB3d3cuZmFicmlrYW0uY29tgg93d3cuY29udG9zby5jb20w
+HQYDVR0OBBYEFBHQXUJ12bQqS603a0iW3guyZD6cMA0GCSqGSIb3DQEBCwUAA4IB
+AQA60rVJB4swn8CK7e+skQsVhhYIzmbprWzOgmFe1/mz61X5g3gTwya9U+HYS03l
+Ok163Mdd4iw100iBFXB3TTCisp2tD6VfFXtBQDERiPNGTwNQFa2kLWK3m6CSjs/2
+NYCqmXu9epqbK9oF74HEMyo3wW5EevUIdby+JPF18DKMaHMbdDemEoG+7P9KXAFR
+jcAOhFqYjYNjryN1nFqNLxS34m7P2p+YlRVrMkbGIrZW7pD1i6+bC2RdXEIa9p53
++rvVVXEhWPchUmAXU2vUygOAPAhZoVhPSLxmsF1zzj5FbJWLoSfXBtC/qFBsou2Y
+LYc+/ICymuS9U92s7yn2FqZP"
     }
   },
   "variables": {
@@ -150,7 +175,8 @@
     "deployAzureBastionTemplateURL": "[concat(variables('gitUri'),'/AzureBastion.json')]",
     "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]",
     "deployManagedIdentityTemplateURL": "[concat(variables('gitUri'),'/ManagedIdentity.json')]",
-    "deployKeyVaultTemplateURL": "[concat(variables('gitUri'),'/KeyVault.json')]"
+    "deployKeyVaultTemplateURL": "[concat(variables('gitUri'),'/KeyVault.json')]",
+    "deployKeyVaultSecretTemplateURL": "[concat(variables('gitUri'),'/KeyVaultSecret.json')]"
   },
   "resources": [
     {
@@ -249,6 +275,32 @@
           },
           "identityName": {
             "value": "[parameters('identityName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployKeyVaultSecret",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployKeyVault"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployKeyVaultSecretTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vaultName": {
+            "value": "[parameters('vaultName')]"
+          },
+          "secretName": {
+            "value": "[parameters('secretName')]"
+          },
+          "certificate": {
+            "value": "[parameters('certificate')]"
           }
         }
       }
