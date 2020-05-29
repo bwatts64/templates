@@ -20,9 +20,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - run: echo '::set-output name=ADMIN_PASSWORD::mypass'
-      id: password
-    - run: echo '::set-output name=ADMIN_USERNAME::myuser'
+    - run: echo '::set-output name=ADMIN_USERNAME::sysadmin'
       id: admin
     - run: echo '::set-output name=APIM_EMAIL::someemail@someemail.com'
       id: email
@@ -54,7 +52,7 @@ jobs:
         deploymentName: TestDeployment
         # Supply deployment parameter values.
         parameters: ./azuredeploy.parameters.json
-          adminPassword=${{steps.password.outputs.ADMIN_PASSWORD}} 
+          adminPassword=${{ secrets.DEFAULT_VM_PASSWORD }}
           adminUsername=${{steps.admin.outputs.ADMIN_USERNAME}} 
           apimEmail=${{steps.email.outputs.APIM_EMAIL}} 
           apimname=${{steps.apimname.outputs.APIM_NAME}}
