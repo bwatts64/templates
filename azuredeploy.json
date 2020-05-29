@@ -132,6 +132,10 @@
     "identityName": {
       "type": "string",
       "defaultValue": "wbpocid"
+    },
+    "vaultName": {
+      "type": "string",
+      "defaultValue": "wbpodkv"
     }
   },
   "variables": {
@@ -142,7 +146,8 @@
     "deployAPPGWTemplateURL": "[concat(variables('gitUri'),'/AppGW.json')]",
     "deployAzureBastionTemplateURL": "[concat(variables('gitUri'),'/AzureBastion.json')]",
     "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]",
-    "deployManagedIdentityTemplateURL": "[concat(variables('gitUri'),'/ManagedIdentity.json')]"
+    "deployManagedIdentityTemplateURL": "[concat(variables('gitUri'),'/ManagedIdentity.json')]",
+    "deployKeyVaultTemplateURL": "[concat(variables('gitUri'),'/KeyVault.json')]"
   },
   "resources": [
     {
@@ -218,6 +223,29 @@
         "parameters": {
           "identityName": {
             "value": "[parameters('identityName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployKeyVault",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployManagedIdentity"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployKeyVaultTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vaultName": {
+            "value": "[parameters('vaultName')]"
+          },
+          "objectId": {
+            "value": "[reference('deployManagedIdentity').outputs.ObjectId.value]"
           }
         }
       }
