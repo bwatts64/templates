@@ -5,7 +5,7 @@
         "vaultName": {
             "type": "String"
         },
-        "objectId": {
+        "identityName": {
             "type": "string"
         }
     },
@@ -29,7 +29,7 @@
                 "accessPolicies": [
                     {
                         "tenantId": "[variables('tenantId')]",
-                        "objectId": "[parameters('objectId')]",
+                        "objectId": "[reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('identityName')), '2018-11-30', 'Full').identity.principalId]",
                         "permissions": {
                             "keys": [
                                 "Get",

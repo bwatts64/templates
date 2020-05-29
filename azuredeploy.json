@@ -244,8 +244,8 @@
           "vaultName": {
             "value": "[parameters('vaultName')]"
           },
-          "objectId": {
-            "value": "[reference('deployManagedIdentity').outputs.ObjectId.value]"
+          "identityName": {
+            "value": "[parameters('identityName')]"
           }
         }
       }
