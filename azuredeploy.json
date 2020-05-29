@@ -131,7 +131,7 @@
     }
   },
   "variables": {
-    "gitUri": "https://raw.githubusercontent.com/bwatts64/templates/master",
+    "gitUri": "https://raw.githubusercontent.com/karlrissland/templates/master",
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",

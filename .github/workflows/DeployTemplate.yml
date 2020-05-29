@@ -55,6 +55,6 @@ jobs:
         # Supply deployment parameter values.
         parameters: ./azuredeploy.parameters.json
           adminPassword=${{steps.password.outputs.ADMIN_PASSWORD}} 
-          adminUsername=${{steps.admin.outputs.ADMIN_PASSWORD}} 
+          adminUsername=${{steps.admin.outputs.ADMIN_USERNAME}} 
           apimEmail=${{steps.email.outputs.APIM_EMAIL}} 
           apimname=${{steps.apimname.outputs.APIM_NAME}}
