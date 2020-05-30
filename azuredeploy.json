@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vNETName": {
@@ -124,10 +124,6 @@
       "type": "secureString",
       "defaultValue": "ABCabc1234"
     },
-    "jumpAvailabilityZone": {
-      "type": "string",
-      "defaultValue": "1"
-    },
     "jumpSKU": {
       "type": "string",
       "defaultValue": "2019-Datacenter"
@@ -167,7 +163,7 @@ LYc+/ICymuS9U92s7yn2FqZP"
     }
   },
   "variables": {
-    "gitUri": "https://raw.githubusercontent.com/bwatts64/templates/master",
+    "gitUri": "https://raw.githubusercontent.com/karlrissland/templates/master",
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",
@@ -463,9 +459,6 @@ LYc+/ICymuS9U92s7yn2FqZP"
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
-          },
-          "zone": {
-            "value": "[parameters('jumpAvailabilityZone')]"
           },
           "sku": {
             "value": "[parameters('jumpSKU')]"

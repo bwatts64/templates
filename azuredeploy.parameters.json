@@ -1,87 +1,97 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "vNETName": {
-      "value": "vmss-vnet"
-    },
-    "addressRange": {
-      "value": "10.10.0.0/16"
-    },
-    "frontendRange": {
-      "value": "10.10.2.0/24"
-    },
-    "appRange": {
-      "value": "10.10.3.0/24"
-    },
-    "databaseRange": {
-      "value": "10.10.4.0/24"
-    },
-    "sharedRange": {
-      "value": "10.10.5.0/24"
-    },
-    "gwRange": {
-      "value": "10.10.1.0/24"
-    },
-    "bastionRange": {
-      "value": "10.10.6.0/24"
-    },
-    "appGWName": {
-      "value": "pocInforGW"
-    },
-    "appGWprivateIP": {
-      "value": "10.10.1.10"
-    },
-    "ilbPrivateIP": {
-      "value": "10.10.3.10"
-    },
-    "webvmssName": {
-      "value": "InforWebScaleSet"
-    },
-    "webvmPrefix": {
-      "value": "pocInforWeb"
-    },
-    "webvmCount": {
-      "value": 2
-    },
-    "adminUserName": {
-      "value": "bwatts"
-    },
-    "adminPassword": {
-      "value": "NFLdolphins01!!"
-    },
-    "websku": {
-      "value": "Standard_D2_v3"
-    },
-    "appvmssName": {
-      "value": "InforAppScaleSet"
-    },
-    "appvmPrefix": {
-      "value": "pocInforApp"
-    },
-    "appvmCount": {
-      "value": 2
-    },
-    "appsku": {
-      "value": "Standard_D2_v3"
-    },
-    "sftpVirtualMachineName": {
-      "value": "pocInforSFTP"
-    },
-    "sftpVirtualMachineSize": {
-      "value": "Standard_DS2_v2"
-    },
-    "dashVirtualMachineName": {
-      "value": "pocInforDash"
-    },
-    "dashVirtualMachineSize": {
-      "value": "Standard_D2_v3"
-    },
-    "dcNamePrefix": {
-      "value": "pocInforDC"
-    },
-    "dcVirtualMachineSize": {
-      "value": "Standard_D2_v3"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vNETName": {
+            "value": "wbpocAPPVnet"
+        },
+        "addressRange": {
+            "value": "10.0.0.0/8"
+        },
+        "apimRange": {
+            "value": "10.0.1.0/24"
+        },
+        "aksRange": {
+            "value": "10.1.0.0/16"
+        },
+        "privateEPRange": {
+            "value": "10.0.2.0/24"
+        },
+        "sharedRange": {
+            "value": "10.0.3.0/24"
+        },
+        "bastionRange": {
+            "value": "10.0.4.0/24"
+        },
+        "appgwRange": {
+            "value": "10.0.5.0/24"
+        },
+        "appInsightsName": {
+            "value": "wbpocapimai"
+        },
+        "apimname": {
+            "value": "wbpocAPPapim"
+        },
+        "apimsku": {
+            "value": "Developer"
+        },
+        "apimcapacity": {
+            "value": 1
+        },
+        "apimEmail": {
+            "value": "someemail@someemail.com"
+        },
+        "applicationGatewayName": {
+            "value": "wbpocAPPappgw"
+        },
+        "appgwtier": {
+            "value": "WAF_v2"
+        },
+        "appgwskuSize": {
+            "value": "WAF_v2"
+        },
+        "appgwcapacity": {
+            "value": 2
+        },
+        "appgwzones": {
+            "value": [
+                    "1",
+                    "2",
+                    "3"
+            ]
+        },
+        "appgwPIPName": {
+            "value": "wbpocAPPappgw-pip"
+        },
+        "appgwsku": {
+            "value": "Standard"
+        },
+        "appgwpublicIpZones": {
+            "value": []
+        },
+        "appgwprivateIpAddress": {
+            "value": "10.0.5.4"
+        },
+        "appgwautoScaleMaxCapacity": {
+            "value": 4
+        },
+        "bastionHostName": {
+            "value": "wbpocdemobastion"
+        },
+        "jumpName": {
+            "value": "wbpocdemojump"
+        },
+        "jumpSize": {
+            "value": "Standard_D2"
+        },
+        "adminUsername": {
+            "value": "jumpAdmin"
+        },
+        "adminPassword": {
+            "value": "" 
+        },
+        "jumpSKU": {
+            "value": "2019-Datacenter"
+        }
     }
-  }
 }
