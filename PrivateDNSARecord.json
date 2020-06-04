@@ -16,7 +16,6 @@
             "apiVersion": "2018-09-01",
             "name": "[concat(parameters('zone_name'), '/', parameters('apimname'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/privateDnsZones', parameters('zone_name'))]"
             ],
             "properties": {
                 "ttl": 3600,
