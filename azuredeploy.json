@@ -261,6 +261,9 @@
           },
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "apimname": {
+            "value": "[parameters('apimname')]"
           }
         }
       }

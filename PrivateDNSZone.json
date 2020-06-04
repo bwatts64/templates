@@ -7,7 +7,11 @@
         },
         "vnet_id": {
             "type": "String"
+        },
+        "apimname": {
+            "type": "string"
         }
+
     },
     "variables": {},
     "resources": [
