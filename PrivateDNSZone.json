@@ -47,6 +47,21 @@
             }
         },
         {
+            "type": "Microsoft.Network/privateDnsZones/A",
+            "apiVersion": "2018-09-01",
+            "name": "[concat(parameters('zone_name'), '/', parameters('apimname'))]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "ttl": 3600,
+                "aRecords": [
+                    {
+                        "ipv4Address": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('zone_name'))).Properties.privateIPAddresses[0]]"
+                    }
+                ]
+            }
+        },
+        {
             "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
             "apiVersion": "2018-09-01",
             "name": "[concat(parameters('zone_name'),'/apim')]",
