@@ -265,7 +265,29 @@
         }
       }
     },
-
+    {
+      "name": "deployGWDNSZoneRecord",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployGWDNSZone"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneARecordTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "[parameters('gw_zone_name')]"
+          },
+          "apimname": {
+            "value": "[parameters('apimname')]"
+          }
+        }
+      }
+    },
     {
       "name": "deployAPPGW",
       "type": "Microsoft.Resources/deployments",

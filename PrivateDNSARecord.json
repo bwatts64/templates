@@ -22,7 +22,7 @@
                 "ttl": 3600,
                 "aRecords": [
                     {
-                        "ipv4Address": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('zone_name'),'Properties'),'2019-01-01').privateIPAddresses[0]]"
+                        "ipv4Address": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('zone_name'))).Properties.privateIPAddresses[0]]"
                     }
                 ]
             }
