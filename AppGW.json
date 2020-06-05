@@ -60,7 +60,7 @@
             "location": "[parameters('location')]",
             "zones": "[parameters('zones')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]"
+                "[parameters('publicIpAddressName')]"
             ],
             "tags": {},
             "properties": {
@@ -91,7 +91,7 @@
                     {
                         "name": "appGwPrivateFrontendIp",
                         "properties": {
-                            "privateIPAddress": "10.0.5.4",
+                            "privateIPAddress": "[parameters('privateIpAddress')]",
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
                                 "id": "[parameters('subnetID')]"
