@@ -83,19 +83,20 @@
                     {
                         "name": "appGwPublicFrontendIp",
                         "properties": {
-                            "PublicIPAddress": {
-                                "id": "[variables('publicIPRef')]"
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/POCInspire/providers/Microsoft.Network/publicIPAddresses/wbpocAPPappgw-pip"
                             }
                         }
                     },
                     {
                         "name": "appGwPrivateFrontendIp",
                         "properties": {
+                            "privateIPAddress": "10.0.5.4",
+                            "privateIPAllocationMethod": "Static",
                             "subnet": {
                                 "id": "[parameters('subnetID')]"
-                            },
-                            "privateIPAddress": "[parameters('privateIpAddress')]",
-                            "privateIPAllocationMethod": "Static"
+                            }
                         }
                     }
                 ],
@@ -103,17 +104,19 @@
                     {
                         "name": "port_80",
                         "properties": {
-                            "Port": 80
+                            "port": 80
                         }
                     }
                 ],
                 "backendAddressPools": [
                     {
-                        "name": "APIMGW",
+                        "name": "BEPool",
                         "properties": {
-                            "backendAddresses": {
+                            "backendAddresses": [
+                                {
                                     "fqdn": "[parameters('bePool')]"
                                 }
+                            ]
                         }
                     }
                 ],
@@ -134,39 +137,38 @@
                 ],
                 "httpListeners": [
                     {
-                        "name": "HTTP80",
+                        "name": "80",
                         "properties": {
                             "frontendIPConfiguration": {
-                                "id": "[concat(variables('applicationGatewayId'), '/frontendIPConfigurations/appGwPublicFrontendIp')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/frontendIPConfigurations/appGwPublicFrontendIp')]"
                             },
                             "frontendPort": {
-                                "id": "[concat(variables('applicationGatewayId'), '/frontendPorts/port_80')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/frontendPorts/port_80')]"
                             },
                             "protocol": "Http",
-                            "sslCertificate": null
+                            "hostNames": [],
+                            "requireServerNameIndication": false
                         }
                     }
                 ],
+                "urlPathMaps": [],
                 "requestRoutingRules": [
                     {
-                        "Name": "DefaultRouting",
+                        "name": "DefaultRouting",
                         "properties": {
-                            "RuleType": "Basic",
+                            "ruleType": "Basic",
                             "httpListener": {
-                                "id": "[concat(variables('applicationGatewayId'), '/httpListeners/HTTP80')]"
-                            },
-                            "backendHttpSettings": {
-                                "id": "[concat(variables('applicationGatewayId'), '/backendHttpSettingsCollection/HTTP443')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/httpListeners/80')]"
                             },
                             "backendAddressPool": {
-                                "id": "[concat(variables('applicationGatewayId'), '/backendAddressPools/APIMGW')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendAddressPools/BEPool')]"
+                            },
+                            "backendHttpSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendHttpSettingsCollection/HTTP443')]"
                             }
-
                         }
                     }
                 ],
-                "enableHttp2": false,
-                "sslCertificates": [],
                 "probes": [
                     {
                         "name": "APIMGW",
@@ -183,29 +185,23 @@
                         }
                     }
                 ],
-                "autoscaleConfiguration": {
-                    "minCapacity": "[parameters('capacity')]",
-                    "maxCapacity": "[parameters('autoScaleMaxCapacity')]"
-                },
+                "rewriteRuleSets": [],
+                "redirectConfigurations": [],
                 "webApplicationFirewallConfiguration": {
                     "enabled": true,
                     "firewallMode": "Detection",
                     "ruleSetType": "OWASP",
-                    "ruleSetVersion": "3.0"
+                    "ruleSetVersion": "3.0",
+                    "disabledRuleGroups": [],
+                    "requestBodyCheck": true,
+                    "maxRequestBodySizeInKb": 128,
+                    "fileUploadLimitInMb": 100
+                },
+                "enableHttp2": false,
+                "autoscaleConfiguration": {
+                    "minCapacity": 2,
+                    "maxCapacity": 4
                 }
-            }
-        },
-        {
-            "apiVersion": "2019-02-01",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[parameters('publicIpAddressName')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "[parameters('sku')]"
-            },
-            "zones": "[parameters('publicIpZones')]",
-            "properties": {
-                "publicIPAllocationMethod": "[parameters('allocationMethod')]"
             }
         }
     ]
