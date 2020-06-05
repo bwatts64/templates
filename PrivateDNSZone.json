@@ -61,7 +61,7 @@
                 "ttl": 3600,
                 "aRecords": [
                     {
-                        "ipv4Address": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('zone_name'))).Properties.privateIPAddresses[0]]"
+                        "ipv4Address": "10.0.1.5"
                     }
                 ]
             }
