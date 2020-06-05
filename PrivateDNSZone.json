@@ -12,7 +12,7 @@
             "type": "string"
         },
         "ipaddress": {
-            "type": "array"
+            "type": "string"
         }
     },
     "variables": {},
@@ -59,10 +59,6 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Network/privateDnsZones', parameters('zone_name'))]"
             ],
-            "copy": {
-                "name": "ipcopy",
-                "count": "[length(parameters('ipaddress'))]"
-            },
             "properties": {
                 "ttl": 3600,
                 "aRecords": [
