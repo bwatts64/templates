@@ -326,6 +326,9 @@
           },
           "subnetID": {
               "value": "[reference('deployVNET').outputs.appgwSubnetID.value]"
+          },
+          "bepool": {
+            "value": "[concat(parameters('apimname'),'.',parameters('gw_zone_name'))]"
           }
         }
       }
