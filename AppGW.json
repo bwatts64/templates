@@ -170,7 +170,6 @@
                                 "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/frontendPorts/port_80')]"
                             },
                             "protocol": "Http",
-                            "hostName": "APIMGW",
                             "hostNames": [],
                             "requireServerNameIndication": false
                         }

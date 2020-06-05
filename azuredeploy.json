@@ -131,6 +131,10 @@
     "gw_zone_name": {
       "type": "string",
       "defaultValue": "azure-api.net"
+    },
+    "dev_zone_name": {
+      "type": "string",
+      "defaultValue": "developer.azure-api.net"
     }
   },
   "variables": {
@@ -272,6 +276,35 @@
       }
     },
     {
+      "name": "deployDEVDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployAPIM"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "[parameters('dev_zone_name')]"
+          },
+          "vnet_id": {
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "apimname": {
+            "value": "[parameters('apimname')]"
+          },
+          "ipaddress": {
+            "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
+          }
+        }
+      }
+    },
+    {
       "name": "deployAPPGW",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -327,8 +360,11 @@
           "subnetID": {
               "value": "[reference('deployVNET').outputs.appgwSubnetID.value]"
           },
-          "bepool": {
+          "apipool": {
             "value": "[concat(parameters('apimname'),'.',parameters('gw_zone_name'))]"
+          },
+          "devPool": {
+            "value": "[concat(parameters('apimname'),'.',parameters('dev_zone_name'))]"
           }
         }
       }
