@@ -103,7 +103,7 @@
     "outputs": {
         "APIMIP": {
             "type": "array",
-            "value": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('apimname'))).Properties.privateIPAddresses]"
+            "value": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('apimname'))).privateIPAddresses]"
         }
     }
 }
