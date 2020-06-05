@@ -50,8 +50,7 @@
         }
     },
     "variables": {
-        "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]",
-        "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName'))]"
+        "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]"
     },
     "resources": [
         {
@@ -85,7 +84,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/POCInspire/providers/Microsoft.Network/publicIPAddresses/wbpocAPPappgw-pip"
+                                "id": "[variables('publicIPRef')]"
                             }
                         }
                     },
@@ -202,6 +201,19 @@
                     "minCapacity": 2,
                     "maxCapacity": 4
                 }
+            }
+        },
+        {
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIpAddressName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
+            "zones": "[parameters('publicIpZones')]",
+            "properties": {
+                "publicIPAllocationMethod": "[parameters('allocationMethod')]"
             }
         }
     ]
