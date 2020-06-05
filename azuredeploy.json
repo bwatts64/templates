@@ -266,7 +266,7 @@
             "value": "[parameters('apimname')]"
           },
           "ipaddress": {
-            "value": "[reference('deployAPIM').outputs.APIMIP.value]"
+            "value": "10.0.0.5"
           }
         }
       }
@@ -399,5 +399,9 @@
     }
   ],
   "outputs": {
+    "IPAddress": {
+      "type": "string",
+      "value": "[reference('deployAPIM').outputs.APIMIP.value]"
+    }
   }
 }
