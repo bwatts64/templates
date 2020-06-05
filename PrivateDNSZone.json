@@ -10,8 +10,10 @@
         },
         "apimname": {
             "type": "string"
+        },
+        "ipaddress": {
+            "type": "string"
         }
-
     },
     "variables": {},
     "resources": [
@@ -61,7 +63,7 @@
                 "ttl": 3600,
                 "aRecords": [
                     {
-                        "ipv4Address": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('apimname'))).Properties.privateIPAddresses[0]]"
+                        "ipv4Address": "[parameters('ipaddress')]"
                     }
                 ]
             }

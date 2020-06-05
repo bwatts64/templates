@@ -264,6 +264,9 @@
           },
           "apimname": {
             "value": "[parameters('apimname')]"
+          },
+          "ipaddress": {
+            "value": "[reference('deployAPIM').outputs.APIMIP.value]"
           }
         }
       }

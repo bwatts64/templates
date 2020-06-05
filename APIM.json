@@ -99,5 +99,11 @@
                 }
             ]
         }
-    ]
+    ],
+    "outputs": {
+        "APIMIP": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.ApiManagement/service',parameters('apimname'))).Properties.privateIPAddresses[0]]"
+        }
+    }
 }
