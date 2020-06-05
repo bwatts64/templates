@@ -45,7 +45,10 @@
         "subnetID": {
             "type": "string"
         },
-        "bePool": {
+        "devPool": {
+            "type": "string"
+        },
+        "apiPool": {
             "type": "string"
         }
     },
@@ -109,11 +112,21 @@
                 ],
                 "backendAddressPools": [
                     {
-                        "name": "BEPool",
+                        "name": "APIMAPI",
                         "properties": {
                             "backendAddresses": [
                                 {
-                                    "fqdn": "[parameters('bePool')]"
+                                    "fqdn": "[parameters('apiPool')]"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "APIMDEV",
+                        "properties": {
+                            "backendAddresses": [
+                                {
+                                    "fqdn": "[parameters('devPool')]"
                                 }
                             ]
                         }
@@ -121,16 +134,28 @@
                 ],
                 "backendHttpSettingsCollection": [
                     {
-                        "name": "HTTP443",
+                        "name": "443API",
                         "properties": {
                             "port": 443,
                             "protocol": "Https",
                             "cookieBasedAffinity": "Disabled",
                             "pickHostNameFromBackendAddress": true,
+                            "path": "/",
                             "requestTimeout": 20,
                             "probe": {
                                 "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/probes/APIMGW')]"
                             }
+                        }
+                    },
+                    {
+                        "name": "443DEV",
+                        "properties": {
+                            "port": 443,
+                            "protocol": "Https",
+                            "cookieBasedAffinity": "Disabled",
+                            "pickHostNameFromBackendAddress": true,
+                            "path": "/",
+                            "requestTimeout": 20
                         }
                     }
                 ],
@@ -145,25 +170,65 @@
                                 "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/frontendPorts/port_80')]"
                             },
                             "protocol": "Http",
+                            "hostName": "APIMGW",
                             "hostNames": [],
                             "requireServerNameIndication": false
                         }
                     }
                 ],
-                "urlPathMaps": [],
+                "urlPathMaps": [
+                    {
+                        "name": "PathRouting",
+                        "properties": {
+                            "defaultBackendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendAddressPools/APIMAPI')]"
+                            },
+                            "defaultBackendHttpSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendHttpSettingsCollection/443API')]"
+                            },
+                            "pathRules": [
+                                {
+                                    "name": "Dev",
+                                    "properties": {
+                                        "paths": [
+                                            "/dev"
+                                        ],
+                                        "backendAddressPool": {
+                                            "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendAddressPools/APIMDEV')]"
+                                        },
+                                        "backendHttpSettings": {
+                                            "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendHttpSettingsCollection/443DEV')]"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "API",
+                                    "properties": {
+                                        "paths": [
+                                            "/api"
+                                        ],
+                                        "backendAddressPool": {
+                                            "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendAddressPools/APIMAPI')]"
+                                        },
+                                        "backendHttpSettings": {
+                                            "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendHttpSettingsCollection/443API')]"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
                 "requestRoutingRules": [
                     {
-                        "name": "DefaultRouting",
+                        "name": "PathRouting",
                         "properties": {
-                            "ruleType": "Basic",
+                            "ruleType": "PathBasedRouting",
                             "httpListener": {
                                 "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/httpListeners/80')]"
                             },
-                            "backendAddressPool": {
-                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendAddressPools/BEPool')]"
-                            },
-                            "backendHttpSettings": {
-                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/backendHttpSettingsCollection/HTTP443')]"
+                            "urlPathMap": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/urlPathMaps/PathRouting')]"
                             }
                         }
                     }
@@ -173,7 +238,7 @@
                         "name": "APIMGW",
                         "properties": {
                             "protocol": "Https",
-                            "host": "[parameters('bePool')]",
+                            "host": "[parameters('apiPool')]",
                             "path": "/status-0123456789abcdef",
                             "interval": 30,
                             "timeout": 30,
