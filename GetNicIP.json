@@ -11,7 +11,7 @@
     ],
     "outputs": {
         "nicIP": {
-            "value": "[reference(parameters('nicID').ipConfigurations[0].id)]",
+            "value": "[reference(parameters('nicID').ipConfigurations[0].properties.privateIPAddress)]",
             "type": "string"
         }
     }
