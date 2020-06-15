@@ -116,7 +116,7 @@
                                 "enabled": true
                             },
                             {
-                                "category": "Gateway Requests",
+                                "category": "GatewayRequests",
                                 "enabled": true
                             },
                             {
@@ -124,11 +124,11 @@
                                 "enabled": true
                             },
                             {
-                                "category": "EventHub Events",
+                                "category": "EventHubEvents",
                                 "enabled": true
                             },
                             {
-                                "category": "Network Status",
+                                "category": "NetworkStatus",
                                 "enabled": true
                             }
                         ],
