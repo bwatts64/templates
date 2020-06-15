@@ -48,5 +48,11 @@
                 }
             }
         }
-    ]
+    ],
+    "outputs": {
+        "nicID": {
+            "value": "[reference(resourceId('Microsoft.Network/privateEndpoints',parameters('peName'))).networkInterfaces[0].id]",
+            "type": "string"
+        }
+    }
 }

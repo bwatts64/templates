@@ -358,35 +358,6 @@
       }
     },
     {
-      "name": "deployStorageDNSZone",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "deployAPIM"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('deployDNSZoneTemplateURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "zone_name": {
-            "value": "privatelink.blob.core.windows.net"
-          },
-          "vnet_id": {
-            "value": "[reference('deployVNET').outputs.vnetID.value]"
-          },
-          "recordname": {
-            "value": "[parameters('saname')]"
-          },
-          "ipaddress": {
-            "value": "[reference('deploySAPE').outputs.APIMIP.value[0]]"
-          }
-        }
-      }
-    },
-    {
       "name": "deployDEVDNSZone",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -406,11 +377,40 @@
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
-          "apimname": {
+          "recordname": {
             "value": "[parameters('apimname')]"
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployblobDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployStoragePE"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "privatelink.blob.core.windows.net"
+          },
+          "vnet_id": {
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "recordname": {
+            "value": "[parameters('saname')]"
+          },
+          "ipaddress": {
+            "value": "[reference(concat(reference('deployStoragePE').outputs.nicID.value,'.ipconfigurations[0].privateIPAddress'))]"
           }
         }
       }
