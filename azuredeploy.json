@@ -139,6 +139,10 @@
     "workspaceName": {
       "type": "string",
       "defaultValue": "wbpocmonitoringla"
+    },
+    "saname": {
+      "type": "string",
+      "defaultValue": "wbpocinspiresa"
     }
   },
   "variables": {
@@ -150,7 +154,9 @@
     "deployAzureBastionTemplateURL": "[concat(variables('gitUri'),'/AzureBastion.json')]",
     "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]",
     "deployDNSZoneTemplateURL": "[concat(variables('gitUri'),'/PrivateDNSZone.json')]",
-    "deployLogAnalyticsURL": "[concat(variables('gitUri'),'/Log_Analytics_Workspace.json')]"
+    "deployLogAnalyticsURL": "[concat(variables('gitUri'),'/Log_Analytics_Workspace.json')]",
+    "deployPrivateStorageURL": "[concat(variables('gitUri'),'/PrivateStorageAccount.json')]",
+    "deployPrivateEndpointURL": "[concat(variables('gitUri'),'/PrivateEndpoint.json')]"
   },
   "resources": [
     {
@@ -207,6 +213,55 @@
         "parameters": {
           "workspaceName": {
             "value": "[parameters('workspaceName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployPrivateSA",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrivateStorageURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "saName": {
+            "value": "[parameters('saName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployStoragePE",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployPrivateSA",
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrivateEndpointURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "peName": {
+            "value": "[concat(parameters('saName'),'_pe')]"
+          },
+          "resourceID": {
+            "value": "[reference('deployPrivateSA').outputs.saId.value]"
+          },
+          "vnetID": {
+            "value": "[reference('deployVNET').outputs.vnetId.value]"
+          },
+          "groupID": {
+            "value": "blob"
           }
         }
       }
@@ -293,11 +348,40 @@
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
-          "apimname": {
+          "recordname": {
             "value": "[parameters('apimname')]"
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployStorageDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployAPIM"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "privatelink.blob.core.windows.net"
+          },
+          "vnet_id": {
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "recordname": {
+            "value": "[parameters('saname')]"
+          },
+          "ipaddress": {
+            "value": "[reference('deploySAPE').outputs.APIMIP.value[0]]"
           }
         }
       }

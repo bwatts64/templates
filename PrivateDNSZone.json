@@ -8,7 +8,7 @@
         "vnet_id": {
             "type": "String"
         },
-        "apimname": {
+        "recordname": {
             "type": "string"
         },
         "ipaddress": {
@@ -55,7 +55,7 @@
         {
             "type": "Microsoft.Network/privateDnsZones/A",
             "apiVersion": "2018-09-01",
-            "name": "[concat(parameters('zone_name'), '/', parameters('apimname'))]",
+            "name": "[concat(parameters('zone_name'), '/', parameters('recordname'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/privateDnsZones', parameters('zone_name'))]"
             ],
