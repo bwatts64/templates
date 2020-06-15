@@ -185,6 +185,23 @@
                             "hostNames": [],
                             "requireServerNameIndication": false
                         }
+                    },
+                    {
+                        "name": "443private",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/frontendIPConfigurations/appGwPrivateFrontendIp')]"
+                            },
+                            "frontendPort": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/frontendPorts/port_443')]"
+                            },
+                            "protocol": "Https",
+                            "sslCertificate": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', 'wbpocAPPappgw'), '/sslCertificates/AppGW')]"
+                            },
+                            "hostNames": [],
+                            "requireServerNameIndication": false
+                        }
                     }
                 ],
                 "urlPathMaps": [
@@ -232,11 +249,23 @@
                 ],
                 "requestRoutingRules": [
                     {
-                        "name": "PathRouting",
+                        "name": "PathRoutingPublic",
                         "properties": {
                             "ruleType": "PathBasedRouting",
                             "httpListener": {
                                 "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/httpListeners/443public')]"
+                            },
+                            "urlPathMap": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/urlPathMaps/PathRouting')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "PathRoutingPrivate",
+                        "properties": {
+                            "ruleType": "PathBasedRouting",
+                            "httpListener": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/httpListeners/443private')]"
                             },
                             "urlPathMap": {
                                 "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/urlPathMaps/PathRouting')]"
