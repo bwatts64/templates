@@ -156,7 +156,8 @@
     "deployDNSZoneTemplateURL": "[concat(variables('gitUri'),'/PrivateDNSZone.json')]",
     "deployLogAnalyticsURL": "[concat(variables('gitUri'),'/Log_Analytics_Workspace.json')]",
     "deployPrivateStorageURL": "[concat(variables('gitUri'),'/PrivateStorageAccount.json')]",
-    "deployPrivateEndpointURL": "[concat(variables('gitUri'),'/PrivateEndpoint.json')]"
+    "deployPrivateEndpointURL": "[concat(variables('gitUri'),'/PrivateEndpoint.json')]",
+    "getNICIPURL": "[concat(variables('gitUri'),'/GetNicIP.json')]"
   },
   "resources": [
     {
@@ -387,6 +388,26 @@
       }
     },
     {
+      "name": "getNICIP",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "deployStoragePE"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('getNICIPUrL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "nicID": {
+            "value": "[reference('deployStoragePE').outputs.nicID.value]"
+          }
+        }
+      }
+    },
+    {
       "name": "deployblobDNSZone",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -410,7 +431,7 @@
             "value": "[parameters('saname')]"
           },
           "ipaddress": {
-            "value": "[reference(concat(reference('deployStoragePE').outputs.nicID.value,'.ipconfigurations[0].privateIPAddress'))]"
+            "value": "[reference('getNICIP').outputs.nicIP.value]"
           }
         }
       }
