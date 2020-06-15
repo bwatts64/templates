@@ -22,6 +22,9 @@
         },
         "loggerName": {
             "type": "string"
+        },
+        "workspaceId": {
+            "type": "string"
         }
     },
     "variables": {},
@@ -96,9 +99,50 @@
                             "samplingType": "fixed"
                         }
                     }
+                },
+                {
+                    "type": "providers/diagnosticSettings",
+                    "name": "Microsoft.Insights/loganalytics",
+                    "dependsOn": [
+                        "[parameters('apimName')]"
+                    ],
+                    "apiVersion": "2017-05-01-preview",
+                    "properties": {
+                        "name": "loganalytics",
+                        "workspaceId": "[parameters('workspaceId')]",
+                        "logs": [
+                            {
+                                "category": "GatewayLogs",
+                                "enabled": true
+                            },
+                            {
+                                "category": "Gateway Requests",
+                                "enabled": true
+                            },
+                            {
+                                "category": "Capacity",
+                                "enabled": true
+                            },
+                            {
+                                "category": "EventHub Events",
+                                "enabled": true
+                            },
+                            {
+                                "category": "Network Status",
+                                "enabled": true
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "category": "AllMetrics",
+                                "enabled": true
+                            }
+                        ]
+                    }
                 }
             ]
         }
+        
     ],
     "outputs": {
         "APIMIP": {

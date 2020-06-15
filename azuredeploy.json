@@ -236,7 +236,8 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "deployVNET",
-        "deployAppInsights"
+        "deployAppInsights",
+        "deployLAWorkspace"
       ],
       "properties": {
         "mode": "Incremental",
@@ -265,6 +266,9 @@
           },
           "loggerName":{
             "value": "[parameters('appInsightsName')]"
+          },
+          "workspaceID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }
