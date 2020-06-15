@@ -164,7 +164,10 @@
       "name": "deployVNET",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "dependsOn": [],
+      "dependsOn": [
+        "deployPrivateSA",
+        "deployLAWorkspace"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -195,6 +198,12 @@
           },
           "privateEPRange": {
             "value": "[parameters('privateEPRange')]"
+          },
+          "storageId": {
+            "value": "[reference('deployPrivateStorage').outputs.saId.value]"
+          },
+          "laID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }

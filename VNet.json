@@ -32,6 +32,12 @@
     },
     "bastionRange": {
       "type": "String"
+    },
+    "storageId": {
+      "type": "string"
+    },
+    "laID": {
+      "type": "string"
     }
   },
   "variables": {},
@@ -224,6 +230,35 @@
       }
     },
     {
+      "name": "APIM-NSG-FlowLog",
+      "type": "Microsoft.Network/networkWatchers/flowLogs",
+      "dependsOn": [
+        "APIM-NSG"
+      ],
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','APIM-NSG')]",
+        "storageId": "[parameters('storageId')]",
+        "enabled": true,
+        "flowAnalyticsConfiguration": {
+          "networkWatcherFlowAnalyticsConfiguration": {
+            "enabled": true,
+            "workspaceResourceId": "[parameters('laID')]",
+              "trafficAnalyticsInterval": 10
+            },
+            "retentionPolicy": {
+              "days": 10,
+              "enabled": true
+            },
+            "format": {
+              "type": "JSON",
+              "version": 2
+            }
+          }
+        }
+    },
+    {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2019-08-01",
       "name": "AKS-NSG",
@@ -231,6 +266,35 @@
       "properties": {
 
       }
+    },
+    {
+      "name": "AKS-NSG-FlowLog",
+      "type": "Microsoft.Network/networkWatchers/flowLogs",
+      "dependsOn": [
+        "AKS-NSG"
+      ],
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','AKS-NSG')]",
+        "storageId": "[parameters('storageId')]",
+        "enabled": true,
+        "flowAnalyticsConfiguration": {
+          "networkWatcherFlowAnalyticsConfiguration": {
+            "enabled": true,
+            "workspaceResourceId": "[parameters('laID')]",
+              "trafficAnalyticsInterval": 10
+            },
+            "retentionPolicy": {
+              "days": 10,
+              "enabled": true
+            },
+            "format": {
+              "type": "JSON",
+              "version": 2
+            }
+          }
+        }
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -267,6 +331,35 @@
           }
         ]
       }      
+    },
+    {
+      "name": "Shared-NSG-FlowLog",
+      "type": "Microsoft.Network/networkWatchers/flowLogs",
+      "dependsOn": [
+        "Shared-NSG"
+      ],
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','Shared-NSG')]",
+        "storageId": "[parameters('storageId')]",
+        "enabled": true,
+        "flowAnalyticsConfiguration": {
+          "networkWatcherFlowAnalyticsConfiguration": {
+            "enabled": true,
+            "workspaceResourceId": "[parameters('laID')]",
+              "trafficAnalyticsInterval": 10
+            },
+            "retentionPolicy": {
+              "days": 10,
+              "enabled": true
+            },
+            "format": {
+              "type": "JSON",
+              "version": 2
+            }
+          }
+        }
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -316,6 +409,35 @@
           }
         ]
       }      
+    },
+    {
+      "name": "Backend-NSG-FlowLog",
+      "type": "Microsoft.Network/networkWatchers/flowLogs",
+      "dependsOn": [
+        "Backend-NSG"
+      ],
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','Backend-NSG')]",
+        "storageId": "[parameters('storageId')]",
+        "enabled": true,
+        "flowAnalyticsConfiguration": {
+          "networkWatcherFlowAnalyticsConfiguration": {
+            "enabled": true,
+            "workspaceResourceId": "[parameters('laID')]",
+              "trafficAnalyticsInterval": 10
+            },
+            "retentionPolicy": {
+              "days": 10,
+              "enabled": true
+            },
+            "format": {
+              "type": "JSON",
+              "version": 2
+            }
+          }
+        }
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
