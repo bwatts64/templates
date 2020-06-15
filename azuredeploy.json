@@ -135,6 +135,10 @@
     "dev_zone_name": {
       "type": "string",
       "defaultValue": "developer.azure-api.net"
+    },
+    "workspaceName": {
+      "type": "string",
+      "defaultValue": "wbpocmonitoringla"
     }
   },
   "variables": {
@@ -146,7 +150,7 @@
     "deployAzureBastionTemplateURL": "[concat(variables('gitUri'),'/AzureBastion.json')]",
     "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]",
     "deployDNSZoneTemplateURL": "[concat(variables('gitUri'),'/PrivateDNSZone.json')]",
-    "deployDNSZoneARecordTemplateURL": "[concat(variables('gitUri'),'/PrivateDNSARecord.json')]"
+    "deployLogAnalyticsURL": "[concat(variables('gitUri'),'/Log_Analytics_Workspace.json')]"
   },
   "resources": [
     {
@@ -184,6 +188,25 @@
           },
           "privateEPRange": {
             "value": "[parameters('privateEPRange')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployLAWorkspace",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployLogAnalyticsURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "workspaceName": {
+            "value": "[parameters('workspaceName')]"
           }
         }
       }
@@ -309,7 +332,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "deployVNET"
+        "deployVNET",
+        "deployLAWorkspace"
       ],
       "properties": {
         "mode": "Incremental",
@@ -365,6 +389,9 @@
           },
           "devPool": {
             "value": "[concat(parameters('apimname'),'.',parameters('dev_zone_name'))]"
+          },
+          "workspaceID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }

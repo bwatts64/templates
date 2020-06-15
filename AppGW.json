@@ -50,6 +50,9 @@
         },
         "apiPool": {
             "type": "string"
+        },
+        "workspaceId": {
+            "type": "string"
         }
     },
     "variables": {
@@ -312,7 +315,45 @@
                     "minCapacity": 2,
                     "maxCapacity": 4
                 }
-            }
+            },
+            "resources": [
+                {
+                    "type": "providers/diagnosticSettings",
+                    "name": "Microsoft.Insights/loganalytics",
+                    "dependsOn": [
+                        "[parameters('applicationGatewayName')]"
+                    ],
+                    "apiVersion": "2017-05-01-preview",
+                    "properties": {
+                        "name": "loganalytics",
+                        "workspaceId": "[parameters('workspaceId')]",
+                        "logs": [
+                            {
+                                "category": "ApplicationGatewayAccessLog",
+                                "enabled": true
+                            },
+                            {
+                                "category": "ApplicationGatewayPerformanceLog",
+                                "enabled": true
+                            },
+                            {
+                                "category": "ApplicationGatewayFirewallLog",
+                                "enabled": true
+                            }
+                        ],
+                        "metrics": [
+                            {
+                            "category": "AllMetrics",
+                            "enabled": false,
+                            "retentionPolicy": {
+                                "days": 0,
+                                "enabled": false
+                            }
+                            }
+                        ]
+                    }
+                }
+            ]
         },
         {
             "apiVersion": "2019-02-01",
