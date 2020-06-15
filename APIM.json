@@ -114,9 +114,11 @@
                             {
                                 "category": "GatewayLogs",
                                 "enabled": true
-                            },
+                            }
+                        ],
+                        "metrics": [
                             {
-                                "category": "GatewayRequests",
+                                "category": "Gateway Requests",
                                 "enabled": true
                             },
                             {
@@ -124,17 +126,11 @@
                                 "enabled": true
                             },
                             {
-                                "category": "EventHubEvents",
+                                "category": "EventHub Events",
                                 "enabled": true
                             },
                             {
-                                "category": "NetworkStatus",
-                                "enabled": true
-                            }
-                        ],
-                        "metrics": [
-                            {
-                                "category": "AllMetrics",
+                                "category": "Network Status",
                                 "enabled": true
                             }
                         ]
