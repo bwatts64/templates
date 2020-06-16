@@ -230,35 +230,6 @@
       }
     },
     {
-      "name": "NetworkWatcher_eastuseuap/APIM-NSG-FlowLog",
-      "type": "Microsoft.Network/networkWatchers/flowLogs",
-      "dependsOn": [
-        "APIM-NSG"
-      ],
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2019-09-01",
-      "properties": {
-        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','APIM-NSG')]",
-        "storageId": "[parameters('storageId')]",
-        "enabled": true,
-        "flowAnalyticsConfiguration": {
-          "networkWatcherFlowAnalyticsConfiguration": {
-            "enabled": true,
-            "workspaceResourceId": "[parameters('laID')]",
-              "trafficAnalyticsInterval": 10
-            },
-            "retentionPolicy": {
-              "days": 10,
-              "enabled": true
-            },
-            "format": {
-              "type": "JSON",
-              "version": 2
-            }
-          }
-        }
-    },
-    {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2019-08-01",
       "name": "AKS-NSG",
@@ -266,35 +237,6 @@
       "properties": {
 
       }
-    },
-    {
-      "name": "NetworkWatcher_eastuseuap/AKS-NSG-FlowLog",
-      "type": "Microsoft.Network/networkWatchers/flowLogs",
-      "dependsOn": [
-        "AKS-NSG"
-      ],
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2019-09-01",
-      "properties": {
-        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','AKS-NSG')]",
-        "storageId": "[parameters('storageId')]",
-        "enabled": true,
-        "flowAnalyticsConfiguration": {
-          "networkWatcherFlowAnalyticsConfiguration": {
-            "enabled": true,
-            "workspaceResourceId": "[parameters('laID')]",
-              "trafficAnalyticsInterval": 10
-            },
-            "retentionPolicy": {
-              "days": 10,
-              "enabled": true
-            },
-            "format": {
-              "type": "JSON",
-              "version": 2
-            }
-          }
-        }
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -331,35 +273,6 @@
           }
         ]
       }      
-    },
-    {
-      "name": "NetworkWatcher_eastuseuap/Shared-NSG-FlowLog",
-      "type": "Microsoft.Network/networkWatchers/flowLogs",
-      "dependsOn": [
-        "Shared-NSG"
-      ],
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2019-09-01",
-      "properties": {
-        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','Shared-NSG')]",
-        "storageId": "[parameters('storageId')]",
-        "enabled": true,
-        "flowAnalyticsConfiguration": {
-          "networkWatcherFlowAnalyticsConfiguration": {
-            "enabled": true,
-            "workspaceResourceId": "[parameters('laID')]",
-              "trafficAnalyticsInterval": 10
-            },
-            "retentionPolicy": {
-              "days": 10,
-              "enabled": true
-            },
-            "format": {
-              "type": "JSON",
-              "version": 2
-            }
-          }
-        }
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -409,35 +322,6 @@
           }
         ]
       }      
-    },
-    {
-      "name": "NetworkWatcher_eastuseuap/Backend-NSG-FlowLog",
-      "type": "Microsoft.Network/networkWatchers/flowLogs",
-      "dependsOn": [
-        "Backend-NSG"
-      ],
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2019-09-01",
-      "properties": {
-        "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','Backend-NSG')]",
-        "storageId": "[parameters('storageId')]",
-        "enabled": true,
-        "flowAnalyticsConfiguration": {
-          "networkWatcherFlowAnalyticsConfiguration": {
-            "enabled": true,
-            "workspaceResourceId": "[parameters('laID')]",
-              "trafficAnalyticsInterval": 10
-            },
-            "retentionPolicy": {
-              "days": 10,
-              "enabled": true
-            },
-            "format": {
-              "type": "JSON",
-              "version": 2
-            }
-          }
-        }
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
@@ -508,7 +392,159 @@
           }
         ]
       }
-    }
+    },
+    {
+            "apiVersion": "2019-09-01",
+            "name": "deployFlowLogs",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[resourceGroup().name]",
+            "dependsOn":[
+                "[parameters('vNETName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "storageId": {
+                            "type": "string"
+                        },
+                        "laID": {
+                          "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                          "name": "NetworkWatcher_eastus/AKS-NSG-FlowLog",
+                          "type": "Microsoft.Network/networkWatchers/flowLogs",
+                          "dependsOn": [
+                            "AKS-NSG"
+                          ],
+                          "location": "[resourceGroup().location]",
+                          "apiVersion": "2019-09-01",
+                          "properties": {
+                            "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','AKS-NSG')]",
+                            "storageId": "[parameters('storageId')]",
+                            "enabled": true,
+                            "flowAnalyticsConfiguration": {
+                              "networkWatcherFlowAnalyticsConfiguration": {
+                                "enabled": true,
+                                "workspaceResourceId": "[parameters('laID')]",
+                                  "trafficAnalyticsInterval": 10
+                                },
+                                "retentionPolicy": {
+                                  "days": 10,
+                                  "enabled": true
+                                },
+                                "format": {
+                                  "type": "JSON",
+                                  "version": 2
+                                }
+                              }
+                            }
+                        },
+                        {
+                          "name": "NetworkWatcher_eastus/APIM-NSG-FlowLog",
+                          "type": "Microsoft.Network/networkWatchers/flowLogs",
+                          "dependsOn": [
+                            "APIM-NSG"
+                          ],
+                          "location": "[resourceGroup().location]",
+                          "apiVersion": "2019-09-01",
+                          "properties": {
+                            "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','APIM-NSG')]",
+                            "storageId": "[parameters('storageId')]",
+                            "enabled": true,
+                            "flowAnalyticsConfiguration": {
+                              "networkWatcherFlowAnalyticsConfiguration": {
+                                "enabled": true,
+                                "workspaceResourceId": "[parameters('laID')]",
+                                  "trafficAnalyticsInterval": 10
+                                },
+                                "retentionPolicy": {
+                                  "days": 10,
+                                  "enabled": true
+                                },
+                                "format": {
+                                  "type": "JSON",
+                                  "version": 2
+                                }
+                              }
+                            }
+                        },
+                        {
+                          "name": "NetworkWatcher_eastus/Shared-NSG-FlowLog",
+                          "type": "Microsoft.Network/networkWatchers/flowLogs",
+                          "dependsOn": [
+                            "Shared-NSG"
+                          ],
+                          "location": "[resourceGroup().location]",
+                          "apiVersion": "2019-09-01",
+                          "properties": {
+                            "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','Shared-NSG')]",
+                            "storageId": "[parameters('storageId')]",
+                            "enabled": true,
+                            "flowAnalyticsConfiguration": {
+                              "networkWatcherFlowAnalyticsConfiguration": {
+                                "enabled": true,
+                                "workspaceResourceId": "[parameters('laID')]",
+                                  "trafficAnalyticsInterval": 10
+                                },
+                                "retentionPolicy": {
+                                  "days": 10,
+                                  "enabled": true
+                                },
+                                "format": {
+                                  "type": "JSON",
+                                  "version": 2
+                                }
+                              }
+                            }
+                        },
+                        {
+                          "name": "NetworkWatcher_eastus/Backend-NSG-FlowLog",
+                          "type": "Microsoft.Network/networkWatchers/FlowLogs",
+                          "dependsOn": [
+                          ],
+                          "location": "[resourceGroup().location]",
+                          "apiVersion": "2019-09-01",
+                          "properties": {
+                            "targetResourceId": "[resourceId('Microsoft.Network/networkSecurityGroups','Backend-NSG')]",
+                            "storageId": "[parameters('storageId')]",
+                            "enabled": true,
+                            "flowAnalyticsConfiguration": {
+                              "networkWatcherFlowAnalyticsConfiguration": {
+                                "enabled": true,
+                                "workspaceResourceId": "[parameters('laID')]",
+                                  "trafficAnalyticsInterval": 10
+                                },
+                                "retentionPolicy": {
+                                  "days": 10,
+                                  "enabled": true
+                                },
+                                "format": {
+                                  "type": "JSON",
+                                  "version": 2
+                                }
+                              }
+                            }
+                        }
+                    ]
+                },
+                "parameters": {
+                        "storageId": {
+                            "value": "[parameters('storageId')]"
+                        },
+                        "laID": {
+                          "value": "[parameters('laID')]"
+                        }
+                }
+            }
+        }
   ],
   "outputs": {
     "vnetId": {
