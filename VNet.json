@@ -230,7 +230,7 @@
       }
     },
     {
-      "name": "APIM-NSG-FlowLog",
+      "name": "NetworkWatcher_eastus/APIM-NSG-FlowLog",
       "type": "Microsoft.Network/networkWatchers/flowLogs",
       "dependsOn": [
         "APIM-NSG"
@@ -268,7 +268,7 @@
       }
     },
     {
-      "name": "AKS-NSG-FlowLog",
+      "name": "NetworkWatcher_eastus/AKS-NSG-FlowLog",
       "type": "Microsoft.Network/networkWatchers/flowLogs",
       "dependsOn": [
         "AKS-NSG"
@@ -333,7 +333,7 @@
       }      
     },
     {
-      "name": "Shared-NSG-FlowLog",
+      "name": "NetworkWatcher_eastus/Shared-NSG-FlowLog",
       "type": "Microsoft.Network/networkWatchers/flowLogs",
       "dependsOn": [
         "Shared-NSG"
@@ -411,7 +411,7 @@
       }      
     },
     {
-      "name": "Backend-NSG-FlowLog",
+      "name": "NetworkWatcher_eastus/Backend-NSG-FlowLog",
       "type": "Microsoft.Network/networkWatchers/flowLogs",
       "dependsOn": [
         "Backend-NSG"

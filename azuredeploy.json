@@ -165,7 +165,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "deployPrivateSA",
+        "deployPrivateStorage",
         "deployLAWorkspace"
       ],
       "properties": {
@@ -228,7 +228,7 @@
       }
     },
     {
-      "name": "deployPrivateSA",
+      "name": "deployPrivateStorage",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
@@ -251,7 +251,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "deployPrivateSA",
+        "deployPrivateStorage",
         "deployVNET"
       ],
       "properties": {
@@ -265,7 +265,7 @@
             "value": "[concat(parameters('saName'),'_pe')]"
           },
           "resourceID": {
-            "value": "[reference('deployPrivateSA').outputs.saId.value]"
+            "value": "[reference('deployPrivateStorage').outputs.saId.value]"
           },
           "vnetID": {
             "value": "[reference('deployVNET').outputs.vnetId.value]"
