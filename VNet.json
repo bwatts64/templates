@@ -323,7 +323,7 @@
           {
             "name": "allow-HealthProbe",
             "properties": {
-              "priority": 110,
+              "priority": 120,
               "access": "Allow",
               "direction": "Inbound",
               "destinationPortRange": "8080",
