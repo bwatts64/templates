@@ -11,34 +11,34 @@
     },
     "addressRange": {
       "type": "String",
-      "defaultValue":"10.0.0.0/8",
+      "defaultValue":"192.168.1.0/24",
       "metadata": {
         "description": "Administrator password for the local admin account"
       }
     },
     "apimRange": {
       "type": "String",
-      "defaultValue": "10.0.1.0/24"
+      "defaultValue": "192.168.1.224/28"
     },
     "aksRange": {
       "type": "String",
-      "defaultValue": "10.1.0.0/16"
+      "defaultValue": "192.168.1.0/25"
     },
     "privateEPRange": {
       "type": "String",
-      "defaultValue":"10.0.2.0/24"
+      "defaultValue":"192.168.1.176/28"
     },
     "sharedRange": {
       "type": "String",
-      "defaultValue": "10.0.3.0/24"
+      "defaultValue": "192.168.1.160/28"
     },
     "bastionRange": {
       "type": "String",
-      "defaultValue": "10.0.4.0/24"
+      "defaultValue": "192.168.1.128/28"
     },
     "appgwRange": {
       "type": "string",
-      "defaultValue": "10.0.5.0/24"
+      "defaultValue": "192.168.1.144/28"
     },
     "appInsightsName": {
       "defaultValue": "wbpocapimai",
@@ -98,7 +98,7 @@
     },
     "appgwprivateIpAddress": {
         "type": "string",
-        "defaultValue": "10.0.5.4"
+        "defaultValue": "192.168.1.150"
     },
     "appgwautoScaleMaxCapacity": {
         "type": "int",
