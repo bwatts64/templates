@@ -4,13 +4,10 @@
     "parameters": {
         "vaultName": {
             "type": "String"
-        },
-        "identityName": {
-            "type": "string"
         }
     },
     "variables": {
-        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+        
     },
     "resources": [
         {
@@ -25,57 +22,18 @@
                     "family": "A",
                     "name": "standard"
                 },
-                "tenantId": "[variables('tenantId')]",
-                "accessPolicies": [
-                    {
-                        "tenantId": "[variables('tenantId')]",
-                        "objectId": "[reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('identityName')), '2018-11-30', 'Full').properties.PrincipalId]",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers"
-                            ]
-                        }
-                    }
-                ],
+                "tenantId": "[subscription().tenantId]",
                 "enabledForDeployment": true,
                 "enabledForDiskEncryption": true,
                 "enabledForTemplateDeployment": true,
                 "enableSoftDelete": true
             }
         }
-    ]
+    ],
+    "outputs": {
+        "vaultId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+        }
+    }
 }

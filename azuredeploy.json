@@ -143,6 +143,10 @@
     "saname": {
       "type": "string",
       "defaultValue": "wbpocinspiresa"
+    },
+    "vaultName": {
+      "type": "string",
+      "defaultValue": "wbpocinspirekv"
     }
   },
   "variables": {
@@ -157,7 +161,8 @@
     "deployLogAnalyticsURL": "[concat(variables('gitUri'),'/Log_Analytics_Workspace.json')]",
     "deployPrivateStorageURL": "[concat(variables('gitUri'),'/PrivateStorageAccount.json')]",
     "deployPrivateEndpointURL": "[concat(variables('gitUri'),'/PrivateEndpoint.json')]",
-    "getNICIPURL": "[concat(variables('gitUri'),'/GetNicIP.json')]"
+    "getNICIPURL": "[concat(variables('gitUri'),'/GetNicIP.json')]",
+    "deployKeyVaultURL": "[concat(variables('gitUri'),'/KeyVault.json')]"
   },
   "resources": [
     {
@@ -223,6 +228,55 @@
         "parameters": {
           "workspaceName": {
             "value": "[parameters('workspaceName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployKeyVault",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployKeyVaultURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vaultName": {
+            "value": "[parameters('vaultName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployKeyVaultPE",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployKeyVault",
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrivateEndpointURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "peName": {
+            "value": "[concat(parameters('vaultName'),'_pe')]"
+          },
+          "resourceID": {
+            "value": "[reference('deployKeyVault').outputs.vaultId.value]"
+          },
+          "vnetID": {
+            "value": "[reference('deployVNET').outputs.vnetId.value]"
+          },
+          "groupID": {
+            "value": "vault"
           }
         }
       }
@@ -441,6 +495,55 @@
           },
           "ipaddress": {
             "value": "[reference('getNICIP').outputs.nicIP.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "getVaultNICIP",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployKeyVaultPE"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('getNICIPUrL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "nicID": {
+            "value": "[reference('deployKeyVaultPE').outputs.nicID.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployKeyVaultDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "getVaultNICIP"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "privatelink.vaultcore.azure.net"
+          },
+          "vnet_id": {
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "recordname": {
+            "value": "[parameters('vaultName')]"
+          },
+          "ipaddress": {
+            "value": "[reference('getVaultNICIP').outputs.nicIP.value]"
           }
         }
       }
