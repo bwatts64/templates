@@ -167,7 +167,8 @@
     "deployPrivateEndpointURL": "[concat(variables('gitUri'),'/PrivateEndpoint.json')]",
     "getNICIPURL": "[concat(variables('gitUri'),'/GetNicIP.json')]",
     "deployKeyVaultURL": "[concat(variables('gitUri'),'/KeyVault.json')]",
-    "deployACRURL": "[concat(variables('gitUri'),'/ACR.json')]"
+    "deployACRURL": "[concat(variables('gitUri'),'/ACR.json')]",
+    "addVMInsightsURL": "[concat(variables('gitUri'),'/EnableVMInsights.json')]"
   },
   "resources": [
     {
@@ -786,12 +787,38 @@
           }
         }
       }
+    },
+    {
+      "name": "addJumpBoxInsights",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployJumpBox"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('addVMInsightsURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "VmResourceId": {
+            "value": "[reference('deployJumpBox').outputs.vmID.value]"
+          },
+          "osType": {
+            "value": "Windows"
+          },
+          "WorkspaceResourceId": {
+            "value": "[reference('deployLAWorkspace').outputs.vmID.value]"
+          }
+        }
+      }
     }
   ],
   "outputs": {
     "IPAddress": {
       "type": "array",
-      "value": "[reference('deployAPIM').outputs.APIMIP.value]"
+      "value": "[reference('deployAPIM').outputs.workspaceId.value]"
     }
   }
 }

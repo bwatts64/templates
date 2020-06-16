@@ -112,6 +112,9 @@
     }
   ],
   "outputs": {
-
+    "vmID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+    }
   }
 }
