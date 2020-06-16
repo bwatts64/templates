@@ -299,7 +299,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "vaultName": {
+          "acrName": {
             "value": "[parameters('acrName')]"
           }
         }
