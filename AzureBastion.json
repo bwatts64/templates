@@ -16,6 +16,9 @@
         },
         "publicIpAddressName": {
             "type": "string"
+        },
+        "workspaceId": {
+            "type": "string"
         }
     },
     "resources": [
@@ -55,7 +58,28 @@
                     }
                 ]
             },
-            "tags": {}
+            "tags": {},
+            "resources": [
+                {
+                    "type": "providers/diagnosticSettings",
+                    "name": "Microsoft.Insights/loganalytics",
+                    "dependsOn": [
+                        "[parameters('bastionHostName')]"
+                    ],
+                    "apiVersion": "2017-05-01-preview",
+                    "properties": {
+                        "name": "loganalytics",
+                        "workspaceId": "[parameters('workspaceId')]",
+                        "logs": [
+                            {
+                                "category": "BastionAuditLogs",
+                                "enabled": true
+                            }
+                        ],
+                        "metrics": []
+                    }
+                }
+            ]
         }
     ]
 }

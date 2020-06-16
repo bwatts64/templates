@@ -343,12 +343,12 @@
                         ],
                         "metrics": [
                             {
-                            "category": "AllMetrics",
-                            "enabled": false,
-                            "retentionPolicy": {
-                                "days": 0,
-                                "enabled": false
-                            }
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
                             }
                         ]
                     }

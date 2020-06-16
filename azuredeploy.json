@@ -253,6 +253,9 @@
         "parameters": {
           "vaultName": {
             "value": "[parameters('vaultName')]"
+          },
+          "workspaceID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }
@@ -302,6 +305,9 @@
         "parameters": {
           "acrName": {
             "value": "[parameters('acrName')]"
+          },
+          "workspaceID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }
@@ -749,6 +755,9 @@
           },
           "publicIpAddressName": {
               "value": "[concat(parameters('bastionHostName'),'-pip')]"
+          },
+          "workspaceID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }
@@ -809,7 +818,7 @@
             "value": "Windows"
           },
           "WorkspaceResourceId": {
-            "value": "[reference('deployLAWorkspace').outputs.vmID.value]"
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }
