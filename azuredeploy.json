@@ -151,6 +151,10 @@
     "acrName": {
       "type": "string",
       "defaultValue": "wbpocinspireacr"
+    },
+    "sbName": {
+      "type": "string",
+      "defaultValue": "wbpocinspiresb"
     }
   },
   "variables": {
@@ -168,7 +172,8 @@
     "getNICIPURL": "[concat(variables('gitUri'),'/GetNicIP.json')]",
     "deployKeyVaultURL": "[concat(variables('gitUri'),'/KeyVault.json')]",
     "deployACRURL": "[concat(variables('gitUri'),'/ACR.json')]",
-    "addVMInsightsURL": "[concat(variables('gitUri'),'/EnableVMInsights.json')]"
+    "addVMInsightsURL": "[concat(variables('gitUri'),'/EnableVMInsights.json')]",
+    "deployServiceBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]"
   },
   "resources": [
     {
@@ -286,6 +291,58 @@
           },
           "groupID": {
             "value": "vault"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployServiceBus",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployServiceBusURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "sbName": {
+            "value": "[parameters('sbName')]"
+          },
+          "workspaceID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployServiceBusPE",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployServiceBus",
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrivateEndpointURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "peName": {
+            "value": "[concat(parameters('sbName'),'_pe')]"
+          },
+          "resourceID": {
+            "value": "[reference('deployServiceBus').outputs.sbId.value]"
+          },
+          "vnetID": {
+            "value": "[reference('deployVNET').outputs.vnetId.value]"
+          },
+          "groupID": {
+            "value": "namespace"
           }
         }
       }
@@ -605,6 +662,55 @@
           },
           "ipaddress": {
             "value": "[reference('getVaultNICIP').outputs.nicIP.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "getServiceBusNICIP",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployServiceBusPE"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('getNICIPUrL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "nicID": {
+            "value": "[reference('deployServiceBusPE').outputs.nicID.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployServiceBusDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "getServiceBusNICIP"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "privatelink.vaultcore.azure.net"
+          },
+          "vnet_id": {
+            "value": "[reference('deployServiceBus').outputs.sbId.value]"
+          },
+          "recordname": {
+            "value": "[parameters('sbName')]"
+          },
+          "ipaddress": {
+            "value": "[reference('getServiceBusNICIP').outputs.nicIP.value]"
           }
         }
       }
