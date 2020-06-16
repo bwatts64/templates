@@ -147,6 +147,10 @@
     "vaultName": {
       "type": "string",
       "defaultValue": "wbpocinspirekv"
+    },
+    "acrName": {
+      "type": "string",
+      "defaultValue": "wbpocinspireacr"
     }
   },
   "variables": {
@@ -162,7 +166,8 @@
     "deployPrivateStorageURL": "[concat(variables('gitUri'),'/PrivateStorageAccount.json')]",
     "deployPrivateEndpointURL": "[concat(variables('gitUri'),'/PrivateEndpoint.json')]",
     "getNICIPURL": "[concat(variables('gitUri'),'/GetNicIP.json')]",
-    "deployKeyVaultURL": "[concat(variables('gitUri'),'/KeyVault.json')]"
+    "deployKeyVaultURL": "[concat(variables('gitUri'),'/KeyVault.json')]",
+    "deployACRURL": "[concat(variables('gitUri'),'/ACR.json')]"
   },
   "resources": [
     {
@@ -277,6 +282,55 @@
           },
           "groupID": {
             "value": "vault"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployACR",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployACRURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vaultName": {
+            "value": "[parameters('acrName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployACRPE",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployACR",
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrivateEndpointURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "peName": {
+            "value": "[concat(parameters('acrName'),'_pe')]"
+          },
+          "resourceID": {
+            "value": "[reference('deployACR').outputs.acrId.value]"
+          },
+          "vnetID": {
+            "value": "[reference('deployVNET').outputs.vnetId.value]"
+          },
+          "groupID": {
+            "value": "registry"
           }
         }
       }
@@ -544,6 +598,55 @@
           },
           "ipaddress": {
             "value": "[reference('getVaultNICIP').outputs.nicIP.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "getACRNICIP",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployACRPE"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('getNICIPUrL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "nicID": {
+            "value": "[reference('deployACRPE').outputs.nicID.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployACRDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "getACRNICIP"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "privatelink.azure.io"
+          },
+          "vnet_id": {
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "recordname": {
+            "value": "[parameters('acrName')]"
+          },
+          "ipaddress": {
+            "value": "[reference('getACRNICIP').outputs.nicIP.value]"
           }
         }
       }
