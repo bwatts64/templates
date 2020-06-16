@@ -422,7 +422,7 @@
                           "name": "NetworkWatcher_eastus/AKS-NSG-FlowLog",
                           "type": "Microsoft.Network/networkWatchers/flowLogs",
                           "dependsOn": [
-                            "AKS-NSG"
+                            
                           ],
                           "location": "[resourceGroup().location]",
                           "apiVersion": "2019-09-01",
@@ -451,7 +451,7 @@
                           "name": "NetworkWatcher_eastus/APIM-NSG-FlowLog",
                           "type": "Microsoft.Network/networkWatchers/flowLogs",
                           "dependsOn": [
-                            "APIM-NSG"
+                            
                           ],
                           "location": "[resourceGroup().location]",
                           "apiVersion": "2019-09-01",
@@ -480,7 +480,7 @@
                           "name": "NetworkWatcher_eastus/Shared-NSG-FlowLog",
                           "type": "Microsoft.Network/networkWatchers/flowLogs",
                           "dependsOn": [
-                            "Shared-NSG"
+                            
                           ],
                           "location": "[resourceGroup().location]",
                           "apiVersion": "2019-09-01",

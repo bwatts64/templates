@@ -163,7 +163,7 @@
     {
       "name": "deployVNET",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployPrivateStorage",
         "deployLAWorkspace"
@@ -211,7 +211,7 @@
     {
       "name": "deployLAWorkspace",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
       ],
       "properties": {
@@ -230,7 +230,7 @@
     {
       "name": "deployPrivateStorage",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
       ],
       "properties": {
@@ -249,7 +249,7 @@
     {
       "name": "deployStoragePE",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployPrivateStorage",
         "deployVNET"
@@ -279,7 +279,7 @@
     {
       "name": "deployAppInsights",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
       ],
       "properties": {
@@ -298,7 +298,7 @@
     {
       "name": "deployAPIM",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployVNET",
         "deployAppInsights",
@@ -341,7 +341,7 @@
     {
       "name": "deployGWDNSZone",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployAPIM"
       ],
@@ -370,7 +370,7 @@
     {
       "name": "deployDEVDNSZone",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployAPIM"
       ],
@@ -399,7 +399,7 @@
     {
       "name": "getNICIP",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployStoragePE"
       ],
@@ -419,7 +419,7 @@
     {
       "name": "deployblobDNSZone",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "getNICIP"
       ],
@@ -448,7 +448,7 @@
     {
       "name": "deployAPPGW",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployVNET",
         "deployLAWorkspace"
@@ -517,7 +517,7 @@
     {
       "name": "deployAzureBastion",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployVNET"
       ],
@@ -549,7 +549,7 @@
     {
       "name": "deployJumpBox",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2017-05-10",
       "dependsOn": [
         "deployVNET"
       ],
