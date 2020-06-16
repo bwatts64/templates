@@ -449,11 +449,11 @@
           {
             "name": "APPGW-SN",
             "properties": {
-              "addressPrefix": "[parameters('appgwRange')]"
-            },
-            "networkSecurityGroup": {
+              "addressPrefix": "[parameters('appgwRange')]",
+              "networkSecurityGroup": {
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'AppGW-NSG')]"
               }
+            }
           }
         ]
       }
