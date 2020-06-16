@@ -16,7 +16,7 @@
             "name": "[parameters('acrName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "Microsoft.Resources/deployments/WVD-VNET_24708821-3c1e-4662-93bb-55056fe4c011"
+                
             ],
             "sku": {
                 "name": "Premium"
