@@ -178,7 +178,7 @@
     "deployACRURL": "[concat(variables('gitUri'),'/ACR.json')]",
     "addVMInsightsURL": "[concat(variables('gitUri'),'/EnableVMInsights.json')]",
     "deployServiceBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]",
-    "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]"
+    "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/AzureRedisCache.json')]"
   },
   "resources": [
     {
@@ -939,7 +939,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('deployKeyVaultURL')]",
+          "uri": "[variables('deployAzureCacheBusURL')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -964,7 +964,7 @@
   ],
   "outputs": {
     "IPAddress": {
-      "type": "array",
+      "type": "string",
       "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
     }
   }

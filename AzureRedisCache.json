@@ -23,7 +23,7 @@
             "properties": {
                 "sku": {
                     "name": "Premium",
-                    "family": "P",
+                    "family": "Premium",
                     "capacity": 1
                 },
                 "redisConfiguration": {
