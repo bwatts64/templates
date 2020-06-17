@@ -11,6 +11,9 @@
         },
         "saConnectionString": {
             "type": "string"
+        },
+        "ipAddress": {
+            "type": "string"
         }
     },
     "resources": [
@@ -24,21 +27,46 @@
                     "capacity": 1
                 },
                 "redisConfiguration": {
-                    "rdb-storage-connection-string": "[concat('DefaultEndpointsProtocol=https;AccountName=armtemplatessa;BlobEndpoint=https://armtemplatessa.blob.core.windows.net/;AccountKey=', listKeys('/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/Lab/providers/Microsoft.Storage/storageAccounts/armtemplatessa', '2015-06-15').key1)]",
+                    "rdb-storage-connection-string": "[parameters('saConnectionString')]",
                     "rdb-backup-enabled": "true",
                     "rdb-backup-frequency": "60",
                     "rdb-backup-max-snapshot-count": "1"
                 },
                 "enableNonSslPort": false,
                 "shardCount": 1,
-                "subnetId": "/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/Lab/providers/Microsoft.Network/virtualNetworks/Lab-vnet/subnets/default",
-                "staticIP": "10.0.0.22"
+                "subnetId": "[parameters('subnetId')]",
+                "staticIP": "[parameters('ipAddress')]"
             },
             "zones": [
                 "3"
             ],
             "apiVersion": "2019-07-01",
-            "type": "Microsoft.Cache/Redis"
+            "type": "Microsoft.Cache/Redis",
+            "resources": [
+                {
+                    "type": "providers/diagnosticSettings",
+                    "name": "Microsoft.Insights/loganalytics",
+                    "dependsOn": [
+                        "[parameters('cacheName')]"
+                    ],
+                    "apiVersion": "2017-05-01-preview",
+                    "properties": {
+                        "name": "loganalytics",
+                        "workspaceId": "[parameters('workspaceId')]",
+                        "logs": [],
+                        "metrics": [
+                            {
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     ],
     "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",

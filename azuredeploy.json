@@ -155,6 +155,10 @@
     "sbName": {
       "type": "string",
       "defaultValue": "wbpocinspiresb"
+    },
+    "cacheName": {
+      "type": "string",
+      "defaultValue": "wbpocinspirecache"
     }
   },
   "variables": {
@@ -173,7 +177,8 @@
     "deployKeyVaultURL": "[concat(variables('gitUri'),'/KeyVault.json')]",
     "deployACRURL": "[concat(variables('gitUri'),'/ACR.json')]",
     "addVMInsightsURL": "[concat(variables('gitUri'),'/EnableVMInsights.json')]",
-    "deployServiceBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]"
+    "deployServiceBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]",
+    "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]"
   },
   "resources": [
     {
@@ -181,8 +186,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
-        "deployPrivateStorage",
-        "deployLAWorkspace"
+        
       ],
       "properties": {
         "mode": "Incremental",
@@ -214,12 +218,6 @@
           },
           "privateEPRange": {
             "value": "[parameters('privateEPRange')]"
-          },
-          "storageId": {
-            "value": "[reference('deployPrivateStorage').outputs.saId.value]"
-          },
-          "laID": {
-            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
           }
         }
       }
@@ -248,6 +246,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
+        "deployLAWorkspace"
       ],
       "properties": {
         "mode": "Incremental",
@@ -928,12 +927,45 @@
           }
         }
       }
+    },
+    {
+      "name": "deployAzureCacheVault",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployLAWorkspace",
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployKeyVaultURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "cacheName": {
+            "value": "[parameters('cacheName')]"
+          },
+          "workspaceID": {
+            "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "subnetId": {
+            "value": "[reference('deployVNET').outputs.epSubnetID.value]"
+          },
+          "saConnectionString": {
+            "value": "[reference('deployPrivateStorage').outputs.saConnectionString.value]"
+          },
+          "ipAddress": {
+            "value": "192.168.1.180"
+          }
+        }
+      }
     }
   ],
   "outputs": {
     "IPAddress": {
       "type": "array",
-      "value": "[reference('deployAPIM').outputs.workspaceId.value]"
+      "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
     }
   }
 }

@@ -32,12 +32,6 @@
     },
     "bastionRange": {
       "type": "String"
-    },
-    "storageId": {
-      "type": "string"
-    },
-    "laID": {
-      "type": "string"
     }
   },
   "variables": {},
