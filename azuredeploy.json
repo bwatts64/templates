@@ -704,7 +704,7 @@
             "value": "privatelink.vaultcore.azure.net"
           },
           "vnet_id": {
-            "value": "[reference('deployServiceBus').outputs.sbId.value]"
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
             "value": "[parameters('sbName')]"
