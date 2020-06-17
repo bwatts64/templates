@@ -1,0 +1,46 @@
+{
+    "parameters": {
+        "cacheName": {
+            "type": "String"
+        },
+        "workspaceId": {
+            "type": "string"
+        },
+        "subnetId": {
+            "type": "string"
+        },
+        "saConnectionString": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('cacheName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "name": "Premium",
+                    "family": "P",
+                    "capacity": 1
+                },
+                "redisConfiguration": {
+                    "rdb-storage-connection-string": "[concat('DefaultEndpointsProtocol=https;AccountName=armtemplatessa;BlobEndpoint=https://armtemplatessa.blob.core.windows.net/;AccountKey=', listKeys('/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/Lab/providers/Microsoft.Storage/storageAccounts/armtemplatessa', '2015-06-15').key1)]",
+                    "rdb-backup-enabled": "true",
+                    "rdb-backup-frequency": "60",
+                    "rdb-backup-max-snapshot-count": "1"
+                },
+                "enableNonSslPort": false,
+                "shardCount": 1,
+                "subnetId": "/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/Lab/providers/Microsoft.Network/virtualNetworks/Lab-vnet/subnets/default",
+                "staticIP": "10.0.0.22"
+            },
+            "zones": [
+                "3"
+            ],
+            "apiVersion": "2019-07-01",
+            "type": "Microsoft.Cache/Redis"
+        }
+    ],
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0"
+}

@@ -189,7 +189,7 @@
                             },
                             "protocol": "Https",
                             "sslCertificate": {
-                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', 'wbpocAPPappgw'), '/sslCertificates/AppGW')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/sslCertificates/AppGW')]"
                             },
                             "hostNames": [],
                             "requireServerNameIndication": false
@@ -206,7 +206,7 @@
                             },
                             "protocol": "Https",
                             "sslCertificate": {
-                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', 'wbpocAPPappgw'), '/sslCertificates/AppGW')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/sslCertificates/AppGW')]"
                             },
                             "hostNames": [],
                             "requireServerNameIndication": false
