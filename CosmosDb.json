@@ -8,283 +8,42 @@
         "location": {
             "type": "string"
         },
-        "locationName": {
-            "type": "string"
-        },
         "defaultExperience": {
             "type": "string"
         },
         "isZoneRedundant": {
             "type": "string"
-        },
-        "pairedLocation": {
-            "type": "string"
-        },
-        "pairedLocationName": {
-            "type": "string"
-        },
-        "vNetName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the virtual network to be created"
-            }
-        },
-        "peName": {
-            "defaultValue": "pocinspiresape",
-            "type": "string"
         }
     },
-    "variables": {
-        "subscriptionId": "[subscription().Id]",
-        "resourceGroupName": "[resourceGroup().name]",
-        "uniqueCosmosdb": "[uniqueString(variables('subscriptionId'), variables('resourceGroupName'), parameters('location'))]",
-        "cosmosDbName": "[tolower(concat('sqlva', variables('uniqueCosmosdb')))]",
-        "privateEndpointCosmosDbName": "pocinsightscosmosdb",
-        "privateEndpointId": "[if(parameters('enablePrivateEndpoint'), concat(resourceGroup().id, '/Microsoft.Network/privateEndpoints/', parameters('serverName')),'')]",
-        "privateEndpointApi": "2019-04-01",
-        "privateLinkServiceServiceId": "[concat(resourceGroup().id,'/providers/Microsoft.DocumentDB/databaseAccounts/', parameters('serverName'))]"
-    },
+    "variables": {},
     "resources": [
-        {
-            "apiVersion": "2017-05-10",
-            "type": "Microsoft.Resources/deployments",
-            "name": "[variables('cosmosDbName')]",
-            "subscriptionId": "[variables('subscriptionId')]",
-            "resourceGroup": "[variables('resourceGroupName')]",
-            "dependsOn": [],
-            "resources": [],
-            "properties": {
-                "mode": "Incremental",
-                "parameters": {},
-                "template": {
-                    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "variables": {},
-                    "resources": [
-                        {
-                            "apiVersion": "2019-04-01",
-                            "name": "[parameters('vNETName')]", //"CohoOnPrem-vnet",
-                            "type": "Microsoft.Network/virtualNetworks",
-                            "location": "[resourceGroup().location]",
-                            "properties": {
-                                "provisioningState": "Succeeded",
-                                "resourceGuid": "a59c867d-401f-4630-a4e5-452bede2871b",
-                                "addressSpace": {
-                                    "addressPrefixes": [
-                                        "10.0.0.0/16"
-                                    ]
-                                },
-                                "subnets": [
-                                    {
-                                        "name": "AzureFirewallSubnet",
-                                        "id": "/subscriptions/78eec5ba-16fb-4bb9-87ba-3f1554c310f9/resourceGroups/rg-nealOnPremEnvironment/providers/Microsoft.Network/virtualNetworks/CohoOnPrem-vnet/subnets/AzureFirewallSubnet",
-                                        "etag": "W/\"a4c1f96f-f71a-4fd2-8dc7-9ae9231fda15\"",
-                                        "properties": {
-                                            "provisioningState": "Succeeded",
-                                            "addressPrefix": "10.0.1.0/24",
-                                            "serviceEndpoints": [],
-                                            "delegations": [],
-                                            "privateEndpointNetworkPolicies": "Disabled",
-                                            "privateLinkServiceNetworkPolicies": "Enabled"
-                                        },
-                                        "type": "Microsoft.Network/virtualNetworks/subnets"
-                                    },
-                                    {
-                                        "name": "Subnet",
-                                        "id": "/subscriptions/78eec5ba-16fb-4bb9-87ba-3f1554c310f9/resourceGroups/rg-nealOnPremEnvironment/providers/Microsoft.Network/virtualNetworks/CohoOnPrem-vnet/subnets/Subnet",
-                                        "etag": "W/\"a4c1f96f-f71a-4fd2-8dc7-9ae9231fda15\"",
-                                        "properties": {
-                                            "provisioningState": "Succeeded",
-                                            "addressPrefix": "10.0.0.0/24",
-                                            "ipConfigurations": [
-                                                {
-                                                    "id": "/subscriptions/78eec5ba-16fb-4bb9-87ba-3f1554c310f9/resourceGroups/rg-nealOnPremEnvironment/providers/Microsoft.Network/networkInterfaces/sqlvm1nic/ipConfigurations/ipconfig1"
-                                                }
-                                            ],
-                                            "delegations": [],
-                                            "privateEndpointNetworkPolicies": "Disabled",
-                                            "privateLinkServiceNetworkPolicies": "Enabled"
-                                        },
-                                        "type": "Microsoft.Network/virtualNetworks/subnets"
-                                    }
-                                ],
-                                "virtualNetworkPeerings": [],
-                                "enableDdosProtection": false,
-                                "enableVmProtection": false
-                            },
-                            "tags": {
-                                "displayName": "VirtualNetwork"
-                            }
-                        }
-                    ],
-                    "outputs": {}
-                }
-            }
-        },
         {
             "apiVersion": "2019-12-12",
             "kind": "GlobalDocumentDB",
-            "type": "Microsoft.DocumentDb/databaseAccounts",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
             "name": "[parameters('name')]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "databaseAccountOfferType": "Standard",
                 "locations": [
                     {
                         "id": "[concat(parameters('name'), '-', parameters('location'))]",
                         "failoverPriority": 0,
-                        "locationName": "[parameters('locationName')]",
+                        "locationName": "[resourceGroup().location]",
                         "isZoneRedundant": "[parameters('isZoneRedundant')]"
-                    },
-                    {
-                        "id": "[concat(parameters('name'), '-', parameters('pairedLocation'))]",
-                        "failoverPriority": 1,
-                        "locationName": "[parameters('pairedLocationName')]"
                     }
                 ],
-                "enableMultipleWriteLocations": true,
-                "isVirtualNetworkFilterEnabled": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": true,
                 "virtualNetworkRules": [],
-                "ipRangeFilter": "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26",
+                "ipRangeFilter": "",
                 "dependsOn": [
-                    "Microsoft.Resources/deployments/CohoOnPrem-vnet_5b56b119-e52d-4221-a71d-0edc4b99b014"
                 ],
                 "capabilities": [],
                 "enableFreeTier": false
             },
             "tags": {
-                "defaultExperience": "[parameters('defaultExperience')]",
-                "hidden-cosmos-mmspecial": "",
-                "CosmosAccountType": "Production"
             }
-        },
-        {
-            "apiVersion": "2017-05-10",
-            "type": "Microsoft.Resources/deployments",
-            "name": "pocinsightscosmosdb_5b56b119-e52d-4221-a71d-0edc4b99b015",
-            "subscriptionId": "78eec5ba-16fb-4bb9-87ba-3f1554c310f9",
-            "resourceGroup": "inspirebrands-poc-rg",
-            "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('name'))]"
-            ],
-            "resources": [],
-            "properties": {
-                "mode": "Incremental",
-                "parameters": {
-                    "privateEndpointName": {
-                        "value": "[parameters('peName')]"
-                    },
-                    "privateEndpointConnectionId": {
-                        "value": "[parameters('peConnectionId')]"
-                    },
-                    "privateEndpointConnectionName": {
-                        "value": "[variables('privateEndpointCosmosDbName')]"
-                    },
-                    "privateEndpointId": {
-                        "value": "[variables('privateEndpointId')]"
-                    },
-                    "privateEndpointApiVersion": {
-                        "value": "[variables('privateEndpointApi')]"
-                    },
-                    "privateLinkServiceId": {
-                        "value": "[variables('privateLinkServiceServiceId')]" //"/subscriptions/78eec5ba-16fb-4bb9-87ba-3f1554c310f9/resourcegroups/inspirebrands-poc-rg/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb-inspire"
-                    },
-                    "groupId": {
-                        "value": "Sql"
-                    },
-                    "subnetId": {
-                        "value": "[parameters('peSubnetId')]"
-                    },
-                    "location": {
-                        "value": "[resourceGroup().location]"
-                    },
-                    "tags": {
-                        "value": {}
-                    }
-                },
-                "templatelink": {
-                    "contentVersion": "1.0.0.0",
-                    "uri": "[variables('privateEndpointTemplateLink')]" //"https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.15370524.0/DeploymentTemplates/PrivateEndpointForCosmosAccount.json"
-                }
-            }
-        },
-        {
-            "apiVersion": "[variables('deploymentTemplateApi')]", //"2017-05-10",
-            "name": "[concat('PrivateDns-', variables('privateEndpointNestedTemplateId'))]", //"PrivateDns-5b56b119e52d4221a71d0edc4b99b016",
-            "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[resourceGroup().name]",
-            "dependsOn": [
-                "[string('pocinsightscosmosdb_5b56b119-e52d-4221-a71d-0edc4b99b015')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "resources": [
-                        {
-                            "type": "Microsoft.Network/privateDnsZones",
-                            "apiVersion": "2018-09-01",
-                            "name": "[string('privatelink.documents.azure.com')]",
-                            "location": "global",
-                            "tags": {},
-                            "properties": {}
-                        },
-                        {
-                            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-                            "apiVersion": "2018-09-01",
-                            "name": "[concat(string('privatelink.documents.azure.com'), '/', uniqueString(string('/subscriptions/78eec5ba-16fb-4bb9-87ba-3f1554c310f9/resourceGroups/rg-nealOnPremEnvironment/providers/Microsoft.Network/virtualNetworks/CohoOnPrem-vnet')))]",
-                            "location": "global",
-                            "dependsOn": [
-                                "[string('privatelink.documents.azure.com')]"
-                            ],
-                            "properties": {
-                                "virtualNetwork": {
-                                    "id": "[string('/subscriptions/78eec5ba-16fb-4bb9-87ba-3f1554c310f9/resourceGroups/rg-nealOnPremEnvironment/providers/Microsoft.Network/virtualNetworks/CohoOnPrem-vnet')]"
-                                },
-                                "registrationEnabled": false
-                            }
-                        },
-                        {
-                            "apiVersion": "2017-05-10",
-                            "name": "EndpointDnsRecords-5b56b119e52d4221a71d0edc4b99b016",
-                            "type": "Microsoft.Resources/deployments",
-                            "dependsOn": [
-                                "[string('privatelink.documents.azure.com')]"
-                            ],
-                            "properties": {
-                                "mode": "Incremental",
-                                "templatelink": {
-                                    "contentVersion": "1.0.0.0",
-                                    "uri": "https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.15370524.0/DeploymentTemplates/PrivateDnsForPrivateEndpoint.json"
-                                },
-                                "parameters": {
-                                    "privateDnsName": {
-                                        "value": "[string('privatelink.documents.azure.com')]"
-                                    },
-                                    "privateEndpointNicResourceId": {
-                                        "value": "[reference('pocinsightscosmosdb_5b56b119-e52d-4221-a71d-0edc4b99b015').outputs.networkInterfaceId.value]"
-                                    },
-                                    "nicRecordsTemplateUri": {
-                                        "value": "https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.15370524.0/DeploymentTemplates/PrivateDnsForPrivateEndpointNic.json"
-                                    },
-                                    "ipConfigRecordsTemplateUri": {
-                                        "value": "https://cosmos.hosting.portal.azure.net/cosmos/Content/2.0.15370524.0/DeploymentTemplates/PrivateDnsForPrivateEndpointIpConfig.json"
-                                    },
-                                    "uniqueId": {
-                                        "value": "5b56b119e52d4221a71d0edc4b99b016"
-                                    },
-                                    "existingRecords": {
-                                        "value": {}
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                }
-            },
-            "subscriptionId": "[(variables('subscriptionId')]"
         }
     ],
     "outputs": {}
