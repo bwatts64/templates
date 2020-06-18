@@ -6,7 +6,7 @@
             "type": "string"
         },
         "isZoneRedundant": {
-            "type": "string"
+            "type": "bool"
         }
     },
     "variables": {},
