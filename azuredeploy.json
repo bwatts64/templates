@@ -159,6 +159,62 @@
     "cacheName": {
       "type": "string",
       "defaultValue": "wbpocinspirecache"
+    },
+    "AksresourceName": {
+      "type": "string",
+      "defaultValue": "wbaksprivate"
+    },
+    "nodeResourceGroup": {
+      "type": "string",
+      "defaultValue": "wbaksresources"
+    },
+    "dnsPrefix": {
+        "type": "string",
+        "defaultValue": "wbaksprivate-dns"
+    },
+    "kubernetesVersion": {
+        "type": "string",
+        "defaultValue": "1.15.11"
+    },
+    "networkPlugin": {
+        "type": "string",
+        "defaultValue": "kubenet"
+    },
+    "enableRBAC": {
+        "type": "bool",
+        "defaultValue": true
+    },
+    "vmssNodePool": {
+        "type": "bool",
+        "defaultValue": true
+    },
+    "windowsProfile": {
+        "type": "bool",
+        "defaultValue": false
+    },
+    "enablePrivateCluster": {
+        "type": "bool",
+        "defaultValue": true
+    },
+    "enableHttpApplicationRouting": {
+        "type": "bool",
+        "defaultValue": true
+    },
+    "networkPolicy": {
+        "type": "string",
+        "defaultValue": "calico"
+    },
+    "serviceCidr": {
+        "type": "string",
+        "defaultValue": "10.0.0.0/24"
+    },
+    "dnsServiceIP": {
+        "type": "string",
+        "defaultValue": "10.0.0.10"
+    },
+    "dockerBridgeCidr": {
+        "type": "string",
+        "defaultValue": "172.17.0.1/24"
     }
   },
   "variables": {
@@ -178,7 +234,8 @@
     "deployACRURL": "[concat(variables('gitUri'),'/ACR.json')]",
     "addVMInsightsURL": "[concat(variables('gitUri'),'/EnableVMInsights.json')]",
     "deployServiceBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]",
-    "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/AzureRedisCache.json')]"
+    "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/AzureRedisCache.json')]",
+    "deployAzureAKSTemplateURL": "[concat(variables('gitUri'),'/PrivateAKSMICluster.json')]"
   },
   "resources": [
     {
@@ -957,6 +1014,77 @@
           },
           "ipAddress": {
             "value": "192.168.1.180"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployPrivateAKSCluster",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-05-01",
+      "dependsOn": [
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployAzureAKSTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "AksresourceName": {
+            "value": "[parameters('AksresourceName')]"
+          },
+          "location": {
+              "value": "[resourceGroup().location]"
+          },
+          "nodeResourceGroup":{
+            "value": "[parameters('nodeResourceGroup')]"
+          },
+          "VNetName" : {
+            "value": "[parameters('vNETName')]"
+          },
+          "SubnetName" : {
+            "value": "appgw-sn"
+          },  
+          "dnsPrefix": {
+              "value": "[parameters('dnsPrefix')]"
+          },
+          "kubernetesVersion": {
+              "value": "[parameters('kubernetesVersion')]"
+          },
+          "networkPlugin": {
+              "value": "[parameters('networkPlugin')]"
+          },
+          "enableRBAC": {
+              "value": "[parameters('enableRBAC')]"
+          },
+          "vmssNodePool": {
+              "value": "[parameters('vmssNodePool')]"
+          },
+          "windowsProfile": {
+              "value": "[parameters('windowsProfile')]"
+          },
+          "enablePrivateCluster": {
+              "value": "[parameters('enablePrivateCluster')]"
+          },
+          "enableHttpApplicationRouting": {
+              "value": "[parameters('enableHttpApplicationRouting')]"
+          },
+          "networkPolicy": {
+              "value": "[parameters('networkPolicy')]"
+          },
+          "vnetSubnetID": {
+              "value": "[reference('deployVNET').outputs.aksSubnetID.value]"
+          },
+          "serviceCidr": {
+              "value": "[parameters('serviceCidr')]"
+          },
+          "dnsServiceIP": {
+              "value": "[parameters('dnsServiceIP')]"
+          },
+          "dockerBridgeCidr": {
+              "value": "[parameters('dockerBridgeCidr')]"
           }
         }
       }
