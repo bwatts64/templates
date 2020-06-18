@@ -235,7 +235,8 @@
     "addVMInsightsURL": "[concat(variables('gitUri'),'/EnableVMInsights.json')]",
     "deployServiceBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]",
     "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/AzureRedisCache.json')]",
-    "deployAzureAKSTemplateURL": "[concat(variables('gitUri'),'/PrivateAKSMICluster.json')]"
+    "deployAzureAKSTemplateURL": "[concat(variables('gitUri'),'/PrivateAKSMICluster.json')]",
+    "deployAzureCosmosDbURL": "[concat(variables('gitUri'),'/CosmosDb.json')]"
   },
   "resources": [
     {
