@@ -3,15 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "peName": {
-            "defaultValue": "pocinspiresape",
             "type": "String"
         },
         "resourceID": {
-            "defaultValue": "/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/POCInspire/providers/Microsoft.Storage/storageAccounts/pocinspiresa",
             "type": "String"
         },
         "vnetID": {
-            "defaultValue": "/subscriptions/5f1c1322-cebc-4ea3-8779-fac7d666e18f/resourceGroups/pocinspire/providers/Microsoft.Network/virtualNetworks/wbpocAPPVnet",
             "type": "String"
         },
         "groupID": {

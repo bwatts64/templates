@@ -168,8 +168,7 @@
                     "networkPolicy": "[parameters('networkPolicy')]",
                     "serviceCidr": "[parameters('serviceCidr')]",
                     "dnsServiceIP": "[parameters('dnsServiceIP')]",
-                    "dockerBridgeCidr": "[parameters('dockerBridgeCidr')]",
-                    "outboundType": "userDefinedRouting"
+                    "dockerBridgeCidr": "[parameters('dockerBridgeCidr')]"
                 },
                 "apiServerAccessProfile": {
                     "enablePrivateCluster": "[parameters('enablePrivateCluster')]"
