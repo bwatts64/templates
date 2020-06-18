@@ -1,0 +1,49 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "cosmosdbName": {
+            "type": "string"
+        },
+        "isZoneRedundant": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2019-12-12",
+            "kind": "GlobalDocumentDB",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "cosmosdbName": "[parameters('cosmosdbName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "databaseAccountOfferType": "Standard",
+                "locations": [
+                    {
+                        "id": "[concat(parameters('cosmosdbName'), '-', resourceGroup().location)]",
+                        "failoverPriority": 0,
+                        "locationName": "[resourceGroup().location]",
+                        "isZoneRedundant": "[parameters('isZoneRedundant')]"
+                    }
+                ],
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": true,
+                "virtualNetworkRules": [],
+                "ipRangeFilter": "",
+                "dependsOn": [
+                ],
+                "capabilities": [],
+                "enableFreeTier": false
+            },
+            "tags": {
+            }
+        }
+    ],
+    "outputs": {
+        "cosmosDbId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosdbName'))]"
+        }
+    }
+}

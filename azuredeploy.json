@@ -215,6 +215,14 @@
     "dockerBridgeCidr": {
         "type": "string",
         "defaultValue": "172.17.0.1/24"
+    },
+    "cosmosDbName": {
+      "type": "string",
+      "defaultValue": "cnpocinspirecosmosdb"
+    },
+    "isZoneRedundant": {
+        "type": "string",
+        "defaultValue": true
     }
   },
   "variables": {
@@ -295,6 +303,59 @@
         "parameters": {
           "workspaceName": {
             "value": "[parameters('workspaceName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployCosmosDb",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployLAWorkspace"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployAzureCosmosDbURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "cosmosdbName": {
+            "value": "[parameters('cosmosdbname')]"
+          },
+          "isZoneRedundant": {
+            "value": "[parameters('isZoneRedundant')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployCosmosDbPE",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployCosmosDb",
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrivateEndpointURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "peName": {
+            "value": "[concat(parameters('cosmosdbname'),'_pe')]"
+          },
+          "resourceID": {
+            "value": "[reference('deployCosmosDb').outputs.cosmosDbId.value]"
+          },
+          "vnetID": {
+            "value": "[reference('deployVNET').outputs.vnetId.value]"
+          },
+          "groupID": {
+            "value": "Sql"
           }
         }
       }
@@ -670,6 +731,55 @@
           },
           "ipaddress": {
             "value": "[reference('getNICIP').outputs.nicIP.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "getCosmosDbNICIP",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployCosmosDbPE"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('getNICIPUrL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "nicID": {
+            "value": "[reference('deployCosmosDbPE').outputs.nicID.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deployCosmosDbDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "getCosmosDbNICIP"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "privatelink.documents.azure.com"
+          },
+          "vnet_id": {
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "recordname": {
+            "value": "[parameters('cosmosDbName')]"
+          },
+          "ipaddress": {
+            "value": "[reference('getcosmosDbNICIP').outputs.nicIP.value]"
           }
         }
       }
