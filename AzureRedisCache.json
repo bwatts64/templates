@@ -22,8 +22,8 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "sku": {
-                    "name": "Premium",
-                    "family": "Premium",
+                     "name": "Premium",
+                    "family": "P",
                     "capacity": 1
                 },
                 "redisConfiguration": {
