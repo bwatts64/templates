@@ -1156,7 +1156,7 @@
             "value": "[parameters('vNETName')]"
           },
           "SubnetName" : {
-            "value": "appgw-sn"
+            "value": "AKS-SN"
           },  
           "dnsPrefix": {
               "value": "[parameters('dnsPrefix')]"

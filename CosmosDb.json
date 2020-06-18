@@ -27,6 +27,7 @@
                         "isZoneRedundant": "[parameters('isZoneRedundant')]"
                     }
                 ],
+                "publicNetworkAccess": "Enabled",
                 "enableMultipleWriteLocations": false,
                 "isVirtualNetworkFilterEnabled": true,
                 "virtualNetworkRules": [],
