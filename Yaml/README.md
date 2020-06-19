@@ -1,23 +1,22 @@
-Steps to connect to AKS cluster and deploying services
+# Steps to connect to AKS cluster and deploy Ingress controller, web, api and ingress route services
 
-Step 1: Connect to Jump box
+## Step 1: Connect to Jump box
 
 1. click on wbpocdemojump VM in privateaksdemo resource group
 2. Click on bastion option 
 3. Key in Username as adminUsername value from azuredeploy.json
 4. Key in password as adminPassword value from azuredeploy.json
 
+## Step 2: One time setup
 
-Step 2: One time setup
-
-1. Connect ot Jump box
+1. Connect to Jump box
 2. Go to https://kubernetes.io/docs/tasks/tools/install-kubectl/ and download the latest version of kubectl for windows
 3. Copy kubectl from downloads to c:\aksdeploy folder
 4. Go to https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest and download for windows and follow the installation Steps
 5. Go to https://github.com/helm/helm/releases/tag/v3.2.4 and install windows. Unzip and copy helm.exe to c:\aksdeploy folder 
 
 
-Step 3: Deploy Ingress controller to AKS cluster (https://docs.microsoft.com/en-us/azure/aks/ingress-internal-ip)
+## Step 3: Deploy Ingress controller to AKS cluster (https://docs.microsoft.com/en-us/azure/aks/ingress-internal-ip)
 
 1. az login
 2. az account set --subscription
@@ -31,23 +30,22 @@ Step 3: Deploy Ingress controller to AKS cluster (https://docs.microsoft.com/en-
    helm install nginx-ingress stable/nginx-ingress --namespace ingress-basic -f internal-ingress.yaml --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.extraArgs.enable-ssl-passthrough=""
 8. #validate that it create nginx-ingress-controller (LoadBalancer) and nginx-ingress-default-backend(ClusterIP) 
    kubectl get service -l app=nginx-ingress --namespace ingress-basic
-9. 
-    How to resolve kubectl get service nginx -w: EXTERNAL-IP stuck at <pending> (WIP)
-
-    1. Go to wbaksprivate-agentpool in wbaksresources
-    
 
 
-STEP 4: Cleanup
+## STEP 4: Cleanup
 
 1. helm list --namespace ingress-basic
 2. helm uninstall nginx-ingress --namespace ingress-basic
 
 
+## Troubleshooting steps
+ 
+ How to resolve kubectl get service nginx -w: EXTERNAL-IP stuck at <pending> (WIP)
+
+ 1. Go to wbaksprivate-agentpool in wbaksresources
 
 
-
-Sample Ingress YAML
+## Sample Ingress YAML
 
  apiVersion: extensions/v1beta1
   kind: Ingress
