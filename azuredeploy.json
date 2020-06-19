@@ -4,7 +4,7 @@
   "parameters": {
     "vNETName": {
       "type": "String",
-      "defaultValue": "wbpocAPPVnet",
+      "defaultValue": "wbwpocAPPVnet",
       "metadata": {
         "description": "Name of the virtual network to be created"
       }
@@ -41,12 +41,12 @@
       "defaultValue": "192.168.1.144/28"
     },
     "appInsightsName": {
-      "defaultValue": "wbpocapimai",
+      "defaultValue": "wbwpocapimai",
       "type": "string"
     },
     "apimname": {
       "type": "String",
-      "defaultValue": "wbpocAPPapim"
+      "defaultValue": "wbwpocAPPapim"
     },
     "apimsku": {
       "type": "string",
@@ -62,7 +62,7 @@
     },
     "applicationGatewayName": {
       "type": "string",
-      "defaultValue": "wbpocAPPappgw"
+      "defaultValue": "wbwpocAPPappgw"
     },
     "appgwtier": {
       "type": "string",
@@ -86,7 +86,7 @@
     },
     "appgwPIPName": {
         "type": "string",
-        "defaultValue": "wbpocAPPappgw-pip"
+        "defaultValue": "wbwpocAPPappgw-pip"
     },
     "appgwsku": {
         "type": "string",
@@ -106,11 +106,11 @@
     },
     "bastionHostName": {
       "type": "string",
-      "defaultValue": "wbpocdemobastion"
+      "defaultValue": "wbwpocdemobastion"
     },
     "jumpName": {
       "type": "string",
-      "defaultValue": "wbpocdemojump"
+      "defaultValue": "wbwpocdemojump"
     },
     "jumpSize": {
       "type": "string",
@@ -138,27 +138,27 @@
     },
     "workspaceName": {
       "type": "string",
-      "defaultValue": "wbpocmonitoringla"
+      "defaultValue": "wbwpocmonitoringla"
     },
     "saname": {
       "type": "string",
-      "defaultValue": "wbpocinspiresa"
+      "defaultValue": "wbwpocinspiresa"
     },
     "vaultName": {
       "type": "string",
-      "defaultValue": "wbpocinspirekv"
+      "defaultValue": "wbwpocinspirekv"
     },
     "acrName": {
       "type": "string",
-      "defaultValue": "wbpocinspireacr"
+      "defaultValue": "wbwpocinspireacr"
     },
     "sbName": {
       "type": "string",
-      "defaultValue": "wbpocinspiresb"
+      "defaultValue": "wbwpocinspiresb"
     },
     "cacheName": {
       "type": "string",
-      "defaultValue": "wbpocinspirecache"
+      "defaultValue": "wbwpocinspirecache"
     },
     "AksresourceName": {
       "type": "string",
@@ -218,7 +218,7 @@
     },
     "cosmosdbName": {
       "type": "string",
-      "defaultValue": "wbpocinspirecosmosdb"
+      "defaultValue": "wbwpocinspirecosmosdb"
     },
     "isZoneRedundant": {
         "type": "bool",
@@ -226,11 +226,11 @@
     },
     "databaseName": {
       "type": "string",
-      "defaultValue": "wbpocinspiresqldb"
+      "defaultValue": "wbwpocinspiresqldb"
     },
     "serverName":{
       "type": "string",
-      "defaultValue": "wbpocinspiresqlserver"
+      "defaultValue": "wbwpocinspiresqlserver"
     },
     "administratorLogin": {
         "type": "string",
@@ -473,7 +473,7 @@
             "value": "[reference('deployVNET').outputs.vnetId.value]"
           },
           "groupID": {
-            "value": "Sql"
+            "value": "SqlServer"
           }
         }
       }
@@ -1035,7 +1035,7 @@
         },
         "parameters": {
           "zone_name": {
-            "value": "privatelink.vaultcore.azure.net"
+            "value": "privatelink.servicebus.windows.net"
           },
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
