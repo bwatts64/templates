@@ -23,10 +23,10 @@
 3. az aks get-credentials --resource-group privateaksdemo --name wbaksprivate
 4. # Create a namespace for your ingress resources
    kubectl create namespace ingress-basic
-5. # Add the official stable repository
+5. #Add the official stable repository
    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 6. Copy ingress-internal.yaml to c:\aksdeploy folder. Note: 
-7. # Use Helm to deploy an NGINX ingress controller
+7. #Use Helm to deploy an NGINX ingress controller
    helm install nginx-ingress stable/nginx-ingress --namespace ingress-basic -f internal-ingress.yaml --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.extraArgs.enable-ssl-passthrough=""
 8. #validate that it create nginx-ingress-controller (LoadBalancer) and nginx-ingress-default-backend(ClusterIP) 
    kubectl get service -l app=nginx-ingress --namespace ingress-basic
