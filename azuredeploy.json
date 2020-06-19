@@ -231,6 +231,14 @@
     "serverName":{
       "type": "string",
       "defaultValue": "wbpocinspiresqlserver"
+    },
+    "administratorLogin": {
+        "type": "string",
+        "defaultValue": "bwatts"
+    },
+    "administratorLoginPassword": {
+        "type": "securestring",
+        "defaultValue": "ABCabc1234"
     }
   },
   "variables": {
@@ -401,9 +409,6 @@
           "sampleName": {
               "value": ""
           },
-          "serverLocation": {
-              "value": "[resourceGroup().location]"
-          },
           "serverName": {
               "value": "[parameters('serverName')]"
           },
@@ -434,8 +439,11 @@
           "useVAManagedIdentity": {
               "value": true
           },
-          "enablePrivateEndpoint": {
-              "value": false
+          "administratorLogin": {
+            "value": "[parameters('administratorLogin')]"
+          },
+          "administratorLoginPassword": {
+              "value": "[parameters('administratorLoginPassword')]"
           }
         }
       }
