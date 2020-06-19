@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  selector:
+    pod-app: web-servicepod
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: web-servicepod-deployment
+  labels:
+    app: web-servicepod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod-app: web-servicepod
+  template:
+    metadata:
+      labels:
+        pod-app: web-servicepod
+    spec:
+      containers:
+      - name: web-service-container                 #change the name of container 
+        image: acrimg.azurecr.io/api-service:latest #change to your ACR image 
