@@ -21,11 +21,9 @@
 1. az login
 2. az account set --subscription
 3. az aks get-credentials --resource-group privateaksdemo --name wbaksprivate
-4. # Create a namespace for your ingress resources
-   kubectl create namespace ingress-basic
-5. #Add the official stable repository
-   helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-6. Copy ingress-internal.yaml to c:\aksdeploy folder. Note: 
+4. kubectl create namespace ingress-basic #Create a namespace for your ingress resources
+5. helm repo add stable https://kubernetes-charts.storage.googleapis.com/ #Add the official stable repository
+6. Copy ingress-internal.yaml to c:\aksdeploy folder. 
 7. #Use Helm to deploy an NGINX ingress controller
    helm install nginx-ingress stable/nginx-ingress --namespace ingress-basic -f internal-ingress.yaml --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.extraArgs.enable-ssl-passthrough=""
 8. #validate that it create nginx-ingress-controller (LoadBalancer) and nginx-ingress-default-backend(ClusterIP) 
@@ -47,6 +45,7 @@
 
 ## Sample Ingress YAML
 
+```
  apiVersion: extensions/v1beta1
   kind: Ingress
   metadata:
@@ -63,7 +62,7 @@
                 serviceName: exampleService
                 servicePort: 80
               path: /
-    # This section is only required if TLS is to be enabled for the Ingress
+    #This section is only required if TLS is to be enabled for the Ingress
     tls:
         - hosts:
             - www.example.com
@@ -80,3 +79,4 @@ If TLS is enabled for the Ingress, a Secret containing the certificate and key m
     tls.crt: <base64 encoded cert>
     tls.key: <base64 encoded key>
   type: kubernetes.io/tls
+```
