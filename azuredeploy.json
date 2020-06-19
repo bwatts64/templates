@@ -223,6 +223,14 @@
     "isZoneRedundant": {
         "type": "bool",
         "defaultValue": true
+    },
+    "databaseName": {
+      "type": "string",
+      "defaultValue": "cnpocinspiresqldb"
+    },
+    "serverName":{
+      "type": "string",
+      "defaultValue": "cnpocinspiresqlserver"
     }
   },
   "variables": {
@@ -244,7 +252,8 @@
     "deployServiceBusURL": "[concat(variables('gitUri'),'/ServiceBus.json')]",
     "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/AzureRedisCache.json')]",
     "deployAzureAKSTemplateURL": "[concat(variables('gitUri'),'/PrivateAKSMICluster.json')]",
-    "deployAzureCosmosDbURL": "[concat(variables('gitUri'),'/CosmosDb.json')]"
+    "deployAzureCosmosDbURL": "[concat(variables('gitUri'),'/CosmosDb.json')]",
+    "deployAzureSqlDbURL": "[concat(variables('gitUri'),'/SqlDb.json')]"
   },
   "resources": [
     {
@@ -350,6 +359,107 @@
           },
           "resourceID": {
             "value": "[reference('deployCosmosDb').outputs.cosmosDbId.value]"
+          },
+          "vnetID": {
+            "value": "[reference('deployVNET').outputs.vnetId.value]"
+          },
+          "groupID": {
+            "value": "Sql"
+          }
+        }
+      }
+    },
+    {
+      "name": "deploySqlDb",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deployLAWorkspace"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployAzureSqlDbURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "collation": {
+            "value": "SQL_Latin1_General_CP1_CI_AS"
+          },
+          "databaseName": {
+              "value": "[parameters('databaseName)]]"
+          },
+          "tier": {
+              "value": "GeneralPurpose"
+          },
+          "skuName": {
+              "value": "GP_S_Gen5_24"
+          },
+          "maxSizeBytes": {
+              "value": 1099511627776
+          },
+          "sampleName": {
+              "value": ""
+          },
+          "serverLocation": {
+              "value": "[resourceGroup().location]"
+          },
+          "serverName": {
+              "value": "[parameters('serverName)]"
+          },
+          "zoneRedundant": {
+              "value": false
+          },
+          "licenseType": {
+              "value": ""
+          },
+          "readScaleOut": {
+              "value": "Disabled"
+          },
+          "numberOfReplicas": {
+              "value": 0
+          },
+          "minCapacity": {
+              "value": "3"
+          },
+          "autoPauseDelay": {
+              "value": "180"
+          },
+          "enableADS": {
+              "value": false
+          },
+          "enableVA": {
+              "value": false
+          },
+          "useVAManagedIdentity": {
+              "value": true
+          },
+          "enablePrivateEndpoint": {
+              "value": false
+          }
+        }
+      }
+    },
+    {
+      "name": "deploySqlServerPE",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deploySqlDb",
+        "deployVNET"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrivateEndpointURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "peName": {
+            "value": "[concat(parameters('sqldbName'),'_pe')]"
+          },
+          "resourceID": {
+            "value": "[reference('deploySqlDb').outputs.sqlServerId.value]"
           },
           "vnetID": {
             "value": "[reference('deployVNET').outputs.vnetId.value]"
@@ -731,6 +841,55 @@
           },
           "ipaddress": {
             "value": "[reference('getNICIP').outputs.nicIP.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "getSqlServerNICIP",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "deploySqlServerPE"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('getNICIPUrL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "nicID": {
+            "value": "[reference('deploySqlServerPE').outputs.nicID.value]"
+          }
+        }
+      }
+    },
+    {
+      "name": "deploySqlDbDNSZone",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "getSqlServerNICIP"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDNSZoneTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "zone_name": {
+            "value": "privatelink.database.windows.net"
+          },
+          "vnet_id": {
+            "value": "[reference('deployVNET').outputs.vnetID.value]"
+          },
+          "recordname": {
+            "value": "[parameters('serverName')]"
+          },
+          "ipaddress": {
+            "value": "[reference('getSqlServerNICIP').outputs.nicIP.value]"
           }
         }
       }
