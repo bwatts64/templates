@@ -216,12 +216,12 @@
         "type": "string",
         "defaultValue": "172.17.0.1/24"
     },
-    "cosmosDbName": {
+    "cosmosdbName": {
       "type": "string",
       "defaultValue": "cnpocinspirecosmosdb"
     },
     "isZoneRedundant": {
-        "type": "string",
+        "type": "bool",
         "defaultValue": true
     }
   },
@@ -322,7 +322,7 @@
         },
         "parameters": {
           "cosmosdbName": {
-            "value": "[parameters('cosmosdbname')]"
+            "value": "[parameters('cosmosdbName')]"
           },
           "isZoneRedundant": {
             "value": "[parameters('isZoneRedundant')]"
@@ -346,7 +346,7 @@
         },
         "parameters": {
           "peName": {
-            "value": "[concat(parameters('cosmosdbname'),'_pe')]"
+            "value": "[concat(parameters('cosmosdbName'),'_pe')]"
           },
           "resourceID": {
             "value": "[reference('deployCosmosDb').outputs.cosmosDbId.value]"
@@ -776,7 +776,7 @@
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('cosmosDbName')]"
+            "value": "[parameters('cosmosdbName')]"
           },
           "ipaddress": {
             "value": "[reference('getcosmosDbNICIP').outputs.nicIP.value]"
@@ -1156,7 +1156,7 @@
             "value": "[parameters('vNETName')]"
           },
           "SubnetName" : {
-            "value": "appgw-sn"
+            "value": "AKS-SN"
           },  
           "dnsPrefix": {
               "value": "[parameters('dnsPrefix')]"

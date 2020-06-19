@@ -6,7 +6,7 @@
             "type": "string"
         },
         "isZoneRedundant": {
-            "type": "string"
+            "type": "bool"
         }
     },
     "variables": {},
@@ -15,7 +15,7 @@
             "apiVersion": "2019-12-12",
             "kind": "GlobalDocumentDB",
             "type": "Microsoft.DocumentDB/databaseAccounts",
-            "cosmosdbName": "[parameters('cosmosdbName')]",
+            "name": "[parameters('cosmosdbName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "databaseAccountOfferType": "Standard",
@@ -27,6 +27,7 @@
                         "isZoneRedundant": "[parameters('isZoneRedundant')]"
                     }
                 ],
+                "publicNetworkAccess": "Enabled",
                 "enableMultipleWriteLocations": false,
                 "isVirtualNetworkFilterEnabled": true,
                 "virtualNetworkRules": [],
