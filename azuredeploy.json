@@ -218,7 +218,7 @@
     },
     "cosmosdbName": {
       "type": "string",
-      "defaultValue": "cnpocinspirecosmosdb"
+      "defaultValue": "wbpocinspirecosmosdb"
     },
     "isZoneRedundant": {
         "type": "bool",
@@ -226,11 +226,11 @@
     },
     "databaseName": {
       "type": "string",
-      "defaultValue": "cnpocinspiresqldb"
+      "defaultValue": "wbpocinspiresqldb"
     },
     "serverName":{
       "type": "string",
-      "defaultValue": "cnpocinspiresqlserver"
+      "defaultValue": "wbpocinspiresqlserver"
     }
   },
   "variables": {
@@ -253,7 +253,7 @@
     "deployAzureCacheBusURL": "[concat(variables('gitUri'),'/AzureRedisCache.json')]",
     "deployAzureAKSTemplateURL": "[concat(variables('gitUri'),'/PrivateAKSMICluster.json')]",
     "deployAzureCosmosDbURL": "[concat(variables('gitUri'),'/CosmosDb.json')]",
-    "deployAzureSqlDbURL": "[concat(variables('gitUri'),'/SqlDb.json')]"
+    "deployAzureSqlDbURL": "[concat(variables('gitUri'),'/SQLDB.json')]"
   },
   "resources": [
     {
@@ -387,7 +387,7 @@
             "value": "SQL_Latin1_General_CP1_CI_AS"
           },
           "databaseName": {
-              "value": "[parameters('databaseName)]]"
+              "value": "[parameters('databaseName')]"
           },
           "tier": {
               "value": "GeneralPurpose"
@@ -405,7 +405,7 @@
               "value": "[resourceGroup().location]"
           },
           "serverName": {
-              "value": "[parameters('serverName)]"
+              "value": "[parameters('serverName')]"
           },
           "zoneRedundant": {
               "value": false
@@ -456,7 +456,7 @@
         },
         "parameters": {
           "peName": {
-            "value": "[concat(parameters('sqldbName'),'_pe')]"
+            "value": "[concat(parameters('serverName'),'_pe')]"
           },
           "resourceID": {
             "value": "[reference('deploySqlDb').outputs.sqlServerId.value]"

@@ -75,17 +75,6 @@
         }
     },
     "variables": {
-        "subscriptionId": "[subscription().subscriptionId]",
-        "resourceGroupName": "[resourceGroup().name]",
-        "uniqueStorage": "[uniqueString(variables('subscriptionId'), variables('resourceGroupName'), resourceGroup().location)]",
-        "storageName": "[tolower(concat('sqlva', variables('uniqueStorage')))]",
-        "uniqueRoleGuid": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), variables('storageBlobContributor'), resourceId('Microsoft.Sql/servers', parameters('serverName')))]",
-        "StorageBlobContributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-        "uniqueStorageDb": "[uniqueString(variables('subscriptionId'), variables('resourceGroupName'), resourceGroup().location)]",
-        "storageNameDb": "[tolower(concat('sqlva', variables('uniqueStorageDb')))]",
-        "deploymentTemplateApi": "2018-05-01",
-        "uniqueRoleGuidDb": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('storageNameDb')), variables('StorageBlobContributorDb'), resourceId('Microsoft.Sql/servers', parameters('serverName')))]",
-        "StorageBlobContributorDb": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]"
     },
     "resources": [
         {
@@ -135,13 +124,13 @@
                         "tier": "[parameters('tier')]"
                     }
                 }
-            ],
-            "outputs": {
-                "sqlServerId": {
-                    "type": "string",
-                    "value": "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
-                }
-            }
+            ]
         }
-    ]
+    ],
+    "outputs": {
+        "sqlServerId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
+        }
+    }
 }
