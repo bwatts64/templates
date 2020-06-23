@@ -198,7 +198,7 @@
             "name": "deny-all-inbound",
             "properties": {
               "priority": 500,
-              "access": "Allow",
+              "access": "Deny",
               "direction": "Inbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
@@ -211,7 +211,7 @@
             "name": "deny-all-outbound",
             "properties": {
               "priority": 500,
-              "access": "Allow",
+              "access": "Deny",
               "direction": "Outbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
@@ -243,7 +243,7 @@
             "name": "deny-all",
             "properties": {
               "priority": 500,
-              "access": "Allow",
+              "access": "Deny",
               "direction": "Inbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
@@ -279,7 +279,7 @@
             "name": "deny-all",
             "properties": {
               "priority": 500,
-              "access": "Allow",
+              "access": "Deny",
               "direction": "Inbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
@@ -341,7 +341,7 @@
             "name": "deny-all",
             "properties": {
               "priority": 500,
-              "access": "Allow",
+              "access": "Deny",
               "direction": "Inbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
