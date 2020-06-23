@@ -131,7 +131,7 @@
               "priority": 170,
               "access": "Allow",
               "direction": "Outbound",
-              "destinationPortRange": "1886",
+              "destinationPortRange": "443",
               "protocol": "Tcp",
               "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
@@ -178,7 +178,7 @@
               "protocol": "Tcp",
               "sourceAddressPrefix": "VirtualNetwork",
               "sourcePortRange": "*",
-              "destinationAddressPrefix": "INTERNET"
+              "destinationAddressPrefix": "VirtualNetwork"
             }
           },
           {
@@ -205,6 +205,19 @@
               "sourceAddressPrefix": "AzureLoadBalancer",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "VirtualNetwork"
+            }
+          },
+          {
+            "name": "allow-sql-endpoint",
+            "properties": {
+              "priority": 230,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRange": "1433",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "SQL"
             }
           },
           {
