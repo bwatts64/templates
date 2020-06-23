@@ -251,7 +251,6 @@
     "deployWindowsServerTemplateURL": "[concat(variables('gitUri'),'/WindowsVirtualMachine.json')]",
     "deployDNSZoneTemplateURL": "[concat(variables('gitUri'),'/PrivateDNSZone.json')]",
     "deployLogAnalyticsURL": "[concat(variables('gitUri'),'/Log_Analytics_Workspace.json')]",
-    "deployPrivateStorageURL": "[concat(variables('gitUri'),'/PrivateStorageAccount.json')]",
     "deployPrivateEndpointURL": "[concat(variables('gitUri'),'/PrivateEndpoint.json')]",
     "getNICIPURL": "[concat(variables('gitUri'),'/GetNicIP.json')]",
     "deployKeyVaultURL": "[concat(variables('gitUri'),'/KeyVault.json')]",
@@ -636,55 +635,6 @@
       }
     },
     {
-      "name": "deployPrivateStorage",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-05-10",
-      "dependsOn": [
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('deployPrivateStorageURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "saName": {
-            "value": "[parameters('saName')]"
-          }
-        }
-      }
-    },
-    {
-      "name": "deployStoragePE",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-05-10",
-      "dependsOn": [
-        "deployPrivateStorage",
-        "deployVNET"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('deployPrivateEndpointURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "peName": {
-            "value": "[concat(parameters('saName'),'_pe')]"
-          },
-          "resourceID": {
-            "value": "[reference('deployPrivateStorage').outputs.saId.value]"
-          },
-          "vnetID": {
-            "value": "[reference('deployVNET').outputs.vnetId.value]"
-          },
-          "groupID": {
-            "value": "blob"
-          }
-        }
-      }
-    },
-    {
       "name": "deployAppInsights",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
@@ -800,55 +750,6 @@
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
-          }
-        }
-      }
-    },
-    {
-      "name": "getNICIP",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-05-10",
-      "dependsOn": [
-        "deployStoragePE"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('getNICIPUrL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "nicID": {
-            "value": "[reference('deployStoragePE').outputs.nicID.value]"
-          }
-        }
-      }
-    },
-    {
-      "name": "deployblobDNSZone",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-05-10",
-      "dependsOn": [
-        "getNICIP"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('deployDNSZoneTemplateURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "zone_name": {
-            "value": "privatelink.blob.core.windows.net"
-          },
-          "vnet_id": {
-            "value": "[reference('deployVNET').outputs.vnetID.value]"
-          },
-          "recordname": {
-            "value": "[parameters('saname')]"
-          },
-          "ipaddress": {
-            "value": "[reference('getNICIP').outputs.nicIP.value]"
           }
         }
       }
@@ -1286,9 +1187,6 @@
           },
           "subnetId": {
             "value": "[reference('deployVNET').outputs.epSubnetID.value]"
-          },
-          "saConnectionString": {
-            "value": "[reference('deployPrivateStorage').outputs.saConnectionString.value]"
           },
           "ipAddress": {
             "value": "192.168.1.180"

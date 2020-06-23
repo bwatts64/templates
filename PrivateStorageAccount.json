@@ -13,21 +13,13 @@
             "apiVersion": "2019-06-01",
             "name": "[parameters('saName')]",
             "location": "[resourceGroup().location]",
-            "tags": {
-                
-            },
+            "tags": {},
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"
             },
             "kind": "StorageV2",
             "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Deny"
-                },
                 "supportsHttpsTrafficOnly": true,
                 "encryption": {
                     "services": {
@@ -50,10 +42,6 @@
         "saId": {
             "type": "string",
             "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('saName'))]"
-        },
-        "saConnectionString": {
-            "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('saName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('saName')), '2019-06-01').keys[0].value)]"
         }
     }
 }

@@ -27,8 +27,7 @@
                     "capacity": 1
                 },
                 "redisConfiguration": {
-                    "rdb-storage-connection-string": "[parameters('saConnectionString')]",
-                    "rdb-backup-enabled": "true",
+                    "rdb-backup-enabled": "false",
                     "rdb-backup-frequency": "60",
                     "rdb-backup-max-snapshot-count": "1"
                 },
