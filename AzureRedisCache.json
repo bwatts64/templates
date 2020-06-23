@@ -9,9 +9,6 @@
         "subnetId": {
             "type": "string"
         },
-        "saConnectionString": {
-            "type": "string"
-        },
         "ipAddress": {
             "type": "string"
         }
