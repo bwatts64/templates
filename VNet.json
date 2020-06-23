@@ -202,7 +202,7 @@
               "direction": "Inbound",
               "destinationPortRange": "*",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "AZURE_LOAD_BALANCER",
+              "sourceAddressPrefix": "AzureLoadBalancer",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "VirtualNetwork"
             }
