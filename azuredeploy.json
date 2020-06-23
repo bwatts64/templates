@@ -2,12 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vNETName": {
-      "type": "String",
-      "defaultValue": "wbwpocAPPVnet",
-      "metadata": {
-        "description": "Name of the virtual network to be created"
-      }
+    "namePostfix": {
+      "type":"string",
+      "maxLength":5,
+      "defaultValue":""
     },
     "appInsightsName": {
       "defaultValue": "wbwpocapimai",
@@ -102,22 +100,6 @@
       "type": "string",
       "defaultValue": "developer.azure-api.net"
     },
-    "vaultName": {
-      "type": "string",
-      "defaultValue": "wbwpocinspirekv"
-    },
-    "acrName": {
-      "type": "string",
-      "defaultValue": "wbwpocinspireacr"
-    },
-    "sbName": {
-      "type": "string",
-      "defaultValue": "wbwpocinspiresb"
-    },
-    "cacheName": {
-      "type": "string",
-      "defaultValue": "wbwpocinspirecache"
-    },
     "AksresourceName": {
       "type": "string",
       "defaultValue": "wbaksprivate"
@@ -162,17 +144,9 @@
         "type": "string",
         "defaultValue": "calico"
     },
-    "cosmosdbName": {
-      "type": "string",
-      "defaultValue": "wbwpocinspirecosmosdb"
-    },
     "isZoneRedundant": {
         "type": "bool",
         "defaultValue": true
-    },
-    "databaseName": {
-      "type": "string",
-      "defaultValue": "wbwpocinspiresqldb"
     },
     "serverName":{
       "type": "string",
@@ -218,7 +192,14 @@
     "appgwprivateIpAddress":"192.168.1.150",
     "serviceCidr":"10.0.0.0/24",
     "dnsServiceIP":"10.0.0.10",
-    "dockerBridgeCidr":"172.17.0.1/24"
+    "dockerBridgeCidr":"172.17.0.1/24",
+    "vNETName":"[concat('vnet',parameters('namePostfix'))]",
+    "vaultName":"[concat('vault',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "acrName":"[concat('acr',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "sbName":"[concat('sb',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "cacheName":"[concat('cache',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "cosmosdbName":"[concat('cosmos',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "databaseName":"[concat('sql',parameters('namePostfix'),uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
@@ -236,7 +217,7 @@
         },
         "parameters": {
           "vNETName": {
-            "value": "[parameters('vNETName')]"
+            "value": "[variables('vNETName')]"
           },
           "addressRange": {
             "value": "[variables('addressRange')]"
@@ -296,7 +277,7 @@
         },
         "parameters": {
           "cosmosdbName": {
-            "value": "[parameters('cosmosdbName')]"
+            "value": "[variables('cosmosdbName')]"
           },
           "isZoneRedundant": {
             "value": "[parameters('isZoneRedundant')]"
@@ -320,7 +301,7 @@
         },
         "parameters": {
           "peName": {
-            "value": "[concat(parameters('cosmosdbName'),'_pe')]"
+            "value": "[concat(variables('cosmosdbName'),'_pe')]"
           },
           "resourceID": {
             "value": "[reference('deployCosmosDb').outputs.cosmosDbId.value]"
@@ -352,7 +333,7 @@
             "value": "SQL_Latin1_General_CP1_CI_AS"
           },
           "databaseName": {
-              "value": "[parameters('databaseName')]"
+              "value": "[variables('databaseName')]"
           },
           "tier": {
               "value": "GeneralPurpose"
@@ -450,7 +431,7 @@
         },
         "parameters": {
           "vaultName": {
-            "value": "[parameters('vaultName')]"
+            "value": "[variables('vaultName')]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
@@ -502,7 +483,7 @@
         },
         "parameters": {
           "sbName": {
-            "value": "[parameters('sbName')]"
+            "value": "[variables('sbName')]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
@@ -526,7 +507,7 @@
         },
         "parameters": {
           "peName": {
-            "value": "[concat(parameters('sbName'),'_pe')]"
+            "value": "[concat(variables('sbName'),'_pe')]"
           },
           "resourceID": {
             "value": "[reference('deployServiceBus').outputs.sbId.value]"
@@ -554,7 +535,7 @@
         },
         "parameters": {
           "acrName": {
-            "value": "[parameters('acrName')]"
+            "value": "[variables('acrName')]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
@@ -578,7 +559,7 @@
         },
         "parameters": {
           "peName": {
-            "value": "[concat(parameters('acrName'),'_pe')]"
+            "value": "[concat(variables('acrName'),'_pe')]"
           },
           "resourceID": {
             "value": "[reference('deployACR').outputs.acrId.value]"
@@ -802,7 +783,7 @@
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('cosmosdbName')]"
+            "value": "[variables('cosmosdbName')]"
           },
           "ipaddress": {
             "value": "[reference('getcosmosDbNICIP').outputs.nicIP.value]"
@@ -851,7 +832,7 @@
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('vaultName')]"
+            "value": "[variables('vaultName')]"
           },
           "ipaddress": {
             "value": "[reference('getVaultNICIP').outputs.nicIP.value]"
@@ -900,7 +881,7 @@
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('sbName')]"
+            "value": "[variables('sbName')]"
           },
           "ipaddress": {
             "value": "[reference('getServiceBusNICIP').outputs.nicIP.value]"
@@ -949,7 +930,7 @@
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('acrName')]"
+            "value": "[variables('acrName')]"
           },
           "ipaddress": {
             "value": "[reference('getACRNICIP').outputs.nicIP.value]"
@@ -1138,7 +1119,7 @@
         },
         "parameters": {
           "cacheName": {
-            "value": "[parameters('cacheName')]"
+            "value": "[variables('cacheName')]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
@@ -1176,7 +1157,7 @@
             "value": "[parameters('nodeResourceGroup')]"
           },
           "VNetName" : {
-            "value": "[parameters('vNETName')]"
+            "value": "[variables('vNETName')]"
           },
           "SubnetName" : {
             "value": "AKS-SN"

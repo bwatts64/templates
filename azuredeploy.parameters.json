@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vNETName": {
-            "value": "wbpocAPPVnet"
+        "namePostfix": {
+            "value": ""
         },
         "appInsightsName": {
             "value": "wbpocapimai"
@@ -75,18 +75,6 @@
         "dev_zone_name": {
             "value": "developer.azure-api.net"
         },
-        "vaultName": {
-            "value": "wbwpocinspirekv"
-        },
-        "acrName": {
-            "value": "wbwpocinspireacr"
-        },
-        "sbName": {
-            "value": "wbwpocinspiresb"
-        },
-        "cacheName": {
-            "value": "wbwpocinspirecache"
-        },
         "AksresourceName": {
             "value": "wbaksprivate"
         },
@@ -120,14 +108,8 @@
         "networkPolicy": {
             "value": "calico"
         },
-        "cosmosdbName": {
-            "value": "wbwpocinspirecosmosdb"
-        },
         "isZoneRedundant": {
             "value": true
-        },
-        "databaseName": {
-            "value": "wbwpocinspiresqldb"
         },
         "serverName": {
             "value": "wbwpocinspiresqlserver"
