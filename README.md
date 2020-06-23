@@ -15,4 +15,11 @@ You can start your deployment by clicking the button below.  You will be redirec
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-When you are done playing with the environmnet, you can simply delete the resource group to clean up all the resources created.
+
+You can also clone the repository locally and deploy the environment using the azure command line via;
+
+    az deployment group create --resource-group <yourgroup> --template-file azuredeploy.json --paramters @azuredeploy.parameters.json
+
+
+When you are done playing with the environmnet, you can simply delete the resource group to clean up.
+
