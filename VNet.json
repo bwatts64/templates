@@ -406,7 +406,7 @@
             }
           },
           {
-            "name": "Azure-DNS-TCP",
+            "name": "Azure-DNS-TCP-1",
             "properties": {
               "priority": 130,
               "access": "Allow",
@@ -417,7 +417,22 @@
               "protocol": "Tcp",
               "sourceAddressPrefix": "*",
               "sourcePortRange": "*",
-              "destinationAddressPrefix": "168.63.129.16/32,169.254.169.254/32"
+              "destinationAddressPrefix": "169.254.169.254/32"
+            }
+          },
+          {
+            "name": "Azure-DNS-TCP-2",
+            "properties": {
+              "priority": 130,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRanges": [
+                "53"
+              ],
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "168.63.129.16/32"
             }
           },
           {
