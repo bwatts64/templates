@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "namePostfix": {
-            "value": ""
+            "value": "kr"
         },
         "appInsightsName": {
             "value": "wbpocapimai"
@@ -110,9 +110,6 @@
         },
         "isZoneRedundant": {
             "value": true
-        },
-        "serverName": {
-            "value": "wbwpocinspiresqlserver"
         },
         "administratorLogin": {
             "value": "sysadmin"

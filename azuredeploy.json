@@ -148,10 +148,6 @@
         "type": "bool",
         "defaultValue": true
     },
-    "serverName":{
-      "type": "string",
-      "defaultValue": "wbwpocinspiresqlserver"
-    },
     "administratorLogin": {
         "type": "string",
         "defaultValue": "bwatts"
@@ -199,7 +195,8 @@
     "sbName":"[concat('sb',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
     "cacheName":"[concat('cache',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
     "cosmosdbName":"[concat('cosmos',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "databaseName":"[concat('sql',parameters('namePostfix'),uniqueString(resourceGroup().id))]"
+    "databaseName":"[concat('DB',parameters('namePostfix'))]",
+    "serverName":"[concat('sql',parameters('namePostfix'),uniqueString(resourcegroup().id))]"
   },
   "resources": [
     {
@@ -348,7 +345,7 @@
               "value": ""
           },
           "serverName": {
-              "value": "[parameters('serverName')]"
+              "value": "[variables('serverName')]"
           },
           "zoneRedundant": {
               "value": false
@@ -402,7 +399,7 @@
         },
         "parameters": {
           "peName": {
-            "value": "[concat(parameters('serverName'),'_pe')]"
+            "value": "[concat(variables('serverName'),'_pe')]"
           },
           "resourceID": {
             "value": "[reference('deploySqlDb').outputs.sqlServerId.value]"
@@ -734,7 +731,7 @@
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('serverName')]"
+            "value": "[variables('serverName')]"
           },
           "ipaddress": {
             "value": "[reference('getSqlServerNICIP').outputs.nicIP.value]"
