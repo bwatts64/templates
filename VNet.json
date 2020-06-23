@@ -423,7 +423,7 @@
           {
             "name": "Azure-DNS-TCP-2",
             "properties": {
-              "priority": 130,
+              "priority": 135,
               "access": "Allow",
               "direction": "Outbound",
               "destinationPortRanges": [
@@ -453,7 +453,7 @@
           {
             "name": "Azure-DNS-UDP-2",
             "properties": {
-              "priority": 140,
+              "priority": 145,
               "access": "Allow",
               "direction": "Outbound",
               "destinationPortRanges": [
