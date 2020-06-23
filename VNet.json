@@ -322,7 +322,7 @@
               "direction": "Inbound",
               "destinationPortRange": "65200-65535",
               "protocol": "Tcp",
-              "sourceAddressPrefix": "GatewayManager",
+              "sourceAddressPrefix": "INTERNET",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "*"
             }

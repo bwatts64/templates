@@ -23,11 +23,6 @@
                     "family": "P",
                     "capacity": 1
                 },
-                "redisConfiguration": {
-                    "rdb-backup-enabled": "false",
-                    "rdb-backup-frequency": "60",
-                    "rdb-backup-max-snapshot-count": "1"
-                },
                 "enableNonSslPort": false,
                 "shardCount": 1,
                 "subnetId": "[parameters('subnetId')]",
