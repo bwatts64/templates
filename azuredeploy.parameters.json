@@ -110,12 +110,6 @@
         },
         "isZoneRedundant": {
             "value": true
-        },
-        "administratorLogin": {
-            "value": "sysadmin"
-        },
-        "administratorLoginPassword": {
-            "value": "Password$123"
         }
     }
 }

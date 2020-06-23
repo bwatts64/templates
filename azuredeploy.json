@@ -147,14 +147,6 @@
     "isZoneRedundant": {
         "type": "bool",
         "defaultValue": true
-    },
-    "administratorLogin": {
-        "type": "string",
-        "defaultValue": "bwatts"
-    },
-    "administratorLoginPassword": {
-        "type": "securestring",
-        "defaultValue": "ABCabc1234"
     }
   },
   "variables": {
@@ -375,10 +367,10 @@
               "value": true
           },
           "administratorLogin": {
-            "value": "[parameters('administratorLogin')]"
+            "value": "[parameters('adminUsername')]"
           },
           "administratorLoginPassword": {
-              "value": "[parameters('administratorLoginPassword')]"
+              "value": "[parameters('adminPassword')]"
           }
         }
       }
