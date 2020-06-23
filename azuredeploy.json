@@ -444,7 +444,7 @@
         },
         "parameters": {
           "peName": {
-            "value": "[concat(parameters('vaultName'),'_pe')]"
+            "value": "[concat(variables('vaultName'),'_pe')]"
           },
           "resourceID": {
             "value": "[reference('deployKeyVault').outputs.vaultId.value]"
