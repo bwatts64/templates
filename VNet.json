@@ -320,10 +320,10 @@
               "priority": 120,
               "access": "Allow",
               "direction": "Inbound",
-              "destinationPortRange": "8080",
+              "destinationPortRange": "65200-65535",
               "protocol": "Tcp",
               "sourceAddressPrefix": "GatewayManager",
-              "sourcePortRange": "65200-65535",
+              "sourcePortRange": "*",
               "destinationAddressPrefix": "*"
             }
           }
