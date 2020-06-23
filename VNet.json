@@ -436,7 +436,7 @@
             }
           },
           {
-            "name": "Azure-DNS-UDP",
+            "name": "Azure-DNS-UDP-1",
             "properties": {
               "priority": 140,
               "access": "Allow",
@@ -447,7 +447,22 @@
               "protocol": "Udp",
               "sourceAddressPrefix": "*",
               "sourcePortRange": "*",
-              "destinationAddressPrefix": "168.63.129.16/32,169.254.169.254/32"
+              "destinationAddressPrefix": "168.63.129.16/32"
+            }
+          },
+          {
+            "name": "Azure-DNS-UDP-2",
+            "properties": {
+              "priority": 140,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRanges": [
+                "53"
+              ],
+              "protocol": "Udp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "169.254.169.254/32"
             }
           },
           {
