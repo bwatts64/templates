@@ -195,6 +195,19 @@
             }
           },
           {
+            "name": "allow-load-balancer",
+            "properties": {
+              "priority": 220,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "*",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "AZURE_LOAD_BALANCER",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "VirtualNetwork"
+            }
+          },
+          {
             "name": "deny-all-inbound",
             "properties": {
               "priority": 500,
@@ -372,6 +385,123 @@
               "destinationPortRange": "*",
               "protocol": "Tcp",
               "sourceAddressPrefix": "[parameters('sharedRange')]",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "Azure-Storage",
+            "properties": {
+              "priority": 120,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRanges": [
+                "80",
+                "443"
+              ],
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "Azure-DNS-TCP",
+            "properties": {
+              "priority": 130,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRanges": [
+                "53"
+              ],
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "168.63.129.16/32,169.254.169.254/32"
+            }
+          },
+          {
+            "name": "Azure-DNS-UDP",
+            "properties": {
+              "priority": 140,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRanges": [
+                "53"
+              ],
+              "protocol": "Udp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "168.63.129.16/32,169.254.169.254/32"
+            }
+          },
+          {
+            "name": "Internal-Communication",
+            "properties": {
+              "priority": 150,
+              "access": "Allow",
+              "direction": "Outbound",
+              "destinationPortRanges": [
+                "8443",
+                "10221-10231",
+                "20226",
+                "13000-13999",
+                "15000-15999",
+                "6379-6380"
+              ],
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "Client-Communication",
+            "properties": {
+              "priority": 160,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRanges": [
+                "6379",
+                "6380",
+                "13000-13999",
+                "15000-15999"
+              ],
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "Internal-Communication",
+            "properties": {
+              "priority": 170,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRanges": [
+                "8443",
+                "10221-10231",
+                "20226"
+              ],
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "Azure-Load-Balancer",
+            "properties": {
+              "priority": 180,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRanges": [
+                "8500",
+                "16001"
+              ],
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "AzureLoadBalancer",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "*"
             }
