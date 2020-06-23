@@ -1189,7 +1189,7 @@
             "value": "[reference('deployVNET').outputs.epSubnetID.value]"
           },
           "ipAddress": {
-            "value": "192.168.1.180"
+            "value": "192.168.1.190"
           }
         }
       }
