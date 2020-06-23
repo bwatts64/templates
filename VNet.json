@@ -436,7 +436,7 @@
             }
           },
           {
-            "name": "Internal-Communication",
+            "name": "Internal-Communication-OB",
             "properties": {
               "priority": 150,
               "access": "Allow",
@@ -474,7 +474,7 @@
             }
           },
           {
-            "name": "Internal-Communication",
+            "name": "Internal-Communication-IB",
             "properties": {
               "priority": 170,
               "access": "Allow",
