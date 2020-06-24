@@ -110,6 +110,7 @@
                     "apiVersion": "2017-10-01-preview",
                     "location": "[resourceGroup().location]",
                     "name": "[concat(parameters('serverName'), '/', parameters('databaseName'))]",
+                    "tags":{"Quality":"[parameters('resourceTag')]"},
                     "dependsOn": [
                         "[parameters('serverName')]"
                     ],
