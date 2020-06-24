@@ -149,7 +149,7 @@
     "databaseName":"[concat('DB-',parameters('namePostfix'))]",
     "serverName":"[concat('sql-',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
     "appInsightsName":"[concat('appIns-',parameters('namePostfix'))]",
-    "apimname":"[concat('apim-',parameters('namePostfix'))]",
+    "apimname":"[concat('apim-',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
     "applicationGatewayName":"[concat('appgw-',parameters('namePostfix'))]",
     "appgwPIPName":"[concat('appgwPIP-',parameters('namePostfix'))]",
     "bastionHostName":"[concat('bastion-',parameters('namePostfix'))]",
