@@ -42,7 +42,7 @@
       "apiVersion": "2019-08-01",
       "name": "APIM-NSG",
       "location": "[resourceGroup().location]",
-      "tags":"[parameters('resourceTag')]",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "properties": {
         "securityRules": [
           {

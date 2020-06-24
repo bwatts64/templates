@@ -82,7 +82,7 @@
             "type": "Microsoft.Sql/servers",
             "apiVersion": "2015-05-01-preview",
             "name": "[parameters('serverName')]",
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "location": "[resourceGroup().location]",
             "properties": {
                 "administratorLogin": "[parameters('administratorLogin')]",

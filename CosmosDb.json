@@ -39,7 +39,7 @@
                 "capabilities": [],
                 "enableFreeTier": false
             },
-            "tags":"[parameters('resourceTag')]"
+            "tags":{"Quality":"[parameters('resourceTag')]"}
         }
     ],
     "outputs": {

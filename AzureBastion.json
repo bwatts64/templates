@@ -35,7 +35,7 @@
             "properties": {
                 "publicIPAllocationMethod": "Static"
             },
-            "tags":"[parameters('resourceTag')]"
+            "tags":{"Quality":"[parameters('resourceTag')]"}
         },
         {
             "apiVersion": "2019-04-01",

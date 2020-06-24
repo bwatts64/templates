@@ -36,7 +36,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2018-10-01",
             "name": "[variables('VmName')]",
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "location": "[resourceGroup().location]",
             "resources": [
                 {

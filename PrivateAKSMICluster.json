@@ -181,7 +181,7 @@
                     }
                 }
             },
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "identity": {
                 "type": "SystemAssigned"
             }

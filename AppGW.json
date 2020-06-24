@@ -71,7 +71,7 @@
             "dependsOn": [
                 "[parameters('publicIpAddressName')]"
             ],
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "properties": {
                 "sku": {
                     "name": "[parameters('skuSize')]",

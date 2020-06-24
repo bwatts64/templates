@@ -17,7 +17,7 @@
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
             "apiVersion": "2018-11-30",
             "name": "[parameters('identityName')]",
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "location": "[resourceGroup().location]"
         }
     ],

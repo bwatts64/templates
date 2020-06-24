@@ -14,7 +14,7 @@
             "apiVersion": "2019-06-01",
             "name": "[parameters('saName')]",
             "location": "[resourceGroup().location]",
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"

@@ -16,7 +16,7 @@
       "name": "[parameters('workspaceName')]",
       "apiVersion": "2015-11-01-preview",
       "location": "[resourceGroup().location]",
-      "tags":"[parameters('resourceTag')]",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "properties": {
         "sku": {
           "Name": "PerGB2018"

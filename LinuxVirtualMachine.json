@@ -45,7 +45,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2019-07-01",
       "location": "[resourceGroup().location]",
-      "tags":"[parameters('resourceTag')]",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "dependsOn": [],
       "properties": {
         "ipConfigurations": [

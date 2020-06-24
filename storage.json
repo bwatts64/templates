@@ -30,7 +30,7 @@
             "name": "[parameters('storageAccountName')]",
             "location": "[parameters('location')]",
             "dependsOn": [],
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "sku": {
                 "name": "[parameters('accountType')]"
             },

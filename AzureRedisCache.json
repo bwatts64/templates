@@ -18,7 +18,7 @@
         {
             "name": "[parameters('cacheName')]",
             "location": "[resourceGroup().location]",
-            "tags":"[parameters('resourceTag')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "properties": {
                 "sku": {
                      "name": "Premium",
