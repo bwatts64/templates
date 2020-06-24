@@ -14,9 +14,6 @@
         "apimEmail": {
             "value": "someemail@someemail.com"
         },
-        "applicationGatewayName": {
-            "value": "wbpocAPPappgw"
-        },
         "appgwtier": {
             "value": "WAF_v2"
         },
