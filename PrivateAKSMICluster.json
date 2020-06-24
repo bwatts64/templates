@@ -135,7 +135,8 @@
             "metadata": {
                 "description": "A CIDR notation IP for Docker bridge."
             }
-        }
+        },
+        "resourceTag":{"type": "string"}
     },
     "resources": [
         {
@@ -144,6 +145,7 @@
             "type": "Microsoft.ContainerService/managedClusters",
             "location": "[parameters('location')]",
             "name": "[parameters('AKSresourceName')]",
+            
             "properties": {
                 "kubernetesVersion": "[parameters('kubernetesVersion')]",
                 "nodeResourceGroup": "[parameters('nodeResourceGroup')]",
@@ -179,7 +181,7 @@
                     }
                 }
             },
-            "tags": {},
+            "tags":"[parameters('resourceTag')]",
             "identity": {
                 "type": "SystemAssigned"
             }

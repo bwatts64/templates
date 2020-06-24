@@ -7,13 +7,15 @@
         },
         "workspaceId": {
             "type": "string"
-        }
+        },
+        "resourceTag":{"type":"string"}
     },
     "resources": [
         {
             "type": "Microsoft.ServiceBus/namespaces",
             "apiVersion": "2018-01-01-preview",
             "name": "[parameters('sbName')]",
+            "tags":"[parameters('resourceTag')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Premium",

@@ -25,6 +25,9 @@
         },
         "workspaceId": {
             "type": "string"
+        },
+        "resourceTag": {
+            "type": "string"
         }
     },
     "variables": {},
@@ -34,6 +37,7 @@
             "name": "[parameters('apimname')]",
             "location": "[resourceGroup().location]",
             "type": "Microsoft.ApiManagement/service",
+            "tags":"[parameters('resourceTag')]",
             "sku": {
                 "name": "[parameters('sku')]",
                 "capacity": "[parameters('capacity')]"

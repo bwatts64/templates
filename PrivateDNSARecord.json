@@ -7,7 +7,8 @@
         },
         "apimname": {
             "type": "String"
-        }
+        },
+        "resourceTag":{"type": "string"}
     },
     "variables": {},
     "resources": [
@@ -15,6 +16,7 @@
             "type": "Microsoft.Network/privateDnsZones/A",
             "apiVersion": "2018-09-01",
             "name": "[concat(parameters('zone_name'), '/', parameters('apimname'))]",
+            "tags":"[parameters('resourceTag')]",
             "dependsOn": [
             ],
             "properties": {

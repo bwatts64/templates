@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
@@ -72,7 +72,8 @@
         "autoPauseDelay": {
             "type": "string",
             "defaultValue": ""
-        }
+        },
+        "resourceTag":{"type": "string"}
     },
     "variables": {
     },
@@ -81,6 +82,7 @@
             "type": "Microsoft.Sql/servers",
             "apiVersion": "2015-05-01-preview",
             "name": "[parameters('serverName')]",
+            "tags":"[parameters('resourceTag')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "administratorLogin": "[parameters('administratorLogin')]",

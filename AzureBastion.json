@@ -19,7 +19,8 @@
         },
         "workspaceId": {
             "type": "string"
-        }
+        },
+        "resourceTag": {"type": "string"}
     },
     "resources": [
         {
@@ -27,13 +28,14 @@
             "type": "Microsoft.Network/publicIpAddresses",
             "name": "[parameters('publicIpAddressName')]",
             "location": "[parameters('location')]",
+            
             "sku": {
                 "name": "Standard"
             },
             "properties": {
                 "publicIPAllocationMethod": "Static"
             },
-            "tags": {}
+            "tags":"[parameters('resourceTag')]"
         },
         {
             "apiVersion": "2019-04-01",

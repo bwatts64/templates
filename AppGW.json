@@ -53,6 +53,9 @@
         },
         "workspaceId": {
             "type": "string"
+        },
+        "resourceTag": {
+            "type": "string"
         }
     },
     "variables": {
@@ -68,7 +71,7 @@
             "dependsOn": [
                 "[parameters('publicIpAddressName')]"
             ],
-            "tags": {},
+            "tags":"[parameters('resourceTag')]",
             "properties": {
                 "sku": {
                     "name": "[parameters('skuSize')]",

@@ -23,7 +23,8 @@
         "2016-Datacenter",
         "2019-Datacenter"
       ]
-    }
+    },
+    "resourceTag": {"type": "string"}
   },
   "variables": {
     "publisher": "Windows",
@@ -35,6 +36,7 @@
       "name": "[variables('nicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2019-07-01",
+      "tags":"[parameters('resourceTag')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [],
       "properties": {

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "workspaceName": {
@@ -7,7 +7,8 @@
       "metadata": {
         "description": "Specifies the name of the workspace."
       }
-    }
+    },
+    "resourceTag":{"type": "string"}
   },
   "resources": [
     {
@@ -15,6 +16,7 @@
       "name": "[parameters('workspaceName')]",
       "apiVersion": "2015-11-01-preview",
       "location": "[resourceGroup().location]",
+      "tags":"[parameters('resourceTag')]",
       "properties": {
         "sku": {
           "Name": "PerGB2018"

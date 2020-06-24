@@ -157,7 +157,8 @@
     "gw_zone_name":"azure-api.net",
     "dev_zone_name":"developer.azure-api.net",
     "AksresourceName":"[concat('aksPrivate_',parameters('namePostfix'))]",
-    "nodeResourceGroup":"[concat('aksPrivate_', parameters('namePostfix'),'_Resources')]"
+    "nodeResourceGroup":"[concat('aksPrivate_', parameters('namePostfix'),'_Resources')]",
+    "resourceTag":"MSFT_POC"
   },
   "resources": [
     {
@@ -197,6 +198,9 @@
           },
           "privateEPRange": {
             "value": "[variables('privateEPRange')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -216,6 +220,9 @@
         "parameters": {
           "workspaceName": {
             "value": "[variables('workspaceName')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -239,6 +246,9 @@
           },
           "isZoneRedundant": {
             "value": "[parameters('isZoneRedundant')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -269,6 +279,9 @@
           },
           "groupID": {
             "value": "Sql"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -340,6 +353,9 @@
           },
           "administratorLoginPassword": {
               "value": "[parameters('adminPassword')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -370,6 +386,9 @@
           },
           "groupID": {
             "value": "SqlServer"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -393,6 +412,9 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -423,6 +445,9 @@
           },
           "groupID": {
             "value": "vault"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -445,6 +470,9 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -475,6 +503,9 @@
           },
           "groupID": {
             "value": "namespace"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -497,6 +528,9 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -527,6 +561,9 @@
           },
           "groupID": {
             "value": "registry"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -546,6 +583,9 @@
         "parameters": {
           "name": {
             "value": "[variables('appInsightsName')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -589,6 +629,9 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -618,6 +661,9 @@
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -647,6 +693,9 @@
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -696,6 +745,9 @@
           },
           "ipaddress": {
             "value": "[reference('getSqlServerNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -716,6 +768,9 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployCosmosDbPE').outputs.nicID.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -745,6 +800,9 @@
           },
           "ipaddress": {
             "value": "[reference('getcosmosDbNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -765,6 +823,9 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployKeyVaultPE').outputs.nicID.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -794,6 +855,9 @@
           },
           "ipaddress": {
             "value": "[reference('getVaultNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -814,6 +878,9 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployServiceBusPE').outputs.nicID.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -843,6 +910,9 @@
           },
           "ipaddress": {
             "value": "[reference('getServiceBusNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -863,6 +933,9 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployACRPE').outputs.nicID.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -892,6 +965,9 @@
           },
           "ipaddress": {
             "value": "[reference('getACRNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -961,6 +1037,9 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -996,6 +1075,9 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -1031,6 +1113,9 @@
           },
           "sku": {
             "value": "[parameters('jumpSKU')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -1057,6 +1142,9 @@
           },
           "WorkspaceResourceId": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -1087,6 +1175,9 @@
           },
           "ipAddress": {
             "value": "192.168.1.190"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
@@ -1158,6 +1249,9 @@
           },
           "dockerBridgeCidr": {
               "value": "[variables('dockerBridgeCidr')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
