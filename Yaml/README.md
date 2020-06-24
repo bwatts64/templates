@@ -25,22 +25,39 @@
 5. helm repo add stable https://kubernetes-charts.storage.googleapis.com/ #Add the official stable repository
 6. Copy ingress-internal.yaml to c:\aksdeploy folder. 
 7. #Use Helm to deploy an NGINX ingress controller
-   helm install nginx-ingress stable/nginx-ingress --namespace ingress-basic -f internal-ingress.yaml --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --set controller.extraArgs.enable-ssl-passthrough=""
-8. #validate that it create nginx-ingress-controller (LoadBalancer) and nginx-ingress-default-backend(ClusterIP) 
-   kubectl get service -l app=nginx-ingress --namespace ingress-basic
+
+   #change the following in internal-ingress.yaml
+      for static IP for Ingress controller, uncomment loadBalancerIP: <IP Address> and replace with internal or external IP 
+      Set service.beta.kubernetes.io/azure-load-balancer-internal: "true" if internal
+      Set service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "AKS-SN" #change to your subnet name  
+      save changes and run the following command:
+
+      helm install nginx-ingress stable/nginx-ingress --namespace ingress-basic -f internal-ingress.yaml --set controller.replicaCount=2 --set controller.nodeSelector."beta.kubernetes.io/os"=linux --set defaultBackend.nodeSelector."beta.kubernetes.io/os"=linux --set controller.extraArgs.enable-ssl-passthrough=""
+
+    #validate that it created nginx-ingress-controller (LoadBalancer) and nginx-ingress-default-backend(ClusterIP) 
+
+       kubectl get service -l app=nginx-ingress --namespace ingress-basic
+
+## STEP 4: DEPLOY Web, API and ingress route using YAML
+
+    api-service.yaml
+        change image: acrimg.azurecr.io/api-service:latest to your ACR image   
+        save change and run kubectl apply -f api-service.yaml
+
+    web-service.yaml
+        image: acrimg.azurecr.io/api-service:latest #change to your ACR image   
+        save change and run kubectl apply -f web-service.yaml    
+
+    ingress-route.yaml
+        change host: web.example.com with actual web host name    
+        change host: api.example.com with actual api host name
+        save changes and run kubectl apply -f ingress-route.yaml 
 
 
-## STEP 4: Cleanup
+## STEP 5: Cleanup
 
 1. helm list --namespace ingress-basic
 2. helm uninstall nginx-ingress --namespace ingress-basic
-
-
-## Troubleshooting steps
- 
- How to resolve kubectl get service nginx -w: EXTERNAL-IP stuck at <pending> (WIP)
-
- 1. Go to wbaksprivate-agentpool in wbaksresources
 
 
 ## Sample Ingress YAML
