@@ -7,14 +7,6 @@
       "maxLength":5,
       "defaultValue":""
     },
-    "appInsightsName": {
-      "defaultValue": "wbwpocapimai",
-      "type": "string"
-    },
-    "apimname": {
-      "type": "String",
-      "defaultValue": "wbwpocAPPapim"
-    },
     "apimsku": {
       "type": "string",
       "defaultValue": "Developer"
@@ -26,10 +18,6 @@
     "apimEmail": {
       "type": "string",
       "defaultValue": "bwatts@microsoft.com"
-    },
-    "applicationGatewayName": {
-      "type": "string",
-      "defaultValue": "wbwpocAPPappgw"
     },
     "appgwtier": {
       "type": "string",
@@ -51,10 +39,6 @@
                 "3"
         ]
     },
-    "appgwPIPName": {
-        "type": "string",
-        "defaultValue": "wbwpocAPPappgw-pip"
-    },
     "appgwsku": {
         "type": "string",
         "defaultValue": "Standard"
@@ -63,18 +47,9 @@
         "type": "array",
         "defaultValue": []
     },
-
     "appgwautoScaleMaxCapacity": {
         "type": "int",
         "defaultValue": 4
-    },
-    "bastionHostName": {
-      "type": "string",
-      "defaultValue": "wbwpocdemobastion"
-    },
-    "jumpName": {
-      "type": "string",
-      "defaultValue": "wbwpocdemojump"
     },
     "jumpSize": {
       "type": "string",
@@ -91,22 +66,6 @@
     "jumpSKU": {
       "type": "string",
       "defaultValue": "2019-Datacenter"
-    },
-    "gw_zone_name": {
-      "type": "string",
-      "defaultValue": "azure-api.net"
-    },
-    "dev_zone_name": {
-      "type": "string",
-      "defaultValue": "developer.azure-api.net"
-    },
-    "AksresourceName": {
-      "type": "string",
-      "defaultValue": "wbaksprivate"
-    },
-    "nodeResourceGroup": {
-      "type": "string",
-      "defaultValue": "wbaksresources"
     },
     "dnsPrefix": {
         "type": "string",
@@ -169,7 +128,7 @@
     "deployAzureAKSTemplateURL": "[concat(variables('gitUri'),'/PrivateAKSMICluster.json')]",
     "deployAzureCosmosDbURL": "[concat(variables('gitUri'),'/CosmosDb.json')]",
     "deployAzureSqlDbURL": "[concat(variables('gitUri'),'/SQLDB.json')]",
-    "workspaceName": "[concat('pocmonitor',uniqueString(resourceGroup().id))]",
+    "workspaceName": "[concat('pocmonitor_',uniqueString(resourceGroup().id))]",
     "addressRange":"192.168.1.0/24",
     "apimRange":"192.168.1.224/28",
     "aksRange":"192.168.1.0/25",
@@ -181,14 +140,24 @@
     "serviceCidr":"10.0.0.0/24",
     "dnsServiceIP":"10.0.0.10",
     "dockerBridgeCidr":"172.17.0.1/24",
-    "vNETName":"[concat('vnet',parameters('namePostfix'))]",
-    "vaultName":"[concat('vault',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "acrName":"[concat('acr',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "sbName":"[concat('sb',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "cacheName":"[concat('cache',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "cosmosdbName":"[concat('cosmos',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "databaseName":"[concat('DB',parameters('namePostfix'))]",
-    "serverName":"[concat('sql',parameters('namePostfix'),uniqueString(resourcegroup().id))]"
+    "vNETName":"[concat('vnet_',parameters('namePostfix'))]",
+    "vaultName":"[concat('vault_',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "acrName":"[concat('acr_',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "sbName":"[concat('sb_',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "cacheName":"[concat('cache_',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "cosmosdbName":"[concat('cosmos_',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "databaseName":"[concat('DB_',parameters('namePostfix'))]",
+    "serverName":"[concat('sql_',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
+    "appInsightsName":"[concat('appIns_',parameters('namePostfix'))]",
+    "apimname":"[concat('apim_',parameters('namePostfix'))]",
+    "applicationGatewayName":"[concat('appgw_',parameters('namePostfix'))]",
+    "appgwPIPName":"[concat('appgwPIP_',parameters('namePostfix'))]",
+    "bastionHostName":"[concat('bastion_',parameters('namePostfix'))]",
+    "jumpName":"[concat('jumpbx_',parameters('namePostfix'))]",
+    "gw_zone_name":"azure-api.net",
+    "dev_zone_name":"developer.azure-api.net",
+    "AksresourceName":"[concat('aksPrivate_',parameters('namePostfix'))]",
+    "nodeResourceGroup":"[concat('aksPrivate_', parameters('namePostfix'),'_Resources')]"
   },
   "resources": [
     {
@@ -576,7 +545,7 @@
         },
         "parameters": {
           "name": {
-            "value": "[parameters('appInsightsName')]"
+            "value": "[variables('appInsightsName')]"
           }
         }
       }
@@ -598,7 +567,7 @@
         },
         "parameters": {
           "apimname": {
-            "value": "[parameters('apimName')]"
+            "value": "[variables('apimName')]"
           },
           "sku": {
             "value": "[parameters('apimsku')]"
@@ -616,7 +585,7 @@
             "value": "[reference('deployVNET').outputs.apimSubnetID.value]"
           },
           "loggerName":{
-            "value": "[parameters('appInsightsName')]"
+            "value": "[variables('appInsightsName')]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
@@ -639,13 +608,13 @@
         },
         "parameters": {
           "zone_name": {
-            "value": "[parameters('gw_zone_name')]"
+            "value": "[variables('gw_zone_name')]"
           },
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('apimname')]"
+            "value": "[variables('apimname')]"
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
@@ -668,13 +637,13 @@
         },
         "parameters": {
           "zone_name": {
-            "value": "[parameters('dev_zone_name')]"
+            "value": "[variables('dev_zone_name')]"
           },
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
           },
           "recordname": {
-            "value": "[parameters('apimname')]"
+            "value": "[variables('apimname')]"
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
@@ -946,7 +915,7 @@
             "value": "[resourceGroup().location]"
           },
           "applicationGatewayName": {
-              "value": "[parameters('applicationGatewayName')]"
+              "value": "[variables('applicationGatewayName')]"
           },
           "tier": {
               "value": "[parameters('appgwTier')]"
@@ -964,7 +933,7 @@
               "value": "[parameters('appgwZones')]"
           },
           "publicIpAddressName": {
-              "value": "[parameters('appgwPIPName')]"
+              "value": "[variables('appgwPIPName')]"
           },
           "sku": {
               "value": "[parameters('appgwSKU')]"
@@ -985,10 +954,10 @@
               "value": "[reference('deployVNET').outputs.appgwSubnetID.value]"
           },
           "apipool": {
-            "value": "[concat(parameters('apimname'),'.',parameters('gw_zone_name'))]"
+            "value": "[concat(variables('apimname'),'.',variables('gw_zone_name'))]"
           },
           "devPool": {
-            "value": "[concat(parameters('apimname'),'.',parameters('dev_zone_name'))]"
+            "value": "[concat(variables('apimname'),'.',variables('dev_zone_name'))]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
@@ -1017,13 +986,13 @@
               "value": "[resourceGroup().name]"
           },
           "bastionHostName": {
-              "value": "[parameters('bastionHostName')]"
+              "value": "[variables('bastionHostName')]"
           },
           "subnetId": {
               "value": "[reference('deployVNET').outputs.bastionSubnetID.value]"
           },
           "publicIpAddressName": {
-              "value": "[concat(parameters('bastionHostName'),'-pip')]"
+              "value": "[concat(variables('bastionHostName'),'-pip')]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
@@ -1049,7 +1018,7 @@
             "value": "[reference('deployVNET').outputs.sharedSubnetID.value]"
           },
           "virtualMachineName": {
-            "value": "[parameters('jumpName')]"
+            "value": "[variables('jumpName')]"
           },
           "virtualMachineSize": {
             "value": "[parameters('jumpSize')]"
@@ -1137,13 +1106,13 @@
         },
         "parameters": {
           "AksresourceName": {
-            "value": "[parameters('AksresourceName')]"
+            "value": "[variables('AksresourceName')]"
           },
           "location": {
               "value": "[resourceGroup().location]"
           },
           "nodeResourceGroup":{
-            "value": "[parameters('nodeResourceGroup')]"
+            "value": "[variables('nodeResourceGroup')]"
           },
           "VNetName" : {
             "value": "[variables('vNETName')]"

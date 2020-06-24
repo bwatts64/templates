@@ -5,12 +5,6 @@
         "namePostfix": {
             "value": "kr"
         },
-        "appInsightsName": {
-            "value": "wbpocapimai"
-        },
-        "apimname": {
-            "value": "wbpocAPPapim"
-        },
         "apimsku": {
             "value": "Developer"
         },
@@ -39,9 +33,6 @@
                     "3"
             ]
         },
-        "appgwPIPName": {
-            "value": "wbpocAPPappgw-pip"
-        },
         "appgwsku": {
             "value": "Standard"
         },
@@ -50,12 +41,6 @@
         },
         "appgwautoScaleMaxCapacity": {
             "value": 4
-        },
-        "bastionHostName": {
-            "value": "wbpocdemobastion"
-        },
-        "jumpName": {
-            "value": "wbpocdemojump"
         },
         "jumpSize": {
             "value": "Standard_D2"
@@ -68,18 +53,6 @@
         },
         "jumpSKU": {
             "value": "2019-Datacenter"
-        },
-        "gw_zone_name": {
-            "value": "azure-api.net"
-        },
-        "dev_zone_name": {
-            "value": "developer.azure-api.net"
-        },
-        "AksresourceName": {
-            "value": "wbaksprivate"
-        },
-        "nodeResourceGroup": {
-            "value": "wbaksresources"
         },
         "dnsPrefix": {
             "value": "wbaksprivate-dns"
