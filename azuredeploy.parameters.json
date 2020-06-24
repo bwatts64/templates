@@ -2,29 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vNETName": {
-            "value": "wbpocAPPVnet"
-        },
-        "addressRange": {
-            "value": "10.0.0.0/8"
-        },
-        "apimRange": {
-            "value": "10.0.1.0/24"
-        },
-        "aksRange": {
-            "value": "10.1.0.0/16"
-        },
-        "privateEPRange": {
-            "value": "10.0.2.0/24"
-        },
-        "sharedRange": {
-            "value": "10.0.3.0/24"
-        },
-        "bastionRange": {
-            "value": "10.0.4.0/24"
-        },
-        "appgwRange": {
-            "value": "10.0.5.0/24"
+        "namePostfix": {
+            "value": "kr"
         },
         "appInsightsName": {
             "value": "wbpocapimai"
@@ -69,9 +48,6 @@
         "appgwpublicIpZones": {
             "value": []
         },
-        "appgwprivateIpAddress": {
-            "value": "10.0.5.4"
-        },
         "appgwautoScaleMaxCapacity": {
             "value": 4
         },
@@ -85,13 +61,55 @@
             "value": "Standard_D2"
         },
         "adminUsername": {
-            "value": "jumpAdmin"
+            "value": "sysadmin"
         },
         "adminPassword": {
-            "value": "" 
+            "value": "Password$123" 
         },
         "jumpSKU": {
             "value": "2019-Datacenter"
+        },
+        "gw_zone_name": {
+            "value": "azure-api.net"
+        },
+        "dev_zone_name": {
+            "value": "developer.azure-api.net"
+        },
+        "AksresourceName": {
+            "value": "wbaksprivate"
+        },
+        "nodeResourceGroup": {
+            "value": "wbaksresources"
+        },
+        "dnsPrefix": {
+            "value": "wbaksprivate-dns"
+        },
+        "kubernetesVersion": {
+            "value": "1.15.11"
+        },
+        "networkPlugin": {
+            "value": "kubenet"
+        },
+        "enableRBAC": {
+            "value": true
+        },
+        "vmssNodePool": {
+            "value": true
+        },
+        "windowsProfile": {
+            "value": false
+        },
+        "enablePrivateCluster": {
+            "value": true
+        },
+        "enableHttpApplicationRouting": {
+            "value": true
+        },
+        "networkPolicy": {
+            "value": "calico"
+        },
+        "isZoneRedundant": {
+            "value": true
         }
     }
 }
