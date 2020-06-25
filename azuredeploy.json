@@ -142,7 +142,7 @@
     "dockerBridgeCidr":"172.17.0.1/24",
     "vNETName":"[concat('vnet-',parameters('namePostfix'))]",
     "vaultName":"[concat('vault-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "acrName":"[concat('acr-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "acrName":"[concat('acr',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
     "sbName":"[concat('sb-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
     "cacheName":"[concat('cache-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
     "cosmosdbName":"[concat('cosmos-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
@@ -163,6 +163,7 @@
   "resources": [
     {
       "name": "deployVNET",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -207,6 +208,7 @@
     },
     {
       "name": "deployLAWorkspace",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -229,6 +231,7 @@
     },
     {
       "name": "deployCosmosDb",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -255,6 +258,7 @@
     },
     {
       "name": "deployCosmosDbPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -288,6 +292,7 @@
     },
     {
       "name": "deploySqlDb",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -362,6 +367,7 @@
     },
     {
       "name": "deploySqlServerPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -395,6 +401,7 @@
     },
     {
       "name": "deployKeyVault",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -421,6 +428,7 @@
     },
     {
       "name": "deployKeyVaultPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -454,6 +462,7 @@
     },
     {
       "name": "deployServiceBus",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -479,6 +488,7 @@
     },
     {
       "name": "deployServiceBusPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -512,6 +522,7 @@
     },
     {
       "name": "deployACR",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -537,6 +548,7 @@
     },
     {
       "name": "deployACRPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -570,6 +582,7 @@
     },
     {
       "name": "deployAppInsights",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -592,6 +605,7 @@
     },
     {
       "name": "deployAPIM",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -638,6 +652,7 @@
     },
     {
       "name": "deployGWDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -670,6 +685,7 @@
     },
     {
       "name": "deployDEVDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -702,6 +718,7 @@
     },
     {
       "name": "getSqlServerNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -722,6 +739,7 @@
     },
     {
       "name": "deploySqlDbDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -751,6 +769,7 @@
     },
     {
       "name": "getCosmosDbNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -765,15 +784,13 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployCosmosDbPE').outputs.nicID.value]"
-          },
-          "resourceTag":{
-            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployCosmosDbDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -806,6 +823,7 @@
     },
     {
       "name": "getVaultNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -820,15 +838,13 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployKeyVaultPE').outputs.nicID.value]"
-          },
-          "resourceTag":{
-            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployKeyVaultDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -861,6 +877,7 @@
     },
     {
       "name": "getServiceBusNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -875,15 +892,13 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployServiceBusPE').outputs.nicID.value]"
-          },
-          "resourceTag":{
-            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployServiceBusDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -916,6 +931,7 @@
     },
     {
       "name": "getACRNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -930,15 +946,13 @@
         "parameters": {
           "nicID": {
             "value": "[reference('deployACRPE').outputs.nicID.value]"
-          },
-          "resourceTag":{
-            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployACRDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -971,6 +985,7 @@
     },
     {
       "name": "deployAPPGW",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1043,6 +1058,7 @@
     },
     {
       "name": "deployAzureBastion",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1081,6 +1097,7 @@
     },
     {
       "name": "deployJumpBox",
+      "comments":"NOTE: OS and Datadisks cannot be tagged when provisioned within VM.  Would need to provision DISK with tags first, then reference",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1119,6 +1136,7 @@
     },
     {
       "name": "addJumpBoxInsights",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1148,6 +1166,7 @@
     },
     {
       "name": "deployAzureCacheVault",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1181,6 +1200,7 @@
     },
     {
       "name": "deployPrivateAKSCluster",
+      "comments":"apiVersion is flagged, but haven't changed as not sure if this is needed for some features.",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-05-01",
       "dependsOn": [
