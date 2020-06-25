@@ -157,7 +157,7 @@
     "gw_zone_name":"azure-api.net",
     "dev_zone_name":"developer.azure-api.net",
     "AksresourceName":"[concat('aksPrivate-',parameters('namePostfix'))]",
-    "nodeResourceGroup":"[concat('aksPrivate-', parameters('namePostfix'),'_Resources')]",
+    "nodeResourceGroup":"[concat('aksPrivate-', parameters('namePostfix'),'-Resources',uniqueString(resourceGroup().id))]",
     "resourceTag":"MSFT_POC"
   },
   "resources": [
@@ -1202,7 +1202,7 @@
       "name": "deployPrivateAKSCluster",
       "comments":"apiVersion is flagged, but haven't changed as not sure if this is needed for some features.",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-05-01",
+      "apiVersion": "2019-10-01",
       "dependsOn": [
         "deployVNET"
       ],
