@@ -67,10 +67,6 @@
       "type": "string",
       "defaultValue": "2019-Datacenter"
     },
-    "dnsPrefix": {
-        "type": "string",
-        "defaultValue": "wbaksprivate-dns"
-    },
     "kubernetesVersion": {
         "type": "string",
         "defaultValue": "1.15.11"
@@ -158,7 +154,8 @@
     "dev_zone_name":"developer.azure-api.net",
     "AksresourceName":"[concat('aksPrivate-',parameters('namePostfix'))]",
     "nodeResourceGroup":"[concat('aksPrivate-', parameters('namePostfix'),'-Resources',uniqueString(resourceGroup().id))]",
-    "resourceTag":"MSFT_POC"
+    "resourceTag":"MSFT_POC",
+    "dnsPrefix":"[concat(variables('AksresourceName'),'-dns')]"
   },
   "resources": [
     {
@@ -1232,7 +1229,7 @@
             "value": "AKS-SN"
           },  
           "dnsPrefix": {
-              "value": "[parameters('dnsPrefix')]"
+              "value": "[variables('dnsPrefix')]"
           },
           "kubernetesVersion": {
               "value": "[parameters('kubernetesVersion')]"
