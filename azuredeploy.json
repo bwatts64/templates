@@ -5,7 +5,7 @@
     "namePostfix": {
       "type":"string",
       "maxLength":5,
-      "defaultValue":"poc"
+      "defaultValue":""
     },
     "apimsku": {
       "type": "string",
@@ -51,10 +51,6 @@
         "type": "int",
         "defaultValue": 4
     },
-    "jumpName": {
-      "type": "string",
-      "defaultValue": "wbwpocdemojump"
-    },
     "jumpSize": {
       "type": "string",
       "defaultValue": "Standard_DS1_v2"
@@ -70,18 +66,6 @@
     "jumpSKU": {
       "type": "string",
       "defaultValue": "2019-Datacenter"
-    },
-    "gw_zone_name": {
-      "type": "string",
-      "defaultValue": "azure-api.net"
-    },
-    "dev_zone_name": {
-      "type": "string",
-      "defaultValue": "developer.azure-api.net"
-    },
-    "nodeResourceGroup": {
-      "type": "string",
-      "defaultValue": "wbaksresources"
     },
     "kubernetesVersion": {
         "type": "string",
@@ -121,7 +105,7 @@
     }
   },
   "variables": {
-    "gitUri": "https://raw.githubusercontent.com/bwatts64/templates/master",
+    "gitUri": "https://raw.githubusercontent.com/bwatts64/templates//master",
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",
@@ -140,7 +124,7 @@
     "deployAzureAKSTemplateURL": "[concat(variables('gitUri'),'/PrivateAKSMICluster.json')]",
     "deployAzureCosmosDbURL": "[concat(variables('gitUri'),'/CosmosDb.json')]",
     "deployAzureSqlDbURL": "[concat(variables('gitUri'),'/SQLDB.json')]",
-    "workspaceName": "[concat('pocmonitor',uniqueString(resourceGroup().id))]",
+    "workspaceName": "[concat('pocmonitor-',uniqueString(resourceGroup().id))]",
     "addressRange":"192.168.1.0/24",
     "apimRange":"192.168.1.224/28",
     "aksRange":"192.168.1.0/25",
@@ -152,25 +136,31 @@
     "serviceCidr":"10.0.0.0/24",
     "dnsServiceIP":"10.0.0.10",
     "dockerBridgeCidr":"172.17.0.1/24",
-    "vNETName":"[concat('vnet',parameters('namePostfix'))]",
-    "vaultName":"[concat('vault',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "vNETName":"[concat('vnet-',parameters('namePostfix'))]",
+    "vaultName":"[concat('vault-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
     "acrName":"[concat('acr',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "sbName":"[concat('sb',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "cacheName":"[concat('cache',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "cosmosdbName":"[concat('cosmos',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
-    "databaseName":"[concat('DB',parameters('namePostfix'))]",
-    "serverName":"[concat('sql',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
-    "appInsightsName": "[concat('appinsights',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
-    "apimname": "[concat('apim',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
-    "applicationGatewayName": "[concat('appgw',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
-    "appgwPIPName": "[concat(variables('applicationGatewayName'),'-pip')]",
-    "bastionHostName": "[concat('bastion',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
-    "AksresourceName": "[concat('aks',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
-    "dnsPrefix": "[concat(variables('AksresourceName'),'-dns')]"
+    "sbName":"[concat('sb-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "cacheName":"[concat('cache-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "cosmosdbName":"[concat('cosmos-',parameters('namePostfix'),uniqueString(resourceGroup().id))]",
+    "databaseName":"[concat('DB-',parameters('namePostfix'))]",
+    "serverName":"[concat('sql-',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
+    "appInsightsName":"[concat('appIns-',parameters('namePostfix'))]",
+    "apimname":"[concat('apim-',parameters('namePostfix'),uniqueString(resourcegroup().id))]",
+    "applicationGatewayName":"[concat('appgw-',parameters('namePostfix'))]",
+    "appgwPIPName":"[concat('appgwPIP-',parameters('namePostfix'))]",
+    "bastionHostName":"[concat('bastion-',parameters('namePostfix'))]",
+    "jumpName":"[concat('jumpbx-',parameters('namePostfix'))]",
+    "gw_zone_name":"azure-api.net",
+    "dev_zone_name":"developer.azure-api.net",
+    "AksresourceName":"[concat('aksPrivate-',parameters('namePostfix'))]",
+    "nodeResourceGroup":"[concat('aksPrivate-', parameters('namePostfix'),'-Resources',uniqueString(resourceGroup().id))]",
+    "resourceTag":"MSFT_POC",
+    "dnsPrefix":"[concat(variables('AksresourceName'),'-dns')]"
   },
   "resources": [
     {
       "name": "deployVNET",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -206,12 +196,16 @@
           },
           "privateEPRange": {
             "value": "[variables('privateEPRange')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployLAWorkspace",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -225,12 +219,16 @@
         "parameters": {
           "workspaceName": {
             "value": "[variables('workspaceName')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployCosmosDb",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -248,12 +246,16 @@
           },
           "isZoneRedundant": {
             "value": "[parameters('isZoneRedundant')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployCosmosDbPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -278,12 +280,16 @@
           },
           "groupID": {
             "value": "Sql"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deploySqlDb",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -349,12 +355,16 @@
           },
           "administratorLoginPassword": {
               "value": "[parameters('adminPassword')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deploySqlServerPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -379,12 +389,16 @@
           },
           "groupID": {
             "value": "SqlServer"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployKeyVault",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -402,12 +416,16 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployKeyVaultPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -432,12 +450,16 @@
           },
           "groupID": {
             "value": "vault"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployServiceBus",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -454,12 +476,16 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployServiceBusPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -484,12 +510,16 @@
           },
           "groupID": {
             "value": "namespace"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployACR",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -506,12 +536,16 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployACRPE",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -536,12 +570,16 @@
           },
           "groupID": {
             "value": "registry"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployAppInsights",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -555,12 +593,16 @@
         "parameters": {
           "name": {
             "value": "[variables('appInsightsName')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployAPIM",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -598,12 +640,16 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployGWDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -617,7 +663,7 @@
         },
         "parameters": {
           "zone_name": {
-            "value": "[parameters('gw_zone_name')]"
+            "value": "[variables('gw_zone_name')]"
           },
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
@@ -627,12 +673,16 @@
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployDEVDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -646,7 +696,7 @@
         },
         "parameters": {
           "zone_name": {
-            "value": "[parameters('dev_zone_name')]"
+            "value": "[variables('dev_zone_name')]"
           },
           "vnet_id": {
             "value": "[reference('deployVNET').outputs.vnetID.value]"
@@ -656,12 +706,16 @@
           },
           "ipaddress": {
             "value": "[reference('deployAPIM').outputs.APIMIP.value[0]]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "getSqlServerNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -682,6 +736,7 @@
     },
     {
       "name": "deploySqlDbDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -705,12 +760,16 @@
           },
           "ipaddress": {
             "value": "[reference('getSqlServerNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "getCosmosDbNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -731,6 +790,7 @@
     },
     {
       "name": "deployCosmosDbDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -754,12 +814,16 @@
           },
           "ipaddress": {
             "value": "[reference('getcosmosDbNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "getVaultNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -780,6 +844,7 @@
     },
     {
       "name": "deployKeyVaultDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -803,12 +868,16 @@
           },
           "ipaddress": {
             "value": "[reference('getVaultNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "getServiceBusNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -829,6 +898,7 @@
     },
     {
       "name": "deployServiceBusDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -852,12 +922,16 @@
           },
           "ipaddress": {
             "value": "[reference('getServiceBusNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "getACRNICIP",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -878,6 +952,7 @@
     },
     {
       "name": "deployACRDNSZone",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -901,12 +976,16 @@
           },
           "ipaddress": {
             "value": "[reference('getACRNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployAPPGW",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -963,19 +1042,23 @@
               "value": "[reference('deployVNET').outputs.appgwSubnetID.value]"
           },
           "apipool": {
-            "value": "[concat(variables('apimname'),'.',parameters('gw_zone_name'))]"
+            "value": "[concat(variables('apimname'),'.',variables('gw_zone_name'))]"
           },
           "devPool": {
-            "value": "[concat(variables('apimname'),'.',parameters('dev_zone_name'))]"
+            "value": "[concat(variables('apimname'),'.',variables('dev_zone_name'))]"
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployAzureBastion",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1005,12 +1088,16 @@
           },
           "workspaceID": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployJumpBox",
+      "comments":"NOTE: OS and Datadisks cannot be tagged when provisioned within VM.  Would need to provision DISK with tags first, then reference",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1027,7 +1114,7 @@
             "value": "[reference('deployVNET').outputs.sharedSubnetID.value]"
           },
           "virtualMachineName": {
-            "value": "[parameters('jumpName')]"
+            "value": "[variables('jumpName')]"
           },
           "virtualMachineSize": {
             "value": "[parameters('jumpSize')]"
@@ -1040,12 +1127,16 @@
           },
           "sku": {
             "value": "[parameters('jumpSKU')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "addJumpBoxInsights",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1066,12 +1157,16 @@
           },
           "WorkspaceResourceId": {
             "value": "[reference('deployLAWorkspace').outputs.workspaceId.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployAzureCacheVault",
+      "comments":"",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "dependsOn": [
@@ -1096,14 +1191,18 @@
           },
           "ipAddress": {
             "value": "192.168.1.190"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
     },
     {
       "name": "deployPrivateAKSCluster",
+      "comments":"apiVersion is flagged, but haven't changed as not sure if this is needed for some features.",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-05-01",
+      "apiVersion": "2019-10-01",
       "dependsOn": [
         "deployVNET"
       ],
@@ -1121,7 +1220,7 @@
               "value": "[resourceGroup().location]"
           },
           "nodeResourceGroup":{
-            "value": "[parameters('nodeResourceGroup')]"
+            "value": "[variables('nodeResourceGroup')]"
           },
           "VNetName" : {
             "value": "[variables('vNETName')]"
@@ -1167,6 +1266,9 @@
           },
           "dockerBridgeCidr": {
               "value": "[variables('dockerBridgeCidr')]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }

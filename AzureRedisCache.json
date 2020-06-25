@@ -11,12 +11,14 @@
         },
         "ipAddress": {
             "type": "string"
-        }
+        },
+        "resourceTag": {"type": "string"}
     },
     "resources": [
         {
             "name": "[parameters('cacheName')]",
             "location": "[resourceGroup().location]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "properties": {
                 "sku": {
                      "name": "Premium",
@@ -60,6 +62,6 @@
             ]
         }
     ],
-    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0"
 }

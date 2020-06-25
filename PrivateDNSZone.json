@@ -13,7 +13,8 @@
         },
         "ipaddress": {
             "type": "string"
-        }
+        },
+        "resourceTag":{"type": "string"}
     },
     "variables": {},
     "resources": [
@@ -21,6 +22,7 @@
             "type": "Microsoft.Network/privateDnsZones",
             "apiVersion": "2018-09-01",
             "name": "[parameters('zone_name')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "location": "global",
             "properties": {
                 "maxNumberOfRecordSets": 25000,

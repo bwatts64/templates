@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "VmResourceId": {
@@ -19,7 +19,8 @@
             "metadata": {
                 "description": "Workspace Resource ID."
             }
-        }
+        },
+        "resourceTag": {"type": "string"}
     },
     "variables": {
         "VmName": "[split(parameters('VmResourceId'),'/')[8]]",
@@ -35,6 +36,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2018-10-01",
             "name": "[variables('VmName')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "location": "[resourceGroup().location]",
             "resources": [
                 {

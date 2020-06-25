@@ -34,7 +34,8 @@
       "bastionRange": {
         "type": "String",
         "defaultValue": "10.0.4.0/24"
-      }
+      },
+      "resourceTag":{"type": "string"}
     },
     "variables": {
       "gitUri": "https://raw.githubusercontent.com/bwatts64/templates/master",
@@ -48,6 +49,7 @@
         "name": "deployVNET",
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2015-01-01",
+        "tags":"[parameters('resourceTag')]",
         "dependsOn": [],
         "properties": {
           "mode": "Incremental",

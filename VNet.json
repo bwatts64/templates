@@ -32,7 +32,8 @@
     },
     "bastionRange": {
       "type": "String"
-    }
+    },
+    "resourceTag": {"type": "string"}
   },
   "variables": {},
   "resources": [
@@ -41,6 +42,7 @@
       "apiVersion": "2019-08-01",
       "name": "APIM-NSG",
       "location": "[resourceGroup().location]",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "properties": {
         "securityRules": [
           {
@@ -259,6 +261,7 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2019-08-01",
       "name": "AKS-NSG",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "location": "[resourceGroup().location]",
       "properties": {
 
@@ -268,6 +271,7 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2019-08-01",
       "name": "Shared-NSG",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
@@ -304,6 +308,7 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2019-08-01",
       "name": "AppGW-NSG",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
@@ -366,6 +371,7 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2019-08-01",
       "name": "Backend-NSG",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
@@ -407,7 +413,7 @@
               "sourcePortRange": "*",
               "destinationAddressPrefix": "*"
             }
-          },
+             },
           {
             "name": "Azure-Storage",
             "properties": {
@@ -438,6 +444,7 @@
               "sourcePortRange": "*",
               "destinationAddressPrefix": "169.254.169.254/32"
             }
+            
           },
           {
             "name": "Azure-DNS-TCP-2",
@@ -562,13 +569,13 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2019-04-01",
       "name": "[parameters('vNETName')]",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkSecurityGroups', 'APIM-NSG')]",
         "[resourceId('Microsoft.Network/networkSecurityGroups', 'AKS-NSG')]",
         "[resourceId('Microsoft.Network/networkSecurityGroups', 'Shared-NSG')]"
       ],
-      "tags": {},
       "properties": {
         "addressSpace": {
           "addressPrefixes": [

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vaultName": {
@@ -7,7 +7,8 @@
         },
         "workspaceId": {
             "type": "string"
-        }
+        },
+        "resourceTag":{"type": "string"}
     },
     "variables": {
         
@@ -18,8 +19,7 @@
             "apiVersion": "2016-10-01",
             "name": "[parameters('vaultName')]",
             "location": "[resourceGroup().location]",
-            "tags": {
-            },
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "properties": {
                 "sku": {
                     "family": "A",

@@ -19,7 +19,8 @@
         },
         "workspaceId": {
             "type": "string"
-        }
+        },
+        "resourceTag": {"type": "string"}
     },
     "resources": [
         {
@@ -27,18 +28,20 @@
             "type": "Microsoft.Network/publicIpAddresses",
             "name": "[parameters('publicIpAddressName')]",
             "location": "[parameters('location')]",
+            
             "sku": {
                 "name": "Standard"
             },
             "properties": {
                 "publicIPAllocationMethod": "Static"
             },
-            "tags": {}
+            "tags":{"Quality":"[parameters('resourceTag')]"}
         },
         {
             "apiVersion": "2019-04-01",
             "type": "Microsoft.Network/bastionHosts",
             "name": "[parameters('bastionHostName')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
@@ -58,7 +61,6 @@
                     }
                 ]
             },
-            "tags": {},
             "resources": [
                 {
                     "type": "providers/diagnosticSettings",

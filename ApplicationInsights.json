@@ -4,7 +4,8 @@
     "parameters": {
         "name": {
             "type": "String"
-        }
+        },
+        "resourceTag": {"type": "string"}
     },
     "variables": {},
     "resources": [
@@ -12,6 +13,7 @@
             "type": "microsoft.insights/components",
             "apiVersion": "2015-05-01",
             "name": "[parameters('name')]",
+            "tags":{"Quality":"[parameters('resourceTag')]"},
             "location": "eastus",
             "kind": "web",
             "properties": {
