@@ -4,8 +4,7 @@
     "parameters": {
         "nicID": {
             "type": "String"
-        },
-        "resourceTag": {"type": "string"}
+        }
     },
     "variables": {},
     "resources": [

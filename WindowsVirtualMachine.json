@@ -36,7 +36,7 @@
       "name": "[variables('nicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2019-07-01",
-      "tags":"[parameters('resourceTag')]",
+      "tags":{"Quality":"[parameters('resourceTag')]"},
       "location": "[resourceGroup().location]",
       "dependsOn": [],
       "properties": {
