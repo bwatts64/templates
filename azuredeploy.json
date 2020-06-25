@@ -763,6 +763,9 @@
           },
           "ipaddress": {
             "value": "[reference('getSqlServerNICIP').outputs.nicIP.value]"
+          },
+          "resourceTag":{
+            "value":"[variables('resourceTag')]"
           }
         }
       }
