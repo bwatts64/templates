@@ -51,9 +51,6 @@
         "jumpSKU": {
             "value": "2019-Datacenter"
         },
-        "dnsPrefix": {
-            "value": "wbaksprivate-dns"
-        },
         "kubernetesVersion": {
             "value": "1.15.11"
         },
