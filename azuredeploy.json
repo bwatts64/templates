@@ -105,7 +105,7 @@
     }
   },
   "variables": {
-    "gitUri": "https://raw.githubusercontent.com/bwatts64/templates//karlspellshisnamecorrect",
+    "gitUri": "https://raw.githubusercontent.com/bwatts64/templates//master",
     "deployVNETTemplateURL": "[concat(variables('gitUri'),'/VNet.json')]",
     "deployAppInsightsTemplateURL": "[concat(variables('gitUri'),'/ApplicationInsights.json')]",
     "deployAPIMTemplateURL": "[concat(variables('gitUri'),'/APIM.json')]",
