@@ -178,7 +178,7 @@
                             "path": "/",
                             "requestTimeout": 20,
                             "probe": {
-                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/probes/APIDEV')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/probes/APIMDev')]"
                             }
                         }
                     }
