@@ -176,7 +176,10 @@
                             "cookieBasedAffinity": "Disabled",
                             "pickHostNameFromBackendAddress": true,
                             "path": "/",
-                            "requestTimeout": 20
+                            "requestTimeout": 20,
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName')), '/probes/APIDEV')]"
+                            }
                         }
                     }
                 ],
@@ -292,6 +295,20 @@
                             "protocol": "Https",
                             "host": "[parameters('apiPool')]",
                             "path": "/status-0123456789abcdef",
+                            "interval": 30,
+                            "timeout": 30,
+                            "unhealthyThreshold": 3,
+                            "pickHostNameFromBackendHttpSettings": false,
+                            "minServers": 0,
+                            "match": {}
+                        }
+                    },
+                    {
+                        "name": "APIMDev",
+                        "properties": {
+                            "protocol": "Https",
+                            "host": "[parameters('devPool')]",
+                            "path": "/",
                             "interval": 30,
                             "timeout": 30,
                             "unhealthyThreshold": 3,
