@@ -5,7 +5,7 @@
     "namePostfix": {
       "type":"string",
       "maxLength":5,
-      "defaultValue":""
+      "defaultValue":"poc"
     },
     "apimsku": {
       "type": "string",
