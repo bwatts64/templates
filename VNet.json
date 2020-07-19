@@ -46,7 +46,7 @@
       "properties": {
         "securityRules": [
           {
-            "name": "allow-443",
+            "name": "allow-443-gw",
             "properties": {
               "priority": 110,
               "access": "Allow",
@@ -62,12 +62,12 @@
             }
           },
           {
-            "name": "allow-mgmt-endpoint",
+            "name": "allow-443-mgmt",
             "properties": {
               "priority": 120,
               "access": "Allow",
               "direction": "Inbound",
-              "destinationPortRange": "3443",
+              "destinationPortRange": "443",
               "protocol": "Tcp",
               "sourceAddressPrefix": "ApiManagement",
               "sourcePortRange": "*",
