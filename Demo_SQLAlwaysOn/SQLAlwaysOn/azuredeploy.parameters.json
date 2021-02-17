@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namePrefix": {
+      "value": "pocsqlaa"
+    },
+    "existingDomainName": {
+      "value": "lab.local"
+    },
+    "adminUsername": {
+      "value": "bwatts"
+    },
+    "sqlServiceAccount": {
+      "value": "bwatts"
+    },
+    "existingVirtualNetworkRGName": {
+      "value": "SQLAA"
+    },
+    "existingVirtualNetworkName": {
+      "value": "ad-vnet"
+    },
+    "sqlVMImage": {
+      "value": "2016-Datacenter"
+    },
+    "adminPassword": {
+      "value": "NFLdolphins01!!"
+    },
+    "sqlServicePassword": {
+      "value": "NFLdolphins01!!"
+    },
+    "existingSubnetName": {
+      "value": "ad-vnet-subnet"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "agtServiceAccount": {
+      "value": "bwatts"
+    },
+    "agtServicePassword": {
+      "value": "NFLdolphins01!!"
+    },
+    "workloadType": {
+      "value": "DW"
+    }
+  }
+}
